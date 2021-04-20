@@ -51,8 +51,25 @@ async function seed() {
   const [DejaVu, Montero, ChampagneProblems, Gaslighter, GoYourOwnWay, Peaches, WAP, Willow, MrPerfectlyFine, ConeyIsland] = ringtones;
   console.log(`seeded ${ringtones.length} ringtones`)
   console.log(`seeded successfully`)
+  await users[0].setOrders([orders[0], orders[1], orders[2]])
+  await users[1].setOrder(orders[3])
+  await users[5].setOrders(orders[4], orders[5])
+  await users[6].setOrder(orders[6])
+  await users[7].setOrder(orders[7])
+  await users[8].setOrders([orders[8], orders[9]])
+  await orders[0].setRingtone(DejaVu)
+  await orders[1].setRingtone(Montero)
+  await orders[2].setRingtones([ChampagneProblems, Gaslighter, GoYourOwnWay])
+  await orders[3].setRingtones([Peaches])
+  await orders[4].setRingtone(WAP)
+  await orders[5].setRingtone(Willow)
+  await orders[6].setRingtone(MrPerfectlyFine)
+  await orders[7].setRingtone(ConeyIsland)
+  await orders[8].setRingtones([Peaches, Gaslighter])
+  await orders[9].setRingtones([Montero, ConeyIsland])
   return [DejaVu, Montero, ChampagneProblems, Gaslighter, GoYourOwnWay, Peaches, WAP, Willow, MrPerfectlyFine, ConeyIsland]
 }
+
 /*
  We've separated the `seed` function from the `runSeed` function.
  This way we can isolate the error handling and exit trapping.
