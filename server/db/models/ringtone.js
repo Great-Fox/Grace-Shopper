@@ -20,7 +20,8 @@ const Ringtone = db.define('ringtone', {
         allowNull: false,
         validate: {
             notEmpty: true,
-        }
+        },
+        defaultValue: 1.99
     },
     songUrl: {
         type: Sequelize.TEXT
