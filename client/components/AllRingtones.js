@@ -13,22 +13,26 @@ export class AllRingtones extends React.Component {
     if (!this.props.ringtones) {
       return <h1> Loading Ringtones! </h1>;
     } else {
+      console.log(this.props.ringtones);
       return (
         <div>
           <h1> These are our wonderful ringtones! </h1>
           {this.props.ringtones.map((ringtone) => {
-            <div key={ringtone.id}>
+            return (
+<div key={ringtone.id}>
               <h3>{ringtone.name}</h3>
-              <iframe
+              {/* <iframe
                 src={ringtone.songUrl}
                 width="300"
                 height="380"
                 frameBorder="0"
                 allowtransparency="true"
-                allow="encrypted-media"></iframe>
+                allow="encrypted-media"></iframe> */}
               <h4>{ringtone.artist}</h4>
               <h6>{ringtone.genre}</h6>
-            </div>;
+            </div>
+            )
+            
           })}
         </div>
       );
