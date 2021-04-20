@@ -4,7 +4,9 @@ const db = require('../db')
 const Order_Ringtone = db.define('order ringtone', {
     price: {
         type: Sequelize.DOUBLE,
-        defaultValue: 0
+    },
+    quantity: {
+        type: Sequelize.INTEGER
     }
 })
 
