@@ -12,9 +12,37 @@ async function seed() {
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ username: 'cody', password: '123' }),
-    User.create({ username: 'murphy', password: '123' }),
+    User.create({ email: 'cody@mail.com', firstName: 'Cody', lastName: 'Smith', password: 'cody123' }),
+    User.create({ email: 'murphy@mail.com', firstName: 'Murphy', lastName: 'Pink', password: 'murphy123' }),
+    User.create({ email: 'hannah@mail.com', firstName: 'Hannah', lastName: 'Park', password: 'hannah123' }),
+    User.create({ email: 'anna@mail.com', firstName: 'Anna', lastName: 'Rodriguez', password: 'anna123' }),
+    User.create({ email: 'matt@mail.com', firstName: 'Matt', lastName: 'Taylor', password: 'matt123' }),
+    User.create({ email: 'ralph@mail.com', firstName: 'Ralph', lastName: 'Shi', password: 'ralph123' }),
+    User.create({ email: 'paul@mail.com', firstName: 'Paul', lastName: 'Rudd', password: 'paul123' }),
+    User.create({ email: 'mickey@mail.com', firstName: 'Mickey', lastName: 'Pi', password: 'mickey123' }),
+    User.create({ email: 'rebecca@mail.com', firstName: 'Rebecca', lastName: 'Fang', password: 'rebecca123' }),
+    User.create({ email: 'chris@mail.com', firstName: 'Chris', lastName: 'Evans', password: 'chris123' }),
   ])
+
+  const orders = await Promise.all([
+    Order.create({ paymentMethod: 'Credit Card', completed: false}),
+    Order.create({ paymentMethod: 'Venmo', completed: true}),
+    Order.create({ paymentMethod: 'PayPal', completed: false}),
+    Order.create({ paymentMethod: 'Venmo', completed: false}),
+    Order.create({ paymentMethod: 'PayPal', completed: true}),
+    Order.create({ paymentMethod: 'Credit Card', completed: true}),
+    Order.create({ paymentMethod: 'PayPal', completed: false}),
+    Order.create({ paymentMethod: 'Venmo', completed: false}),
+    Order.create({ paymentMethod: 'Venmo', completed: true}),
+    Order.create({ paymentMethod: 'PayPal', completed: true}),
+  ])
+  return {
+    users: {
+      
+    }
+  }
+
+  await Order.setRingtone([])
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
