@@ -12,11 +12,43 @@ const User = db.define('user', {
     unique: true,
     allowNull: false
   },
-  password: {
+  firstName: {
     type: Sequelize.STRING,
+    allowNull: false
   },
-  githubId: {
-    type: Sequelize.INTEGER
+  lastName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  password: {
+    type: Sequelize.CHAR,
+  },
+  email: {
+    type: Sequelize.CHAR,
+    unique: true,
+    allowNull: false,
+    validate: { 
+      isEmail: true,
+    }
+  },
+  creditCardNum: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    validate:{
+      isCreditCard: true
+    }
+  },
+  creditCardExpDate: {
+    // need to double check later
+    type: Sequelize.DATEONLY,
+    allowNull: false
+  },
+  creditCardSecurityNum:{
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  creditCardZip: {
+    type: Sequelize.STRING
   }
 })
 
