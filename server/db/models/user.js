@@ -24,7 +24,7 @@ const User = db.define('user', {
     allowNull: false
   },
   password: {
-    type: Sequelize.CHAR
+    type: Sequelize.CHAR,
   },
 })
 
