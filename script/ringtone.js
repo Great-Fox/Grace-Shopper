@@ -23,53 +23,11 @@ async function seed() {
     Ringtone.create({  name: `Mr.Perfectly Fine (Taylor's Version)`, artist: 'Taylor Swift', genre: 'pop', songUrl: 'spotify:track:2CYVETnhM9aytqrazYYwrK' }),
     Ringtone.create({  name: 'Coney Island', artist: 'Taylor Swift', genre: 'pop', songUrl: 'spotify:track:2awNGIJHodfLZSClB3PYhz' })
   ]);
-  const users = await Promise.all([
-    User.create({ email: 'cody@mail.com', firstName: 'Cody', lastName: 'Smith', password: 'cody123' }),
-    User.create({ email: 'murphy@mail.com', firstName: 'Murphy', lastName: 'Pink', password: 'murphy123' }),
-    User.create({ email: 'hannah@mail.com', firstName: 'Hannah', lastName: 'Park', password: 'hannah123' }),
-    User.create({ email: 'anna@mail.com', firstName: 'Anna', lastName: 'Rodriguez', password: 'anna123' }),
-    User.create({ email: 'matt@mail.com', firstName: 'Matt', lastName: 'Taylor', password: 'matt123' }),
-    User.create({ email: 'ralph@mail.com', firstName: 'Ralph', lastName: 'Shi', password: 'ralph123' }),
-    User.create({ email: 'paul@mail.com', firstName: 'Paul', lastName: 'Rudd', password: 'paul123' }),
-    User.create({ email: 'mickey@mail.com', firstName: 'Mickey', lastName: 'Pi', password: 'mickey123' }),
-    User.create({ email: 'rebecca@mail.com', firstName: 'Rebecca', lastName: 'Fang', password: 'rebecca123' }),
-    User.create({ email: 'chris@mail.com', firstName: 'Chris', lastName: 'Evans', password: 'chris123' }),
-  ]);
-  const orders = await Promise.all([
-    Order.create({ paymentMethod: 'Credit Card', completed: false}),
-    Order.create({ paymentMethod: 'Venmo', completed: true}),
-    Order.create({ paymentMethod: 'PayPal', completed: false}),
-    Order.create({ paymentMethod: 'Venmo', completed: false}),
-    Order.create({ paymentMethod: 'PayPal', completed: true}),
-    Order.create({ paymentMethod: 'Credit Card', completed: true}),
-    Order.create({ paymentMethod: 'PayPal', completed: false}),
-    Order.create({ paymentMethod: 'Venmo', completed: false}),
-    Order.create({ paymentMethod: 'Venmo', completed: true}),
-    Order.create({ paymentMethod: 'PayPal', completed: true}),
-  ])
-  
   const [DejaVu, Montero, ChampagneProblems, Gaslighter, GoYourOwnWay, Peaches, WAP, Willow, MrPerfectlyFine, ConeyIsland] = ringtones;
   console.log(`seeded ${ringtones.length} ringtones`)
   console.log(`seeded successfully`)
-  await users[0].setOrders([orders[0], orders[1], orders[2]])
-  await users[1].setOrder(orders[3])
-  await users[5].setOrders(orders[4], orders[5])
-  await users[6].setOrder(orders[6])
-  await users[7].setOrder(orders[7])
-  await users[8].setOrders([orders[8], orders[9]])
-  await orders[0].setRingtone(DejaVu)
-  await orders[1].setRingtone(Montero)
-  await orders[2].setRingtones([ChampagneProblems, Gaslighter, GoYourOwnWay])
-  await orders[3].setRingtones([Peaches])
-  await orders[4].setRingtone(WAP)
-  await orders[5].setRingtone(Willow)
-  await orders[6].setRingtone(MrPerfectlyFine)
-  await orders[7].setRingtone(ConeyIsland)
-  await orders[8].setRingtones([Peaches, Gaslighter])
-  await orders[9].setRingtones([Montero, ConeyIsland])
   return [DejaVu, Montero, ChampagneProblems, Gaslighter, GoYourOwnWay, Peaches, WAP, Willow, MrPerfectlyFine, ConeyIsland]
 }
-
 /*
  We've separated the `seed` function from the `runSeed` function.
  This way we can isolate the error handling and exit trapping.
