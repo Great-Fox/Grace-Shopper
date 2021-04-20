@@ -19,7 +19,6 @@ export class AllRingtones extends React.Component {
           {this.props.ringtones.map((ringtone) => {
             <div key={ringtone.id}>
               <h3>{ringtone.name}</h3>
-              <img src={ringtone.image} />
               <iframe
                 src={ringtone.songUrl}
                 width="300"

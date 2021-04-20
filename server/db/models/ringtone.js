@@ -22,9 +22,6 @@ const Ringtone = db.define('ringtone', {
             notEmpty: true,
         }
     },
-    imageUrl: {
-        type: Sequelize.TEXT
-    },
     songUrl: {
         type: Sequelize.TEXT
     }

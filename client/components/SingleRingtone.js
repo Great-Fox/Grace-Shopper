@@ -18,7 +18,6 @@ export class SingleRingtone extends React.Component {
           <h1> Ringtone Infomation </h1>
             <div key={this.props.ringtone.id}>
               <h3>{this.props.ringtone.name}</h3>
-              <img src={this.props.ringtone.image} />
               <iframe
                 src={this.props.ringtone.songUrl}
                 width="300"
