@@ -7,17 +7,26 @@ const axios = require('axios');
 const SALT_ROUNDS = 5;
 
 const User = db.define('user', {
-  username: {
-    type: Sequelize.STRING,
+  email: {
+    type: Sequelize.CHAR,
     unique: true,
+    allowNull: false,
+    validate: { 
+      isEmail: true,
+    }
+  },
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  lastName: {
+    type: Sequelize.STRING,
     allowNull: false
   },
   password: {
-    type: Sequelize.STRING,
+    type: Sequelize.CHAR,
+    v
   },
-  githubId: {
-    type: Sequelize.INTEGER
-  }
 })
 
 module.exports = User
@@ -37,10 +46,10 @@ User.prototype.generateToken = function() {
 /**
  * classMethods
  */
-User.authenticate = async function({ username, password }){
-    const user = await this.findOne({where: { username }})
+User.authenticate = async function({ email, password }){
+    const user = await this.findOne({where: { email }})
     if (!user || !(await user.correctPassword(password))) {
-      const error = Error('Incorrect username/password');
+      const error = Error('Incorrect email/password');
       error.status = 401;
       throw error;
     }
