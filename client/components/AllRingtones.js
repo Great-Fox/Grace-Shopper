@@ -1,13 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchAllRingtones } from '../store/redux/allRingtones';
+import { Cart } from './Cart'
 
 export class AllRingtones extends React.Component {
   constructor() {
     super();
+    this.addToStorage = this.addToStorage.bind(this)
+    this.deleteFromStorage = this.deleteFromStorage.bind(this)
   }
   componentDidMount() {
     this.props.getAllRingtones();
+  }
+  addToStorage(id, name) {
+    localStorage.setItem(`${id}`, `${name}`)
+  }
+  deleteFromStorage(id, name) {
+    localStorage.removeItem(`${id}`, `${name}`)
   }
   render() {
     if (!this.props.ringtones.length) {
@@ -16,6 +25,7 @@ export class AllRingtones extends React.Component {
       return (
         <div>
           <h1> These are our wonderful ringtones! </h1>
+          <Cart />
           {this.props.ringtones.map((ringtone) => {
             return (
               <div key={ringtone.id}>
@@ -32,6 +42,12 @@ export class AllRingtones extends React.Component {
                 <h4>{ringtone.artist}</h4>
                 <h6>{ringtone.genre}</h6>
                 <h6>Price ${ringtone.price}</h6>
+                <button onClick = {() => this.addToStorage(ringtone.id, ringtone.name)}>
+                  Add To Cart
+                </button>
+                <button onClick = {() => this.deleteFromStorage(ringtone.id, ringtone.name)}>
+                  Delete From Cart
+                </button>
               </div>
             );
           })}
