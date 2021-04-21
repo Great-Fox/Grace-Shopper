@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { Badge } from '@material-ui/core';
 
 const Navbar = ({ handleClick, isLoggedIn, firstName }) => (
   <div>
-    <h1>FS-App-Template</h1>
     <nav>
       {isLoggedIn ? (
         <div>
@@ -19,11 +20,13 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => (
       ) : (
         <div>
           {/* The navbar will show these links before you log in */}
-          <p>Welcome Guest!</p>
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
         </div>
       )}
+      <Badge badgeContent={1} color="purple">
+        <ShoppingCartIcon />
+      </Badge>
     </nav>
     <hr />
   </div>

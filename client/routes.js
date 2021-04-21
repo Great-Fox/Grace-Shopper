@@ -6,6 +6,8 @@ import AllRingtones from './components/AllRingtones';
 import SingleRingtone from './components/SingleRingtone';
 import Home from './components/Home';
 import { me } from './store';
+import Navbar from './components/Navbar';
+
 
 /**
  * COMPONENT
@@ -20,6 +22,7 @@ class Routes extends Component {
 
     return (
       <div>
+        <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/ringtone" exact component={AllRingtones} />
