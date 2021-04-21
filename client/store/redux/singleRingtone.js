@@ -8,7 +8,6 @@ export const getSingleRingtone = (ringtone) => ({
 });
 
 export const fetchSingleRingtone = (ringtoneId) => {
-  console.log('am in fetchSingleRingtone!!!!');
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`/api/ringtone/${ringtoneId}`);
