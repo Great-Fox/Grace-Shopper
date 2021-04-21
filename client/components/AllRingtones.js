@@ -10,29 +10,30 @@ export class AllRingtones extends React.Component {
     this.props.getAllRingtones();
   }
   render() {
-    if (!this.props.ringtones) {
+    if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
     } else {
-      console.log(this.props.ringtones);
       return (
         <div>
           <h1> These are our wonderful ringtones! </h1>
           {this.props.ringtones.map((ringtone) => {
             return (
-<div key={ringtone.id}>
-              <h3>{ringtone.name}</h3>
-              {/* <iframe
-                src={ringtone.songUrl}
-                width="300"
-                height="380"
-                frameBorder="0"
-                allowtransparency="true"
-                allow="encrypted-media"></iframe> */}
-              <h4>{ringtone.artist}</h4>
-              <h6>{ringtone.genre}</h6>
-            </div>
-            )
-            
+              <div key={ringtone.id}>
+                <h3>{ringtone.name}</h3>
+                <iframe
+                  src={`https://open.spotify.com/embed/track/${ringtone.songUrl.slice(
+                    14
+                  )}`}
+                  width="300"
+                  height="380"
+                  frameBorder="0"
+                  allowtransparency="true"
+                  allow="encrypted-media"></iframe>
+                <h4>{ringtone.artist}</h4>
+                <h6>{ringtone.genre}</h6>
+                <h6>Price ${ringtone.price}</h6>
+              </div>
+            );
           })}
         </div>
       );
