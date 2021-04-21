@@ -26,7 +26,6 @@ export class AllRingtones extends React.Component {
     this.props.deleteFromStorage(name)
   }
   render() {
-    // console.log("all ringtones", this.props.ringtones)
     console.log(this.props)
     if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
@@ -34,7 +33,7 @@ export class AllRingtones extends React.Component {
       return (
         <div>
           <h1> These are our wonderful ringtones! </h1>
-          <Cart ringtones={this.state.storage} />
+          <Cart ringtones={this.props.storage} />
           {this.props.ringtones.map((ringtone) => {
             return (
               <div key={ringtone.id}>

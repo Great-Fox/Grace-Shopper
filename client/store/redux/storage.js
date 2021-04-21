@@ -22,12 +22,11 @@ export const getStorage = (storage) => ({
 export const storageThunk = () => {
     return async (dispatch) => {
         try {
-          const storage = localStorage
-          Object.keys(localStorage).map(ringtone => { 
-              return ({
-
-                  id: ringtone, name: localStorage[ringtone]
-              })
+          const storage = Object.keys(localStorage).map(ringtone => { 
+              return {
+                  id: ringtone, 
+                  name: localStorage[ringtone]
+              }
             })
           console.log(storage)
           dispatch(getStorage(storage));

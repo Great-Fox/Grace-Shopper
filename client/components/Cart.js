@@ -14,15 +14,15 @@ export class Cart extends React.Component {
     //     this.props.getStorage()
     // }
     render() {
-            let songList = this.props.storage || []
-            // console.log(this.props)
+            let songList = this.props.ringtones || []
+            console.log(this.props, 'cart props');
             return (
                 <div>
                     This is Cart!
                     {this.songList !== false || this.songList.length === 0 ? 'NOTHING IN CART' : songList.map(song => {
                         return (
-                        <div key={song[0]}>
-                            {song[1]}
+                        <div key={song.id}>
+                            {song.name}
                         </div>)
                     })}
                 {/* { this.props.ringtones === undefined || this.props.ringtones.length === 0 ? ("Loading") : (
