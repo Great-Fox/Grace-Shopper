@@ -19,13 +19,14 @@ export class AllRingtones extends React.Component {
     localStorage.removeItem(`${id}`, `${name}`)
   }
   render() {
+    console.log("all ringtones", this.props.ringtones)
     if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
     } else {
       return (
         <div>
           <h1> These are our wonderful ringtones! </h1>
-          <Cart />
+          
           {this.props.ringtones.map((ringtone) => {
             return (
               <div key={ringtone.id}>
@@ -42,12 +43,7 @@ export class AllRingtones extends React.Component {
                 <h4>{ringtone.artist}</h4>
                 <h6>{ringtone.genre}</h6>
                 <h6>Price ${ringtone.price}</h6>
-                <button onClick = {() => this.addToStorage(ringtone.id, ringtone.name)}>
-                  Add To Cart
-                </button>
-                <button onClick = {() => this.deleteFromStorage(ringtone.id, ringtone.name)}>
-                  Delete From Cart
-                </button>
+                <Cart key= {ringtone.id} id={ringtone.id} ringtones={this.props.ringtones} name={ringtone.name} addToStorage={this.addToStorage} deleteFromStorage={this.deleteFromStorage} />
               </div>
             );
           })}
