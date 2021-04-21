@@ -21,7 +21,7 @@ router.get('/:ringtoneId', async (req, res, next) => {
         id: req.params.ringtoneId,
       },
     });
-    req.json(ringtone);
+    res.json(ringtone);
   } catch (error) {
     next(error);
   }
