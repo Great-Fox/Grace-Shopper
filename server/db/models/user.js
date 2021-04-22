@@ -26,6 +26,10 @@ const User = db.define('user', {
   password: {
     type: Sequelize.STRING,
   },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
 module.exports = User;
@@ -35,13 +39,8 @@ module.exports = User;
  */
 User.prototype.correctPassword = async function (candidatePwd) {
   //we need to compare the plain version to an encrypted version of the password
-  console.log('this.email.length', this.email.length);
-  console.log('candidate pwd:', candidatePwd);
   let hashPassword = await this.password;
-  // console.log(
-  //   'bcrypt.compare',
-  //   await bcrypt.compare(candidatePwd, this.password)
-  // );
+
   return bcrypt.compareSync(candidatePwd, hashPassword);
 };
 
@@ -53,9 +52,7 @@ User.prototype.generateToken = function () {
  * classMethods
  */
 User.authenticate = async function ({ email, password }) {
-  console.log('email.length', email.length);
   const user = await this.findOne({ where: { email } });
-  console.log('user.email.length', user.email.length);
   if (!user || !(await user.correctPassword(password))) {
     const error = Error('Incorrect email/password');
     error.status = 401;

@@ -8,7 +8,6 @@ import Home from './components/Home';
 import { me } from './store';
 import Navbar from './components/Navbar';
 
-
 /**
  * COMPONENT
  */
