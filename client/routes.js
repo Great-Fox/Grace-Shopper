@@ -7,6 +7,7 @@ import SingleRingtone from './components/SingleRingtone';
 import Home from './components/Home';
 import { me } from './store';
 import Navbar from './components/Navbar';
+import Cart from './components/Cart'
 
 
 /**
@@ -19,7 +20,7 @@ class Routes extends Component {
 
   render() {
     const { isLoggedIn } = this.props;
-
+    console.log("homepage", this.props)
     return (
       <div>
         <Navbar />
@@ -33,6 +34,7 @@ class Routes extends Component {
           />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
+          <Route exact path="/cart" component={Cart} />
         </Switch>
       </div>
     );
