@@ -15,30 +15,18 @@ export class Cart extends React.Component {
     // }
     render() {
             let songList = this.props.ringtones || []
-            console.log(this.props, 'cart props');
+            console.log(songList, 'cart props');
             return (
                 <div>
                     This is Cart!
-                    {this.songList !== false || this.songList.length === 0 ? 'NOTHING IN CART' : songList.map(song => {
+                    {!songList || songList.length === 0 ? 'NOTHING IN CART' : songList.map(song => {
                         return (
-                        <div key={song.id}>
-                            {song.name}
-                        </div>)
-                    })}
-                {/* { this.props.ringtones === undefined || this.props.ringtones.length === 0 ? ("Loading") : (
-
-                )} */}
-                    {/* <div>
-                        {this.props.ringtones.filter((cur) => {
-                            if(cur.id === this.props.id) {
-                                return (
-                                    <p>
-                                        {cur.name}
-                                    </p>
-                                )
-                            }
-                        })}
-                    </div> */}
+                            <div key={Number(song.id)} >
+                                {song.name}
+                            </div>
+                            )
+                        })
+                    }
                 </div>
 
             )
