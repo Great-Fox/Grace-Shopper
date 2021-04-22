@@ -10,12 +10,23 @@ export class Cart extends React.Component {
     }
 
     componentDidMount(){
+        //see if they are a user
+        //if they are a user, see if they already have an open cart
+        //if they do have an open cart, set local storage to their open cart
+        //if they do not have an open cart, just stick with local storage (function below)
         this.props.getStorage()
     }
 
     deleteFromLocalStorage(id, name) {
         localStorage.removeItem(`${id}`, `${name}`)
         this.props.getStorage()
+    }
+
+    componentWillUnmount(){
+        //check and see if there is a valid token
+        //if there is a token, we try to get the cart that they already have in the db
+        //if they do have a cart, we replace it with what's in our local storage
+        //if they do not have a cart, we make a new one and add in local storage relationships
     }
 
     render() {
