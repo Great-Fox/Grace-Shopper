@@ -4,7 +4,7 @@ const {
 } = require('../db');
 const { requireToken, isAdmin } = require('./gatekeepingMiddleware');
 
-//GET /admin/users
+//GET /api/admin/users
 router.get('/users', requireToken, isAdmin, async (req, res, next) => {
   try {
     const users = await User.findAll();
@@ -14,7 +14,7 @@ router.get('/users', requireToken, isAdmin, async (req, res, next) => {
   }
 });
 
-//POST /admin/ringtones
+//POST /api/admin/ringtones
 router.post('/ringtones', requireToken, isAdmin, async (req, res, next) => {
   try {
     let newRingtone = await Ringtone.create(req.body);
@@ -24,7 +24,7 @@ router.post('/ringtones', requireToken, isAdmin, async (req, res, next) => {
   }
 });
 
-//PUT /admin/:ringtoneId
+//PUT /api/admin/:ringtoneId
 router.put('/:ringtoneId', requireToken, isAdmin, async (req, res, next) => {
   try {
     let ringtone = await Ringtone.findByPk(req.params.ringtoneId);
@@ -35,7 +35,7 @@ router.put('/:ringtoneId', requireToken, isAdmin, async (req, res, next) => {
   }
 });
 
-//DELETE /admin/:ringtoneId
+//DELETE /api/admin/:ringtoneId
 
 router.delete('/:ringtoneId', requireToken, isAdmin, async (req, res, next) => {
   try {

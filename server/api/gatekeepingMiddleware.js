@@ -4,8 +4,9 @@ const {
 
 const requireToken = async (req, res, next) => {
   try {
-    const token = req.headers.authorization;
-    const user = await User.findByToken(token);
+    //THIS IS THE PROBLEM TOKEN = UNDEFINED
+
+    const user = await User.findByToken(req.headers.authorization);
     req.user = user;
     next();
   } catch (error) {

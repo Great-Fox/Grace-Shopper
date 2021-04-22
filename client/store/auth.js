@@ -28,11 +28,21 @@ export const me = () => async (dispatch) => {
   }
 };
 
-export const authenticate = (email, password, method, history, firstName, lastName) => async (
-  dispatch
-) => {
+export const authenticate = (
+  email,
+  password,
+  method,
+  history,
+  firstName,
+  lastName
+) => async (dispatch) => {
   try {
-    const res = await axios.post(`/auth/${method}`, { email, password, firstName, lastName });
+    const res = await axios.post(`/auth/${method}`, {
+      email,
+      password,
+      firstName,
+      lastName,
+    });
     window.localStorage.setItem(TOKEN, res.data.token);
     dispatch(me());
     history.push('/ringtone');
