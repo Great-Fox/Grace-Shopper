@@ -6,6 +6,8 @@ import AllRingtones from './components/AllRingtones';
 import SingleRingtone from './components/SingleRingtone';
 import Home from './components/Home';
 import { me } from './store';
+import Navbar from './components/Navbar';
+
 
 /**
  * COMPONENT
@@ -20,20 +22,18 @@ class Routes extends Component {
 
     return (
       <div>
-        <Route path="/ringtone" exact component={AllRingtones} />
-        <Route path="/ringtone/:ringtoneId" exact component={SingleRingtone} />
-        {/* {isLoggedIn ? (
-          <Switch>
-            <Route path="/home" component={Home} />
-            <Redirect to="/home" />
-          </Switch>
-        ) : (
-          <Switch>
-            <Route path="/" exact component={AllRingtones} />
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
-          </Switch>
-        )} */}
+        <Navbar />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/ringtone" exact component={AllRingtones} />
+          <Route
+            path="/ringtone/:ringtoneId"
+            exact
+            component={SingleRingtone}
+          />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
+        </Switch>
       </div>
     );
   }

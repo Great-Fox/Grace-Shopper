@@ -4,29 +4,41 @@ import { fetchSingleRingtone} from '../store/redux/singleRingtone';
 import { storageThunk } from '../store/redux/storage'
 
 export class Cart extends React.Component {
-    constructor() {
+    constructor(){
         super()
-        // this.state = {
-        //     storage: []
-        // }
+        this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this)
     }
-    // componentDidMount() {
-    //     this.props.getStorage()
-    // }
+
+    componentDidMount(){
+        this.props.getStorage()
+    }
+
+    deleteFromLocalStorage(id, name) {
+        localStorage.removeItem(`${id}`, `${name}`)
+        this.props.getStorage()
+    }
+
     render() {
-            let songList = this.props.ringtones || []
-            console.log(songList, 'cart props');
+        let ringtoneList = this.props.storage || []
+        console.log(this.props, 'cart props');
             return (
                 <div>
                     This is Cart!
-                    {!songList || songList.length === 0 ? 'NOTHING IN CART' : songList.map(song => {
+                    {!ringtoneList || ringtoneList.length === 0 ? 'NOTHING IN CART' : ringtoneList.map(ringtone => {
                         return (
-                            <div key={Number(song.id)} >
-                                {song.name}
+                            <div key={Number(ringtone.id)} >
+                                {ringtone.name}
+                                <div>
+                                    <button onClick = {() => this.deleteFromLocalStorage(ringtone.id, ringtone.name)}>
+                                        Delete From Cart
+                                    </button>
+                                </div>
                             </div>
                             )
-                        })
-                    }
+                        }
+                    )
+                }
+                <button>Check Out</button>
                 </div>
 
             )

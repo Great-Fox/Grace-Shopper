@@ -11,7 +11,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // auth and api routes !!! THIS GOT COMMENTED OUT WE MAY WANT IT EVENTUALLY !!!
-// app.use('/auth', require('./auth'))
+app.use('/auth', require('./auth'));
 app.use('/api', require('./api'));
 
 app.get('/', (req, res) =>
