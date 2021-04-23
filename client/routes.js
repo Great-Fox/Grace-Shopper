@@ -22,17 +22,24 @@ class Routes extends Component {
     return (
       <div>
         <Navbar />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/ringtone" exact component={AllRingtones} />
-          <Route
-            path="/ringtone/:ringtoneId"
-            exact
-            component={SingleRingtone}
-          />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Signup} />
-        </Switch>
+        {isLoggedIn ? (
+          <Switch>
+            <Route path="/home" component={Home} />
+            <Redirect to="/home" />
+          </Switch>
+        ) : (
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/ringtone" exact component={AllRingtones} />
+            <Route
+              path="/ringtone/:ringtoneId"
+              exact
+              component={SingleRingtone}
+            />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={Signup} />
+          </Switch>
+        )}
       </div>
     );
   }
