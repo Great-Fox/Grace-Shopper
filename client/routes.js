@@ -47,7 +47,7 @@ const mapState = (state) => {
     isLoggedIn: !!state.auth.id,
   };
 };
-
+}
 const mapDispatch = (dispatch) => {
   return {
     loadInitialData() {
