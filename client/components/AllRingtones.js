@@ -1,29 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchAllRingtones } from '../store/redux/allRingtones';
-<<<<<<< HEAD
 import { storageThunk } from '../store/redux/storage'
-=======
-import { Cart } from './Cart';
-import {
-  addToStorage,
-  deleteFromStorage,
-  storageThunk,
-} from '../store/redux/storage';
->>>>>>> 90272d3df8fe23bc5a356bf1380e654ba4840166
 
 export class AllRingtones extends React.Component {
   constructor() {
     super();
-<<<<<<< HEAD
     this.addToLocalStorage = this.addToLocalStorage.bind(this)
-=======
-    this.state = {
-      storage: [],
-    };
-    this.addToLocalStorage = this.addToLocalStorage.bind(this);
-    this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
->>>>>>> 90272d3df8fe23bc5a356bf1380e654ba4840166
   }
 
   componentDidMount() {
@@ -32,23 +15,15 @@ export class AllRingtones extends React.Component {
   }
 
   addToLocalStorage(id, name) {
-<<<<<<< HEAD
     localStorage.setItem(`${id}`, `${name}`)
     this.props.getStorage()
-=======
-    localStorage.setItem(`${id}`, `${name}`);
-    this.props.addToStorage(name);
-  }
-  deleteFromLocalStorage(id, name) {
-    localStorage.removeItem(`${id}`, `${name}`);
-    this.props.deleteFromStorage(name);
->>>>>>> 90272d3df8fe23bc5a356bf1380e654ba4840166
   }
 
   render() {
     if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
     } else {
+      console.log(this.props, this.state);
       return (
         <div>
           <h1> These are our wonderful ringtones! </h1>
@@ -67,25 +42,9 @@ export class AllRingtones extends React.Component {
                 <h6>{ringtone.genre}</h6>
                 <h6>Price ${ringtone.price}</h6>
                 <div>
-<<<<<<< HEAD
                     <button onClick = {() => this.addToLocalStorage(ringtone.id, ringtone.name)} >
                       Add To Cart
                     </button>
-=======
-                  <button
-                    onClick={() =>
-                      this.addToLocalStorage(ringtone.id, ringtone.name)
-                    }>
-                    Add To Cart
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      this.deleteFromLocalStorage(ringtone.id, ringtone.name)
-                    }>
-                    Delete From Cart
-                  </button>
->>>>>>> 90272d3df8fe23bc5a356bf1380e654ba4840166
                 </div>
               </div>
             );
@@ -106,13 +65,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getAllRingtones: () => dispatch(fetchAllRingtones()),
-<<<<<<< HEAD
     getStorage: () => dispatch(storageThunk())
-=======
-    addToStorage: (ringtone) => dispatch(addToStorage(ringtone)),
-    deleteFromStorage: (ringtone) => dispatch(deleteFromStorage(ringtone)),
-    getStorage: () => dispatch(storageThunk()),
->>>>>>> 90272d3df8fe23bc5a356bf1380e654ba4840166
   };
 };
 

@@ -19,40 +19,29 @@ export const getStorage = (storage) => ({
   storage,
 });
 
-export const storageThunk = () => {
-<<<<<<< HEAD
+export const storageThunk = (id) => {
     return async (dispatch) => {
         try {
-          const storage = Object.keys(localStorage).map(ringtone => { 
+          let storage;
+          //check if they are logged in
+          if (id) {
+            //
+            storage = axios.get(`./api/order/:${id}`)
+          } else {
+            storage = Object.keys(localStorage).map(ringtone => { 
               return {
                   id: ringtone, 
                   name: localStorage[ringtone]
               }
             })
-          console.log(storage)
+          }
+
           dispatch(getStorage(storage));
         } catch (error) {
           console.log(error);
         }
     };
 }
-=======
-  return async (dispatch) => {
-    try {
-      const storage = localStorage;
-      Object.keys(localStorage).map((ringtone) => {
-        return {
-          id: ringtone,
-          name: localStorage[ringtone],
-        };
-      });
-      dispatch(getStorage(storage));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
->>>>>>> 90272d3df8fe23bc5a356bf1380e654ba4840166
 
 export default function storageReducer(state = [], action) {
   switch (action.type) {

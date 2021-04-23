@@ -2,7 +2,7 @@ const router = require('express').Router();
 module.exports = router;
 
 router.use('/ringtone', require('./ringtone'));
-router.use('./order', require('./order'))
+router.use('/order', require('./order'))
 router.use('/admin', require('./admin'));
 
 router.use((req, res, next) => {

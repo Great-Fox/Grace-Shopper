@@ -6,8 +6,13 @@ const {
 // //GET api/order
 router.get('/:userId', async (req, res, next) => {
   try {
-    let order = await Order.findOne({where: {userId: userId, completed: false}});
-    res.json(order);
+    let order = await Order.findOne({
+      where: {
+        userId: req.params.userId, completed: false}});
+    let products = await Order_Ringtone.findAll({where: {
+      orderId: order.id
+    }})
+    res.send(products);
   } catch (error) {
     next(error);
   }
@@ -20,6 +25,9 @@ router.post('/:userId', async (req, res, next) => {
         const filteredRingtones = await Ringtone.findAll({
           where: {
             id: ringtones
+          }, 
+          include: {
+            model: Ringtone
           }
         });
         await order.setRingtones(filteredRingtones);
