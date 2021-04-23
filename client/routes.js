@@ -22,20 +22,21 @@ class Routes extends Component {
     return (
       <div>
         <Navbar />
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/ringtone" exact component={AllRingtones} />
-            <Route
-              path="/ringtone/:ringtoneId"
-              exact
-              component={SingleRingtone}
-            />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={Signup} />
-          </Switch>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/ringtone" exact component={AllRingtones} />
+          <Route
+            path="/ringtone/:ringtoneId"
+            exact
+            component={SingleRingtone}
+          />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
+        </Switch>
       </div>
-    )}
-
+    );
+  }
+}
 /**
  * CONTAINER
  */
@@ -46,7 +47,7 @@ const mapState = (state) => {
     isLoggedIn: !!state.auth.id,
   };
 };
-}
+
 const mapDispatch = (dispatch) => {
   return {
     loadInitialData() {
