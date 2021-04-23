@@ -19,7 +19,7 @@ async function seed() {
       name: 'Deja Vu',
       artist: 'Olivia Rodrigo',
       genre: 'pop',
-      price: 0.99,
+      price: 99,
       songUrl: 'spotify:track:61KpQadow081I2AsbeLcsb',
     }),
     Ringtone.create({
