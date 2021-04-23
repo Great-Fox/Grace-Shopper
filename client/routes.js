@@ -9,7 +9,6 @@ import { me } from './store';
 import Navbar from './components/Navbar';
 import Cart from './components/Cart'
 
-
 /**
  * COMPONENT
  */
