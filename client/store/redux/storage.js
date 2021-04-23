@@ -24,7 +24,7 @@ export const storageThunk = (id) => {
         try {
           let storage;
           //check if they are logged in
-          if (id) {
+          if (id !== undefined) {
             //
             storage = axios.get(`./api/order/:${id}`)
           } else {

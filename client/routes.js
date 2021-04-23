@@ -18,8 +18,6 @@ class Routes extends Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props;
-    console.log("homepage", this.props)
     return (
       <div>
         <Navbar />

@@ -11,19 +11,19 @@ export class AllRingtones extends React.Component {
 
   componentDidMount() {
     this.props.getAllRingtones();
-    this.props.getStorage();
+    this.props.getStorage(this.props.userId);
   }
 
   addToLocalStorage(id, name) {
     localStorage.setItem(`${id}`, `${name}`)
-    this.props.getStorage()
+    this.props.getStorage(this.props.userId);
   }
 
   render() {
+    
     if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
     } else {
-      console.log(this.props, this.state);
       return (
         <div>
           <h1> These are our wonderful ringtones! </h1>
@@ -59,6 +59,7 @@ const mapState = (state) => {
   return {
     ringtones: state.ringtones,
     storage: state.storage,
+    userId: state.auth.id
   };
 };
 
