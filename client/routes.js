@@ -22,12 +22,6 @@ class Routes extends Component {
     return (
       <div>
         <Navbar />
-        {isLoggedIn ? (
-          <Switch>
-            <Route path="/home" component={Home} />
-            <Redirect to="/home" />
-          </Switch>
-        ) : (
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/ringtone" exact component={AllRingtones} />
@@ -39,11 +33,9 @@ class Routes extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
           </Switch>
-        )}
+
       </div>
-    );
-  }
-}
+    )}
 
 /**
  * CONTAINER
