@@ -7,6 +7,7 @@ import {
   deleteFromStorage,
   storageThunk,
 } from '../store/redux/storage';
+import AdminForm from './AdminForm'
 
 export class AllRingtones extends React.Component {
   constructor() {
@@ -30,13 +31,14 @@ export class AllRingtones extends React.Component {
     this.props.deleteFromStorage(name);
   }
   render() {
+    // if its admin login in, need to render AdminForm component 
     if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
     } else {
       return (
         <div>
           <h1> These are our wonderful ringtones! </h1>
-          <Cart ringtones={this.state.storage} />
+          <AdminForm />
           {this.props.ringtones.map((ringtone) => {
             return (
               <div key={ringtone.id}>
