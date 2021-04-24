@@ -14,6 +14,7 @@ export class AllRingtones extends React.Component {
     super();
     this.state = {
       storage: [],
+      form: false
     };
     this.addToLocalStorage = this.addToLocalStorage.bind(this);
     this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
@@ -38,7 +39,15 @@ export class AllRingtones extends React.Component {
       return (
         <div>
           <h1> These are our wonderful ringtones! </h1>
-          <AdminForm />
+          {this.props.isAdmin ? (
+            <button onClick={()=>{this.setState({form: !this.state.form})}}>Add New Ringtone</button>
+          ) : null
+          }
+          {
+            this.state.form ? (
+              <AdminForm />
+            ) : null
+          }
           {this.props.ringtones.map((ringtone) => {
             return (
               <div key={ringtone.id}>
@@ -83,6 +92,7 @@ const mapState = (state) => {
   return {
     ringtones: state.ringtones,
     storage: state.storage,
+    isAdmin: state.auth.isAdmin
   };
 };
 
