@@ -1,23 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchAllRingtones } from '../store/redux/allRingtones';
+import { deleteMySingleRingtone } from '../store/redux/adminRingtone';
 import { Cart } from './Cart';
 import {
   addToStorage,
   deleteFromStorage,
   storageThunk,
 } from '../store/redux/storage';
-import AdminForm from './AdminForm'
+import AdminForm from './AdminForm';
 
 export class AllRingtones extends React.Component {
   constructor() {
     super();
     this.state = {
       storage: [],
-      form: false
+      form: false,
     };
     this.addToLocalStorage = this.addToLocalStorage.bind(this);
     this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
   componentDidMount() {
     this.props.getAllRingtones();
@@ -31,8 +33,10 @@ export class AllRingtones extends React.Component {
     localStorage.removeItem(`${id}`, `${name}`);
     this.props.deleteFromStorage(name);
   }
+  handleDelete(id) {
+    this.props.deleteRingtone(id);
+  }
   render() {
-    // if its admin login in, need to render AdminForm component 
     if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
     } else {
@@ -40,14 +44,14 @@ export class AllRingtones extends React.Component {
         <div>
           <h1> These are our wonderful ringtones! </h1>
           {this.props.isAdmin ? (
-            <button onClick={()=>{this.setState({form: !this.state.form})}}>Add New Ringtone</button>
-          ) : null
-          }
-          {
-            this.state.form ? (
-              <AdminForm />
-            ) : null
-          }
+            <button
+              onClick={() => {
+                this.setState({ form: !this.state.form });
+              }}>
+              Add New Ringtone
+            </button>
+          ) : null}
+          {this.state.form ? <AdminForm /> : null}
           {this.props.ringtones.map((ringtone) => {
             return (
               <div key={ringtone.id}>
@@ -73,11 +77,24 @@ export class AllRingtones extends React.Component {
                   </button>
 
                   <button
-                    onClick={() =>
+                    type="submit"
+                    onSubmit={() =>
                       this.deleteFromLocalStorage(ringtone.id, ringtone.name)
                     }>
                     Delete From Cart
                   </button>
+                  {this.props.isAdmin ? (
+                    <div>
+                      <button
+                        onClick={() => {
+                          if (confirm('Are you sure you want to delete?')) {
+                            this.handleDelete(ringtone.id);
+                          }
+                        }}>
+                        DELETE
+                      </button>
+                    </div>
+                  ) : null}
                 </div>
               </div>
             );
@@ -92,7 +109,7 @@ const mapState = (state) => {
   return {
     ringtones: state.ringtones,
     storage: state.storage,
-    isAdmin: state.auth.isAdmin
+    isAdmin: state.auth.isAdmin,
   };
 };
 
@@ -102,6 +119,7 @@ const mapDispatch = (dispatch) => {
     addToStorage: (ringtone) => dispatch(addToStorage(ringtone)),
     deleteFromStorage: (ringtone) => dispatch(deleteFromStorage(ringtone)),
     getStorage: () => dispatch(storageThunk()),
+    deleteRingtone: (id) => dispatch(deleteMySingleRingtone(id)),
   };
 };
 
