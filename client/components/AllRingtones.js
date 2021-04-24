@@ -55,12 +55,7 @@ export class AllRingtones extends React.Component {
                 }}>
                 Add New Ringtone
               </button>
-              <button
-                onClick={() => {
-                  this.setState({ users: !this.state.users });
-                }}>
-                See all users with accounts
-              </button>
+              <Link to="/admin/users">See all users with accounts</Link>
             </div>
           ) : null}
           {this.state.form ? <AdminForm /> : null}
