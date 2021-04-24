@@ -55,7 +55,7 @@ export class SingleRingtone extends React.Component {
   }
   handleDelete(id) {
     this.props.deleteRingtone(id);
-    this.props.history.goBack();
+    this.props.history.push('/ringtone');
   }
 
   handleSubmit(event) {
@@ -67,7 +67,7 @@ export class SingleRingtone extends React.Component {
   }
 
   render() {
-    console.log('state', this.state);
+    console.log('props', this.props);
     if (!this.props.ringtone.songUrl) {
       return <h1> Loading Ringtone! </h1>;
     } else {
@@ -84,6 +84,7 @@ export class SingleRingtone extends React.Component {
                     type="text"
                     value={this.state.name}
                     onChange={this.handleChange}
+                    required
                   />
                   <br />
                   <input
@@ -121,17 +122,10 @@ export class SingleRingtone extends React.Component {
                     label="Price:"
                     value={this.state.price}
                     onChange={this.handleChange}
+                    required
                   />
                   <br />
                   <button type="submit">Save Changes</button>
-                  <button
-                    onClick={() => {
-                      if (confirm('Are you sure you want to delete?')) {
-                        this.handleDelete(this.state.ringtone.id);
-                      }
-                    }}>
-                    DELETE
-                  </button>
                 </div>
               ) : (
                 <div>
@@ -153,6 +147,16 @@ export class SingleRingtone extends React.Component {
                   <button>Buy This Ringtone!</button>
                 </div>
               )}
+              {this.props.isAdmin ? (
+                <button
+                  onClick={() => {
+                    if (confirm('Are you sure you want to delete?')) {
+                      this.handleDelete(this.props.ringtone.id);
+                    }
+                  }}>
+                  DELETE
+                </button>
+              ) : null}
             </div>
           </form>
         </div>

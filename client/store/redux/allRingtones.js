@@ -26,7 +26,6 @@ export default function allRingtonesReducer(state = [], action) {
     case POST_SINGLE_RINGTONE:
       return [...state, action.ringtone];
     case DELETE_SINGLE_RINGTONE:
-      console.log('helloooooo', action);
       return state.filter((ringtone) => ringtone.id !== action.ringtone.id);
     default:
       return state;
