@@ -9,6 +9,7 @@ import {
   storageThunk,
 } from '../store/redux/storage';
 import AdminForm from './AdminForm';
+import AdminUsers from './AdminUsers';
 
 export class AllRingtones extends React.Component {
   constructor() {
@@ -16,6 +17,7 @@ export class AllRingtones extends React.Component {
     this.state = {
       storage: [],
       form: false,
+      users: false,
     };
     this.addToLocalStorage = this.addToLocalStorage.bind(this);
     this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
@@ -44,14 +46,23 @@ export class AllRingtones extends React.Component {
         <div>
           <h1> These are our wonderful ringtones! </h1>
           {this.props.isAdmin ? (
-            <button
-              onClick={() => {
-                this.setState({ form: !this.state.form });
-              }}>
-              Add New Ringtone
-            </button>
+            <div>
+              <button
+                onClick={() => {
+                  this.setState({ form: !this.state.form });
+                }}>
+                Add New Ringtone
+              </button>
+              <button
+                onClick={() => {
+                  this.setState({ users: !this.state.users });
+                }}>
+                See all users with accounts
+              </button>
+            </div>
           ) : null}
           {this.state.form ? <AdminForm /> : null}
+          {this.state.users ? <AdminUsers /> : null}
           {this.props.ringtones.map((ringtone) => {
             return (
               <div key={ringtone.id}>
