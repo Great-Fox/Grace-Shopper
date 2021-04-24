@@ -12,6 +12,7 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => (
         <div>
           {/* The navbar will show these links after you log in */}
           <Link to="/home">Home</Link>
+          <Link to="/ringtone">See All Our Ringtones!</Link>
           <a href="#" onClick={handleClick}>
             Logout
           </a>
@@ -22,6 +23,7 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => (
           {/* The navbar will show these links before you log in */}
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
+          <Link to="/ringtone">See All Our Ringtones!</Link>
         </div>
       )}
       <Badge badgeContent={1} color="purple">

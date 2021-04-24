@@ -144,18 +144,23 @@ export class SingleRingtone extends React.Component {
                     <h6>{this.props.ringtone.genre}</h6>
                     <h6>Price ${this.props.ringtone.price}</h6>
                   </div>
+                  <br />
                   <button>Buy This Ringtone!</button>
+                  <br />
                 </div>
               )}
               {this.props.isAdmin ? (
-                <button
-                  onClick={() => {
-                    if (confirm('Are you sure you want to delete?')) {
-                      this.handleDelete(this.props.ringtone.id);
-                    }
-                  }}>
-                  DELETE
-                </button>
+                <div>
+                  <br />
+                  <button
+                    onClick={() => {
+                      if (confirm('Are you sure you want to delete?')) {
+                        this.handleDelete(this.props.ringtone.id);
+                      }
+                    }}>
+                    Delete Ringtone
+                  </button>
+                </div>
               ) : null}
             </div>
           </form>

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { fetchAllRingtones } from '../store/redux/allRingtones';
 import { deleteMySingleRingtone } from '../store/redux/adminRingtone';
 import { Cart } from './Cart';
+import { Link } from 'react-router-dom';
+
 import {
   addToStorage,
   deleteFromStorage,
@@ -66,7 +68,9 @@ export class AllRingtones extends React.Component {
           {this.props.ringtones.map((ringtone) => {
             return (
               <div key={ringtone.id}>
-                <h3>{ringtone.name}</h3>
+                <Link to={`/ringtone/${ringtone.id}`}>
+                  <h3>{ringtone.name}</h3>
+                </Link>
                 <iframe
                   src={`https://open.spotify.com/embed/track/${ringtone.songUrl.slice(
                     14
