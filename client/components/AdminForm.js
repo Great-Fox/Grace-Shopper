@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { submitSingleRingtone } from '../store/redux/adminRingtone';
+import Button from '@material-ui/core/Button';
 
 const initialState = {
   name: '',
@@ -65,7 +66,9 @@ export class AdminForm extends React.Component {
             required
           />
         </div>
-        <button type="submit">Submit</button>
+        <Button color="secondary" variant="outlined" type="submit">
+          Submit
+        </Button>
       </form>
     );
   }
