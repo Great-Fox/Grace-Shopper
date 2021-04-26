@@ -26,8 +26,8 @@ class AdminUsers extends React.Component {
         return (
           <div>
             <h1>Here are all our customers with accounts:</h1>
-            <div style={{ display: 'flex', height: '100%' }}>
-              <div style={{ flexGrow: 1, height: '100%' }}>
+            <div style={{ display: 'flex', height: 600, background: "white"}}>
+              <div style={{ flexGrow: 1}}>
                 <DataGrid columns={columns} rows={this.props.users} />
               </div>
             </div>

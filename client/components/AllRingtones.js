@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { spacing } from '@material-ui/system';
+import Box from "@material-ui/core/Box";
 
 import {
   addToStorage,
@@ -16,17 +17,6 @@ import {
 } from '../store/redux/storage';
 import AdminForm from './AdminForm';
 import AdminUsers from './AdminUsers';
-
-const classes = {
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: 8,
-    margin: 'auto',
-    maxWidth: 'auto',
-  },
-};
 
 export class AllRingtones extends React.Component {
   constructor() {
@@ -45,7 +35,6 @@ export class AllRingtones extends React.Component {
   componentDidMount() {
     this.props.getAllRingtones();
     this.props.getStorage();
-    console.log(classes);
   }
   addToLocalStorage(id, name) {
     localStorage.setItem(`${id}`, `${name}`);
@@ -68,7 +57,12 @@ export class AllRingtones extends React.Component {
           <h1> These are our wonderful ringtones! </h1>
           {this.props.isAdmin ? (
             <div>
-              <Button
+              <Box
+                display="flex"
+                justifyContent="center"
+                >
+                <Button
+                width= "225px"
                 color="secondary"
                 variant="contained"
                 onClick={() => {
@@ -76,7 +70,16 @@ export class AllRingtones extends React.Component {
                 }}>
                 Add New Ringtone
               </Button>
-              <Link to="/admin/users">See all users with accounts</Link>
+              <Button             
+                style={{marginLeft: 5}}    
+                color="secondary"
+                variant="contained"
+                onClick={() => {
+                  this.props.history.push('/admin/users')
+                }}>
+                See all users with accounts
+              </Button>
+              </Box>
             </div>
           ) : null}
           {this.state.form ? <AdminForm /> : null}

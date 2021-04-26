@@ -2,13 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { submitSingleRingtone } from '../store/redux/adminRingtone';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 const initialState = {
   name: '',
   artist: '',
   genre: '',
   songUrl: '',
-  price: 1.99,
+  price: '',
 };
 
 export class AdminForm extends React.Component {
@@ -31,45 +34,84 @@ export class AdminForm extends React.Component {
   }
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div>
-          <label>Name</label>
-          <input
-            name="name"
-            onChange={this.handleChange}
-            value={this.state.name}
-            required
-          />
-          <label>Artist</label>
-          <input
-            name="artist"
-            onChange={this.handleChange}
-            value={this.state.artist}
-          />
-          <label>Genre</label>
-          <input
-            name="genre"
-            onChange={this.handleChange}
-            value={this.state.genre}
-          />
-          <label>Song URL</label>
-          <input
-            name="songUrl"
-            onChange={this.handleChange}
-            value={this.state.songUrl}
-          />
-          <label>Price</label>
-          <input
-            name="price"
-            onChange={this.handleChange}
-            value={this.state.price}
-            required
-          />
-        </div>
-        <Button color="secondary" variant="contained" type="submit">
-          Submit
-        </Button>
-      </form>
+        <Container maxWidth="xs">
+            <form onSubmit={this.handleSubmit}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Grid container >
+                            <Grid item xs={12}  style={{marginTop: 8}}>
+                                <TextField
+                                fullWidth
+                                label="Name"
+                                name="name"
+                                size="small"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                                value={this.state.name}
+                                required
+                                />
+                            </Grid>
+                            <Grid item xs={12}  style={{marginTop: 8}}>
+                            <TextField
+                                fullWidth
+                                label="Artist"
+                                size="small"
+                                variant="outlined"                           
+                                name="artist"
+                                onChange={this.handleChange}
+                                value={this.state.artist}
+                            />
+                            </Grid>
+                            <Grid item xs={12}  style={{marginTop: 8}}>
+                            <TextField
+                                fullWidth
+                                label="Genre"
+                                size="small"
+                                variant="outlined"                           
+                                name="genre"
+                                onChange={this.handleChange}
+                                value={this.state.genre}
+                            />
+                            </Grid>
+                            <Grid item xs={12} style={{marginTop: 8}}>
+                            <TextField
+                                fullWidth
+                                label="Song URL"
+                                size="small"
+                                variant="outlined"                           
+                                name="songUrl"
+                                onChange={this.handleChange}
+                                value={this.state.songUrl}
+                            />
+                            </Grid>
+                            <Grid item xs={12} style={{marginTop: 8}}>
+                            <TextField
+                                fullWidth
+                                label="Price"
+                                size="small"
+                                variant="outlined"                           
+                                name="price"
+                                onChange={this.handleChange}
+                                value={this.state.price}
+                                required
+                            />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                    <Grid style={{marginTop: 8}}>
+                        <Button 
+                            fullWidth
+                            color="secondary" 
+                            variant="contained" 
+                            type="submit">
+                        Submit
+                        </Button>
+                    <Grid>
+                    </Grid>
+                </Grid>
+            </form>
+        </Container>
     );
   }
 }

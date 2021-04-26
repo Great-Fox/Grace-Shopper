@@ -82,12 +82,13 @@ const AuthForm = (props) => {
                   /> */}
                 </Grid>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} style={{marginTop: 8}}>
                 <Button
-                  fullWidth={true}
+                  fullWidth
                   variant="contained"
                   color="primary"
-                  type="submit">
+                  type="submit"
+                  >
                   {displayName}
                 </Button>
               </Grid>
