@@ -158,7 +158,7 @@ export class SingleRingtone extends React.Component {
                 <div>
                   <br />
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     color="secondary"
                     onClick={() => {
                       if (confirm('Are you sure you want to delete?')) {

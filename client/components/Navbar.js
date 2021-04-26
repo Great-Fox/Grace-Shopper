@@ -26,7 +26,7 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => (
           <Link to="/ringtone">See All Our Ringtones!</Link>
         </div>
       )}
-      <Badge badgeContent={1} color="purple">
+      <Badge badgeContent={1} color="primary">
         <ShoppingCartIcon />
       </Badge>
     </nav>

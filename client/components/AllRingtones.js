@@ -70,7 +70,7 @@ export class AllRingtones extends React.Component {
             <div>
               <Button
                 color="secondary"
-                variant="outlined"
+                variant="contained"
                 onClick={() => {
                   this.setState({ form: !this.state.form });
                 }}>
@@ -128,7 +128,7 @@ export class AllRingtones extends React.Component {
                           {this.props.isAdmin ? (
                             <div>
                               <Button
-                                variant="outlined"
+                                variant="contained"
                                 color="secondary"
                                 onClick={() => {
                                   if (

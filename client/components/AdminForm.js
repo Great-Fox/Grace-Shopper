@@ -66,7 +66,7 @@ export class AdminForm extends React.Component {
             required
           />
         </div>
-        <Button color="secondary" variant="outlined" type="submit">
+        <Button color="secondary" variant="contained" type="submit">
           Submit
         </Button>
       </form>
