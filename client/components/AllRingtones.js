@@ -47,6 +47,7 @@ export class AllRingtones extends React.Component {
     if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
     } else {
+      console.log(this.props.storage);
       return (
         <div>
           {/* <h1> These are our wonderful ringtones! </h1> */}
@@ -106,7 +107,7 @@ export class AllRingtones extends React.Component {
                             variant="contained"
                             color="primary"
                             onClick={() => 
-                              this.props.addItem(ringtone.id, ringtone.name, this.props.userId)
+                              this.props.addItem(ringtone, this.props.userId)
                             }>
                             Add To Cart
                           </Button>
@@ -152,7 +153,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getAllRingtones: () => dispatch(fetchAllRingtones()),
-    addItem: (ringtoneId, ringtoneName, userId) => dispatch(addItemThunk(ringtoneId, ringtoneName, userId)),
+    addItem: (ringtone, userId) => dispatch(addItemThunk(ringtone, userId)),
     getStorage: (id) => dispatch(storageThunk(id)),
     deleteRingtone: (id) => dispatch(deleteMySingleRingtone(id)),
   };
