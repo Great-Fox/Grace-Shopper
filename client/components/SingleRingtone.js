@@ -5,6 +5,7 @@ import {
   editMySingleRingtone,
   deleteMySingleRingtone,
 } from '../store/redux/adminRingtone';
+import Button from '@material-ui/core/Button';
 
 const initialState = {
   name: '',
@@ -125,7 +126,9 @@ export class SingleRingtone extends React.Component {
                     required
                   />
                   <br />
-                  <button type="submit">Save Changes</button>
+                  <Button variant="contained" color="primary" type="submit">
+                    Save Changes
+                  </Button>
                 </div>
               ) : (
                 <div>
@@ -145,21 +148,25 @@ export class SingleRingtone extends React.Component {
                     <h6>Price ${this.props.ringtone.price}</h6>
                   </div>
                   <br />
-                  <button>Buy This Ringtone!</button>
+                  <Button variant="contained" color="primary">
+                    Buy This Ringtone!
+                  </Button>
                   <br />
                 </div>
               )}
               {this.props.isAdmin ? (
                 <div>
                   <br />
-                  <button
+                  <Button
+                    variant="contained"
+                    color="secondary"
                     onClick={() => {
                       if (confirm('Are you sure you want to delete?')) {
                         this.handleDelete(this.props.ringtone.id);
                       }
                     }}>
                     Delete Ringtone
-                  </button>
+                  </Button>
                 </div>
               ) : null}
             </div>

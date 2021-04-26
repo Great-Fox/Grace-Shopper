@@ -1,7 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getUsers } from '../store/redux/adminUsers';
+import { DataGrid } from '@material-ui/data-grid';
 
+const columns = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'firstName', headerName: 'First Name', width: 130 },
+  { field: 'lastName', headerName: 'Last Name', width: 130 },
+  { field: 'email', headername: 'Email', width: 200 },
+];
 class AdminUsers extends React.Component {
   constructor() {
     super();
@@ -11,24 +18,19 @@ class AdminUsers extends React.Component {
   }
   render() {
     {
-      if (!this.props.isAdmin) {
-        return <h2>I'm sorry you don't have access to this page!</h2>;
-      } else if (!this.props.users.length) {
+      if (!this.props.users.length) {
         return <h2>Loading!</h2>;
+      } else if (!this.props.isAdmin) {
+        return <h2>I'm sorry you don't have access to this site!</h2>;
       } else {
         return (
           <div>
             <h1>Here are all our customers with accounts:</h1>
-            {this.props.users.map((user) => {
-              return (
-                <div>
-                  <h5>First Name: {user.firstName}</h5>
-                  <h5>Last Name: {user.lastName}</h5>
-                  <h5>Email: {user.email}</h5>
-                  <br />
-                </div>
-              );
-            })}
+            <div style={{ display: 'flex', height: 600, background: "white"}}>
+              <div style={{ flexGrow: 1}}>
+                <DataGrid columns={columns} rows={this.props.users} />
+              </div>
+            </div>
           </div>
         );
       }

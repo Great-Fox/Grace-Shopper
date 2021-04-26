@@ -4,6 +4,11 @@ import { fetchAllRingtones } from '../store/redux/allRingtones';
 import { deleteMySingleRingtone } from '../store/redux/adminRingtone';
 import { Cart } from './Cart';
 import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { spacing } from '@material-ui/system';
+import Box from "@material-ui/core/Box";
 
 import {
   deleteFromStorage,
@@ -36,6 +41,7 @@ export class AllRingtones extends React.Component {
   handleDelete(id) {
     this.props.deleteRingtone(id);
   }
+
   render() {
     
     if (!this.props.ringtones.length) {
@@ -43,59 +49,91 @@ export class AllRingtones extends React.Component {
     } else {
       return (
         <div>
-          <h1> These are our wonderful ringtones! </h1>
+          {/* <h1> These are our wonderful ringtones! </h1> */}
           {this.props.isAdmin ? (
             <div>
-              <button
+              <Box
+                display="flex"
+                justifyContent="center"
+                >
+                <Button
+                style={{marginLeft: 5, marginTop: 5}}      
+                color="secondary"
+                variant="contained"
                 onClick={() => {
                   this.setState({ form: !this.state.form });
                 }}>
                 Add New Ringtone
-              </button>
-              <Link to="/admin/users">See all users with accounts</Link>
+              </Button>
+              <Button             
+                style={{marginLeft: 5, marginTop: 5}}    
+                color="secondary"
+                variant="contained"
+                onClick={() => {
+                  this.props.history.push('/admin/users')
+                }}>
+                See all users with accounts
+              </Button>
+              </Box>
             </div>
           ) : null}
           {this.state.form ? <AdminForm /> : null}
           {this.state.users ? <AdminUsers /> : null}
-          {this.props.ringtones.map((ringtone) => {
-            return (
-              <div key={ringtone.id}>
-                <Link to={`/ringtone/${ringtone.id}`}>
-                  <h3>{ringtone.name}</h3>
-                </Link>
-                <iframe
-                  src={`https://open.spotify.com/embed/track/${ringtone.songUrl.slice(14)}`}
-                  width="300"
-                  height="380"
-                  frameBorder="0"
-                  allowtransparency="true"
-                  allow="encrypted-media"></iframe>
-                <h4>{ringtone.artist}</h4>
-                <h6>{ringtone.genre}</h6>
-                <h6>Price ${ringtone.price}</h6>
-                <div>
-                  <button
-                    onClick={() => {console.log(ringtone);
-                      this.props.addItem(ringtone.id, ringtone.name, this.props.userId)
-                    }}>
-                    Add To Cart
-                  </button>
-                  {this.props.isAdmin ? (
-                    <div>
-                      <button
-                        onClick={() => {
-                          if (confirm('Are you sure you want to delete?')) {
-                            this.handleDelete(ringtone.id);
-                          }
-                        }}>
-                        DELETE
-                      </button>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            );
-          })}
+          <div style={{ padding: 20 }}>
+            <Grid container justify="center">
+              {this.props.ringtones.map((ringtone) => {
+                return (
+                  <div key={ringtone.id}>
+                    <Grid item md style={{ margin: 10 }}>
+                      <Paper style={{ padding: 5 }}>
+                        <Link to={`/ringtone/${ringtone.id}`}>
+                          <h3>{ringtone.name}</h3>
+                        </Link>
+                        <iframe
+                          src={`https://open.spotify.com/embed/track/${ringtone.songUrl.slice(
+                            14
+                          )}`}
+                          width="300"
+                          height="380"
+                          frameBorder="0"
+                          allowtransparency="true"
+                          allow="encrypted-media"></iframe>
+                        <h4>{ringtone.artist}</h4>
+                        <h6>{ringtone.genre}</h6>
+                        <h6>Price ${ringtone.price}</h6>
+                        <div>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => 
+                              this.props.addItem(ringtone.id, ringtone.name, this.props.userId)
+                            }>
+                            Add To Cart
+                          </Button>
+                          {this.props.isAdmin ? (
+                            <div>
+                              <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={() => {
+                                  if (
+                                    confirm('Are you sure you want to delete?')
+                                  ) {
+                                    this.handleDelete(ringtone.id);
+                                  }
+                                }}>
+                                DELETE
+                              </Button>
+                            </div>
+                          ) : null}
+                        </div>
+                      </Paper>
+                    </Grid>
+                  </div>
+                );
+              })}
+            </Grid>
+          </div>
         </div>
       );
     }

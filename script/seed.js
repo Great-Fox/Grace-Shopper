@@ -18,26 +18,26 @@ async function seed() {
     Ringtone.create({
       name: 'Deja Vu',
       artist: 'Olivia Rodrigo',
-      genre: 'pop',
+      genre: 'Pop',
       price: 99,
       songUrl: 'spotify:track:61KpQadow081I2AsbeLcsb',
     }),
     Ringtone.create({
       name: 'Montero',
       artist: 'Lil Nas X',
-      genre: 'hip-hop',
+      genre: 'Hip-Hop',
       songUrl: 'spotify:track:67BtfxlNbhBmCDR2L2l8qd',
     }),
     Ringtone.create({
       name: 'Champagne Problems',
       artist: 'Taylor Swift',
-      genre: 'pop',
+      genre: 'Pop',
       songUrl: 'spotify:track:1gcyHQpBQ1lfXGdhZmWrHP',
     }),
     Ringtone.create({
       name: 'Gaslighter',
       artist: 'The Chicks',
-      genre: 'country',
+      genre: 'Country',
       songUrl: 'spotify:track:4UN6sBmFTt2IqxN3IRqJT3',
     }),
     Ringtone.create({
@@ -61,19 +61,19 @@ async function seed() {
     Ringtone.create({
       name: 'Willow',
       artist: 'Taylor Swift',
-      genre: 'pop',
+      genre: 'Pop',
       songUrl: 'spotify:track:3Uo7WG0vmLQ07WB4BDwy7D',
     }),
     Ringtone.create({
       name: `Mr.Perfectly Fine (Taylor's Version)`,
       artist: 'Taylor Swift',
-      genre: 'pop',
+      genre: 'Pop',
       songUrl: 'spotify:track:2CYVETnhM9aytqrazYYwrK',
     }),
     Ringtone.create({
       name: 'Coney Island',
       artist: 'Taylor Swift',
-      genre: 'pop',
+      genre: 'Pop',
       songUrl: 'spotify:track:2awNGIJHodfLZSClB3PYhz',
     }),
   ]);

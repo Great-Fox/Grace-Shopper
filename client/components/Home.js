@@ -10,7 +10,8 @@ export const Home = (props) => {
 
   return (
     <div>
-      <h3>Welcome, {firstName}!</h3>
+      <h3>Welcome to your Ringtone World!</h3>
+      {firstName ? (<p>Hi, Welcome back {firstName}</p>) : null}
     </div>
   );
 };
