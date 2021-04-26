@@ -1,31 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchSingleRingtone } from '../store/redux/singleRingtone';
-import { storageThunk } from '../store/redux/storage';
+import { storageThunk, removeItemThunk } from '../store/redux/storage';
 
 export class Cart extends React.Component {
-    constructor(){
-        super()
-        this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this)
+
+    componentDidMount() {
+        const TOKEN = 'token';
+        const token = window.localStorage.getItem(TOKEN);
+        if (!token) {
+            this.props.getStorage();
+        }
     }
 
-    componentDidMount(){
-        //see if they are a user
-        //if they are a user, see if they already have an open cart
-        //if they do have an open cart, set local storage to their open cart
-        //if they do not have an open cart, just stick with local storage (function below)
-        this.props.getStorage(2)
-    }
-
-    deleteFromLocalStorage(id, name) {
-        localStorage.removeItem(`${id}`, `${name}`)
-        this.props.getStorage()
-    }
-    componentWillUnmount(){
-        //check and see if there is a valid token
-        //if there is a token, we try to get the cart that they already have in the db
-        //if they do have a cart, we replace it with what's in our local storage
-        //if they do not have a cart, we make a new one and add in local storage relationships
+    componentDidUpdate(prevProps){
+        if (prevProps.userId !== this.props.userId) {
+            this.props.getStorage(this.props.userId);
+        }  
     }
 
     render() {
@@ -39,7 +30,7 @@ export class Cart extends React.Component {
                             <div key={Number(ringtone.id)} >
                                 {ringtone.name}
                                 <div>
-                                    <button onClick = {() => this.deleteFromLocalStorage(ringtone.id, ringtone.name)}>
+                                    <button onClick = {() => this.props.removeItem(ringtone.id, ringtone.name, this.props.userId)}>
                                         Delete From Cart
                                     </button>
                                 </div>
@@ -58,6 +49,7 @@ export class Cart extends React.Component {
 const mapState = (state) => {
   return {
     storage: state.storage,
+    userId: state.auth.id
   };
 };
 
@@ -65,6 +57,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getSingleRingtone: (id) => dispatch(fetchSingleRingtone(id)),
     getStorage: (id) => dispatch(storageThunk(id)),
+    removeItem: (ringtoneId, ringtoneName, userId) => dispatch(removeItemThunk(ringtoneId, ringtoneName, userId))
   };
 };
 

@@ -35,7 +35,6 @@ export const storageThunk = (id) => {
               }
             })
           }
-
           dispatch(getStorage(storage));
         } catch (error) {
           console.log(error);
@@ -43,25 +42,38 @@ export const storageThunk = (id) => {
     };
 }
 
-export const addItemThunk = (userId, ringtone) => {
+export const addItemThunk = (ringtoneId, ringtoneName, userId) => {
   return async (dispatch) => {
       try {
         let storage;
-        //check if they are logged in
         if (userId !== undefined) {
-          let response = await axios.post(`./api/order/${userId}`, ringtone);
-          storage = response.data.ringtones;
-          console.log(storage);
+          console.log("thunk ringtone id", ringtoneId);
+          let response = await axios.post(`/api/order/${userId}`, {id: ringtoneId});
+          storage = response.data;
         } else {
-          storage = Object.keys(localStorage).map(ringtone => { 
-            return {
-                id: ringtone, 
-                name: localStorage[ringtone]
-            }
-          })
+          localStorage.setItem(`${ringtoneId}`, `${ringtoneName}`);
+          storage = {id: ringtoneId, name: ringtoneName}
         }
+        dispatch(addToStorage(storage));
+      } catch (error) {
+        console.log(error);
+      }
+  };
+}
 
-        dispatch(getStorage(storage));
+export const removeItemThunk = (ringtoneId, ringtoneName, userId) => {
+  return async (dispatch) => {
+      try {
+        let storage;
+        if (userId !== undefined) {
+          console.log(ringtoneId, 'ringtone id in thunk');
+          let response = await axios.delete(`/api/order/${userId}/${ringtoneId}`);
+          storage = response.data;
+        } else {
+          localStorage.removeItem(`${ringtoneId}`, `${ringtoneName}`)
+          storage = {id: ringtoneId, name: ringtoneName}
+        }
+        dispatch(deleteFromStorage(storage));
       } catch (error) {
         console.log(error);
       }
@@ -73,7 +85,7 @@ export default function storageReducer(state = [], action) {
     case ADD_TO_STORAGE:
       return [...state, action.ringtone];
     case DELETE_FROM_STORAGE:
-      return state.filter((ringtone) => ringtone !== action.ringtone);
+      return state.filter((ringtone) => ringtone.id !== action.ringtone.id);
     case GET_STORAGE:
       return action.storage;
     default:

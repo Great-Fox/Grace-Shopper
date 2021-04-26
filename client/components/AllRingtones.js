@@ -6,7 +6,6 @@ import { Cart } from './Cart';
 import { Link } from 'react-router-dom';
 
 import {
-  addToStorage,
   deleteFromStorage,
   storageThunk, addItemThunk
 } from '../store/redux/storage';
@@ -21,8 +20,8 @@ export class AllRingtones extends React.Component {
       form: false,
       users: false,
     };
-    this.addToStorage = this.addToStorage.bind(this);
-    this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
+    // this.addToStorage = this.addToStorage.bind(this);
+    //this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
@@ -30,10 +29,10 @@ export class AllRingtones extends React.Component {
     await this.props.getAllRingtones();
   }
 
-  addToStorage(id, name) {
-    localStorage.setItem(`${id}`, `${name}`)
-    this.props.getStorage(this.props.userId);
-  }
+  // addToStorage(ringtoneId, ringtoneName, userId) {
+    
+  //   this.props.getStorage(this.props.userId);
+  // }
   handleDelete(id) {
     this.props.deleteRingtone(id);
   }
@@ -76,9 +75,9 @@ export class AllRingtones extends React.Component {
                 <h6>Price ${ringtone.price}</h6>
                 <div>
                   <button
-                    onClick={() =>
-                      this.addToStorage(ringtone.id, ringtone.name)
-                    }>
+                    onClick={() => {console.log(ringtone);
+                      this.props.addItem(ringtone.id, ringtone.name, this.props.userId)
+                    }}>
                     Add To Cart
                   </button>
                   {this.props.isAdmin ? (
@@ -115,8 +114,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getAllRingtones: () => dispatch(fetchAllRingtones()),
-    addItem: (id, ringtone) => dispatch(storageThunk(id, ringtone)),  
-    deleteFromStorage: (ringtone) => dispatch(deleteFromStorage(ringtone)),
+    addItem: (ringtoneId, ringtoneName, userId) => dispatch(addItemThunk(ringtoneId, ringtoneName, userId)),
     getStorage: (id) => dispatch(storageThunk(id)),
     deleteRingtone: (id) => dispatch(deleteMySingleRingtone(id)),
   };

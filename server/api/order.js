@@ -29,29 +29,31 @@ router.post('/:userId', async (req, res, next) => {
             userId: req.params.userId, completed: false
           }
         });
-        let ringtone = await Ringtone.findByPk(req.body.ringtoneId);
+        let ringtone = await Ringtone.findByPk(req.body.id);
         if (!currentOrder) {
           currentOrder = await Order.create();
           let user = await User.findByPk(req.params.userId);
           user.addOrders(currentOrder);
         }
         await currentOrder.addRingtones(ringtone);
-        res.status(201).send(currentOrder);
+        res.status(201).send(ringtone);
     } catch(error) {
         next(error)
     }
 })
 //remove a ringtone from cart
-router.delete('/:userId', async (req, res, next) => {
+router.delete('/:userId/:ringtoneId', async (req, res, next) => {
   try{
       let currentOrder = await Order.findOne({
         where: {
           userId: req.params.userId, completed: false
         }
       });
-      let ringtone = await Ringtone.findByPk(req.body.ringtoneId);
-      await currentOrder.removeRingtones(ringtone);
-      res.send(currentOrder);
+      console.log(currentOrder, "current order");
+      let ringtone = await Ringtone.findByPk(req.params.ringtoneId);
+      console.log(ringtone, "ringtone");
+      await currentOrder.removeRingtone(ringtone);
+      res.send(ringtone);
   } catch(error) {
       next(error)
   }
