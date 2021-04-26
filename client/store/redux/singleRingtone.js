@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {EDIT_SINGLE_RINGTONE, editMySingleRingtone} from './adminRingtone'
 
 const GET_SINGLE_RINGTONE = 'GET_SINGLE_RINGTONE';
 
@@ -21,6 +22,8 @@ export const fetchSingleRingtone = (ringtoneId) => {
 export default function singleRingtoneReducer(state = {}, action) {
   switch (action.type) {
     case GET_SINGLE_RINGTONE:
+      return action.ringtone;
+    case EDIT_SINGLE_RINGTONE: 
       return action.ringtone;
     default:
       return state;

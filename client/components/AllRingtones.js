@@ -1,12 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchAllRingtones } from '../store/redux/allRingtones';
-import { storageThunk, addItemThunk } from '../store/redux/storage'
+import { deleteMySingleRingtone } from '../store/redux/adminRingtone';
+import { Cart } from './Cart';
+import { Link } from 'react-router-dom';
+
+import {
+  addToStorage,
+  deleteFromStorage,
+  storageThunk, addItemThunk
+} from '../store/redux/storage';
+import AdminForm from './AdminForm';
+import AdminUsers from './AdminUsers';
 
 export class AllRingtones extends React.Component {
   constructor() {
     super();
-    this.addToStorage = this.addToStorage.bind(this)
+    this.state = {
+      storage: [],
+      form: false,
+      users: false,
+    };
+    this.addToStorage = this.addToStorage.bind(this);
+    this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   async componentDidMount() {
@@ -17,7 +34,9 @@ export class AllRingtones extends React.Component {
     localStorage.setItem(`${id}`, `${name}`)
     this.props.getStorage(this.props.userId);
   }
-
+  handleDelete(id) {
+    this.props.deleteRingtone(id);
+  }
   render() {
     
     if (!this.props.ringtones.length) {
@@ -26,10 +45,25 @@ export class AllRingtones extends React.Component {
       return (
         <div>
           <h1> These are our wonderful ringtones! </h1>
+          {this.props.isAdmin ? (
+            <div>
+              <button
+                onClick={() => {
+                  this.setState({ form: !this.state.form });
+                }}>
+                Add New Ringtone
+              </button>
+              <Link to="/admin/users">See all users with accounts</Link>
+            </div>
+          ) : null}
+          {this.state.form ? <AdminForm /> : null}
+          {this.state.users ? <AdminUsers /> : null}
           {this.props.ringtones.map((ringtone) => {
             return (
               <div key={ringtone.id}>
-                <h3>{ringtone.name}</h3>
+                <Link to={`/ringtone/${ringtone.id}`}>
+                  <h3>{ringtone.name}</h3>
+                </Link>
                 <iframe
                   src={`https://open.spotify.com/embed/track/${ringtone.songUrl.slice(14)}`}
                   width="300"
@@ -41,9 +75,24 @@ export class AllRingtones extends React.Component {
                 <h6>{ringtone.genre}</h6>
                 <h6>Price ${ringtone.price}</h6>
                 <div>
-                    <button onClick = {() => this.addToStorage(ringtone.id, ringtone.name)} >
-                      Add To Cart
-                    </button>
+                  <button
+                    onClick={() =>
+                      this.addToStorage(ringtone.id, ringtone.name)
+                    }>
+                    Add To Cart
+                  </button>
+                  {this.props.isAdmin ? (
+                    <div>
+                      <button
+                        onClick={() => {
+                          if (confirm('Are you sure you want to delete?')) {
+                            this.handleDelete(ringtone.id);
+                          }
+                        }}>
+                        DELETE
+                      </button>
+                    </div>
+                  ) : null}
                 </div>
               </div>
             );
@@ -58,15 +107,18 @@ const mapState = (state) => {
   return {
     ringtones: state.ringtones,
     storage: state.storage,
-    userId: state.auth.id
+    userId: state.auth.id,
+    isAdmin: state.auth.isAdmin
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
     getAllRingtones: () => dispatch(fetchAllRingtones()),
+    addItem: (id, ringtone) => dispatch(storageThunk(id, ringtone)),  
+    deleteFromStorage: (ringtone) => dispatch(deleteFromStorage(ringtone)),
     getStorage: (id) => dispatch(storageThunk(id)),
-    addItem: (id, ringtone) => dispatch(storageThunk(id, ringtone))
+    deleteRingtone: (id) => dispatch(deleteMySingleRingtone(id)),
   };
 };
 
