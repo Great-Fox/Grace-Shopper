@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
@@ -12,6 +12,9 @@ import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
+import {storageThunk} from '../store/redux/storage'
+import CartIcon from './CartIcon'
+
 // search bar
 // import SearchIcon from '@material-ui/icons/Search';
 // import InputBase from '@material-ui/core/InputBase';
@@ -75,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ handleClick, isLoggedIn, firstName, storage }) => {
+const Navbar = ({ handleClick, isLoggedIn, firstName, storage, length}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -87,6 +90,14 @@ const Navbar = ({ handleClick, isLoggedIn, firstName, storage }) => {
     setAnchorEl(null);
   };
 
+  // async componentDidUpdate(prevProps){
+  //   // await this.props.getStorage(this.props.userId)
+  //   if (this.props.userId !== prevProps.userId) {
+  //     await this.props.getStorage(this.props.userId);
+  //     console.log(this.props.userId)
+  //   }
+  // }
+    // getStorage(userId)
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -137,18 +148,18 @@ const Navbar = ({ handleClick, isLoggedIn, firstName, storage }) => {
                 />
             </div> */}
           <div className={classes.grow} />
-            <div className={classes.sectionShoppingCart}>
-              <IconButton aria-label="show shopping cart" color="inherit">
-                <Link to="/cart">
-                <Badge badgeContent={storage.length} color="primary">
+            <div className={classes.sectionShoppingCart} >
+              <IconButton aria-label="show shopping cart" color="inherit" >
+                <CartIcon />
+                {/* <Link to="/cart">
+                <Badge badgeContent={length} color="secondary">
                   <ShoppingCartIcon />
                 </Badge>
-                </Link>
+                </Link> */}
               </IconButton>
             </div>
             {isLoggedIn ? (
               <div>
-                <Link to="/ringtone">See All Our Ringtones!</Link>
                 <IconButton>
                   <p>Welcome {firstName}!</p>
                 </IconButton>
@@ -196,7 +207,8 @@ const mapState = (state) => {
     isLoggedIn: !!state.auth.id,
     firstName: state.auth.firstName,
     storage: state.storage,
-    userId: state.auth.id
+    userId: state.auth.id,
+    length: state.storage.length
   };
 };
 
