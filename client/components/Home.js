@@ -1,15 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import AdminUsers from './AdminUsers';
 
 /**
  * COMPONENT
  */
 export const Home = (props) => {
-  const { email } = props;
+  const { firstName } = props;
 
   return (
     <div>
-      <h3>Welcome, {email}</h3>
+      <h3>Welcome, {firstName}!</h3>
     </div>
   );
 };
@@ -19,7 +20,7 @@ export const Home = (props) => {
  */
 const mapState = (state) => {
   return {
-    email: state.auth.email,
+    firstName: state.auth.firstName,
   };
 };
 
