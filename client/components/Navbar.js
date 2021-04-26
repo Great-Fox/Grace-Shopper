@@ -73,13 +73,10 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
     },
   },
-
 }));
 
-const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
+const Navbar = ({ handleClick, isLoggedIn, firstName, storage }) => {
   const classes = useStyles();
-
-  // menu button
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClickHere = (event) => {
@@ -142,27 +139,22 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
           <div className={classes.grow} />
             <div className={classes.sectionShoppingCart}>
               <IconButton aria-label="show shopping cart" color="inherit">
-                {/* the badgeContent need to be the length of ringtones in cart 
-                it may have merge conflict
-                becasue i rememberd i fixed this before with different branch--- shiyang */}
-                <Badge badgeContent={1} color="primary">
+                <Link to="/cart">
+                <Badge badgeContent={storage.length} color="primary">
                   <ShoppingCartIcon />
                 </Badge>
+                </Link>
               </IconButton>
             </div>
             {isLoggedIn ? (
               <div>
-                {/* The navbar will show these links after you log in */}
-                
-                <Link to="/ringtone">See All Our Ringtones!</Link> */}
+                <Link to="/ringtone">See All Our Ringtones!</Link>
                 <IconButton>
                   <p>Welcome {firstName}!</p>
                 </IconButton>
                 <IconButton
                   aria-label="log out"
-                  // aria-controls={mobileMenuId}
                   aria-haspopup="true"
-                  // onClick={handleMobileMenuOpen}
                   color="inherit"
                 >
                 <a href="#" onClick={handleClick}>
@@ -172,65 +164,29 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
               </div>
               ) : (
                 <div>
-                  {/* The navbar will show these links before you log in */}
                   <IconButton
-                    aria-label="log out"
-                    // aria-controls={mobileMenuId}
+                    aria-label="log in"
                     aria-haspopup="true"
-                    // onClick={handleMobileMenuOpen}
                     color="inherit"
                   >
                     <Link to="/login">Login</Link>
                   </IconButton>
                   <IconButton
-                    aria-label="log out"
-                    // aria-controls={mobileMenuId}
+                    aria-label="sign up"
                     aria-haspopup="true"
-                    // onClick={handleMobileMenuOpen}
                     color="inherit"
                   >
                     <Link to="/signup">Sign Up</Link>
                   </IconButton>
-                  <IconButton
-                    aria-label="log out"
-                    // aria-controls={mobileMenuId}
-                    aria-haspopup="true"
-                    // onClick={handleMobileMenuOpen}
-                    color="inherit"
-                  >
-                  </IconButton>
                 </div>
-              )}
-            {/* </IconButton> */}
-          {/* </div> */}
-    {/* <nav>
-      {isLoggedIn ? (
-        <div>
-          The navbar will show these links after you log in
-          <Link to="/home">Home</Link>
-          <Link to="/ringtone">See All Our Ringtones!</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-          <p>Welcome {firstName}!</p>
-        </div>
-      ) : (
-        <div>
-          The navbar will show these links before you log in
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-          <Link to="/ringtone">See All Our Ringtones!</Link>
-        </div>
-      )}
-      <Badge badgeContent={1} color="primary">
-        <ShoppingCartIcon />
-      </Badge>
-    </nav> */}
+              )
+            }
     </Toolbar>
     </AppBar>
   </div>
   )
 };
+
 
 /**
  * CONTAINER
@@ -239,6 +195,8 @@ const mapState = (state) => {
   return {
     isLoggedIn: !!state.auth.id,
     firstName: state.auth.firstName,
+    storage: state.storage,
+    userId: state.auth.id
   };
 };
 
@@ -247,6 +205,7 @@ const mapDispatch = (dispatch) => {
     handleClick() {
       dispatch(logout());
     },
+    getStorage: (id) => dispatch(storageThunk(id))
   };
 };
 

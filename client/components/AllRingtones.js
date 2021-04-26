@@ -11,9 +11,8 @@ import { spacing } from '@material-ui/system';
 import Box from "@material-ui/core/Box";
 
 import {
-  addToStorage,
   deleteFromStorage,
-  storageThunk,
+  storageThunk, addItemThunk
 } from '../store/redux/storage';
 import AdminForm from './AdminForm';
 import AdminUsers from './AdminUsers';
@@ -26,29 +25,25 @@ export class AllRingtones extends React.Component {
       form: false,
       users: false,
     };
-
-    this.addToLocalStorage = this.addToLocalStorage.bind(this);
-    this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
+    // this.addToStorage = this.addToStorage.bind(this);
+    //this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
-  componentDidMount() {
-    this.props.getAllRingtones();
-    this.props.getStorage();
+  async componentDidMount() {
+    await this.props.getAllRingtones();
   }
-  addToLocalStorage(id, name) {
-    localStorage.setItem(`${id}`, `${name}`);
-    this.props.addToStorage(name);
-  }
-  deleteFromLocalStorage(id, name) {
-    localStorage.removeItem(`${id}`, `${name}`);
-    this.props.deleteFromStorage(name);
-  }
+
+  // addToStorage(ringtoneId, ringtoneName, userId) {
+    
+  //   this.props.getStorage(this.props.userId);
+  // }
   handleDelete(id) {
     this.props.deleteRingtone(id);
   }
 
   render() {
+    
     if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
     } else {
@@ -110,23 +105,10 @@ export class AllRingtones extends React.Component {
                           <Button
                             variant="contained"
                             color="primary"
-                            onClick={() =>
-                              this.addToLocalStorage(ringtone.id, ringtone.name)
+                            onClick={() => 
+                              this.props.addItem(ringtone.id, ringtone.name, this.props.userId)
                             }>
                             Add To Cart
-                          </Button>
-
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                            onSubmit={() =>
-                              this.deleteFromLocalStorage(
-                                ringtone.id,
-                                ringtone.name
-                              )
-                            }>
-                            Delete From Cart
                           </Button>
                           {this.props.isAdmin ? (
                             <div>
@@ -162,16 +144,16 @@ const mapState = (state) => {
   return {
     ringtones: state.ringtones,
     storage: state.storage,
-    isAdmin: state.auth.isAdmin,
+    userId: state.auth.id,
+    isAdmin: state.auth.isAdmin
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
     getAllRingtones: () => dispatch(fetchAllRingtones()),
-    addToStorage: (ringtone) => dispatch(addToStorage(ringtone)),
-    deleteFromStorage: (ringtone) => dispatch(deleteFromStorage(ringtone)),
-    getStorage: () => dispatch(storageThunk()),
+    addItem: (ringtoneId, ringtoneName, userId) => dispatch(addItemThunk(ringtoneId, ringtoneName, userId)),
+    getStorage: (id) => dispatch(storageThunk(id)),
     deleteRingtone: (id) => dispatch(deleteMySingleRingtone(id)),
   };
 };
