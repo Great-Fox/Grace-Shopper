@@ -7,12 +7,14 @@ import { Badge } from '@material-ui/core';
 import { storageThunk } from '../store/redux/storage'
 
 export class Navbar extends React.Component {
-  componentDidMount(){
-    this.props.getStorage()
+  async componentDidMount(){
+    console.log(this.props.userId)
+    // await this.props.getStorage(this.props.userId)
+    await this.props.getStorage(2)
   }
 // const Navbar = ({ handleClick, isLoggedIn, firstName, storage }) => (
   render(){
-    console.log("navbar", this.state)
+    console.log(this.props);
     return(
       <div>
       <nav>
@@ -51,7 +53,8 @@ const mapState = (state) => {
   return {
     isLoggedIn: !!state.auth.id,
     firstName: state.auth.firstName,
-    storage: state.storage
+    storage: state.storage,
+    userId: state.auth.id
   };
 };
 
@@ -60,7 +63,7 @@ const mapDispatch = (dispatch) => {
     handleClick() {
       dispatch(logout());
     },
-    getStorage: () => dispatch(storageThunk())
+    getStorage: (id) => dispatch(storageThunk(id))
   };
 };
 

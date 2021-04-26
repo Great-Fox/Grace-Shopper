@@ -9,9 +9,8 @@ export class AllRingtones extends React.Component {
     this.addToLocalStorage = this.addToLocalStorage.bind(this)
   }
 
-  componentDidMount() {
-    this.props.getAllRingtones();
-    this.props.getStorage(this.props.userId);
+  async componentDidMount() {
+    await this.props.getAllRingtones();
   }
 
   addToLocalStorage(id, name) {
@@ -66,7 +65,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getAllRingtones: () => dispatch(fetchAllRingtones()),
-    getStorage: () => dispatch(storageThunk())
+    getStorage: (id) => dispatch(storageThunk(id))
   };
 };
 

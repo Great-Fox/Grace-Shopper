@@ -25,8 +25,8 @@ export const storageThunk = (id) => {
           let storage;
           //check if they are logged in
           if (id !== undefined) {
-            //
-            storage = axios.get(`./api/order/:${id}`)
+            let response = await axios.get(`./api/order/${id}`);
+            storage = response.data.ringtones;
           } else {
             storage = Object.keys(localStorage).map(ringtone => { 
               return {
@@ -41,6 +41,30 @@ export const storageThunk = (id) => {
           console.log(error);
         }
     };
+}
+
+export const addItemThunk = (userId, ringtoneId) => {
+  return async (dispatch) => {
+      try {
+        let storage;
+        //check if they are logged in
+        if (userId !== undefined) {
+          let response = await axios.post(`./api/order/${userId}/${ringtoneId}`);
+          storage = response.data.ringtones;
+        } else {
+          storage = Object.keys(localStorage).map(ringtone => { 
+            return {
+                id: ringtone, 
+                name: localStorage[ringtone]
+            }
+          })
+        }
+
+        dispatch(getStorage(storage));
+      } catch (error) {
+        console.log(error);
+      }
+  };
 }
 
 export default function storageReducer(state = [], action) {

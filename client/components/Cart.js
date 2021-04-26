@@ -14,7 +14,7 @@ export class Cart extends React.Component {
         //if they are a user, see if they already have an open cart
         //if they do have an open cart, set local storage to their open cart
         //if they do not have an open cart, just stick with local storage (function below)
-        this.props.getStorage()
+        this.props.getStorage(2)
     }
 
     deleteFromLocalStorage(id, name) {
@@ -64,7 +64,7 @@ const mapState = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getSingleRingtone: (id) => dispatch(fetchSingleRingtone(id)),
-    getStorage: () => dispatch(storageThunk()),
+    getStorage: (id) => dispatch(storageThunk(id)),
   };
 };
 
