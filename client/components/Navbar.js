@@ -7,10 +7,13 @@ import { Badge } from '@material-ui/core';
 import { storageThunk } from '../store/redux/storage'
 
 export class Navbar extends React.Component {
-  async componentDidMount(){
-    console.log(this.props.userId)
+
+  async componentDidUpdate(prevProps){
     // await this.props.getStorage(this.props.userId)
-    await this.props.getStorage(2)
+    if (this.props.userId !== prevProps.userId) {
+      await this.props.getStorage(this.props.userId);
+      console.log(this.props.userId)
+    }
   }
 // const Navbar = ({ handleClick, isLoggedIn, firstName, storage }) => (
   render(){

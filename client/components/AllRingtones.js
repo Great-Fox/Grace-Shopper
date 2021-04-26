@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchAllRingtones } from '../store/redux/allRingtones';
-import { storageThunk } from '../store/redux/storage'
+import { storageThunk, addItemThunk } from '../store/redux/storage'
 
 export class AllRingtones extends React.Component {
   constructor() {
     super();
-    this.addToLocalStorage = this.addToLocalStorage.bind(this)
+    this.addToStorage = this.addToStorage.bind(this)
   }
 
   async componentDidMount() {
     await this.props.getAllRingtones();
   }
 
-  addToLocalStorage(id, name) {
+  addToStorage(id, name) {
     localStorage.setItem(`${id}`, `${name}`)
     this.props.getStorage(this.props.userId);
   }
@@ -41,7 +41,7 @@ export class AllRingtones extends React.Component {
                 <h6>{ringtone.genre}</h6>
                 <h6>Price ${ringtone.price}</h6>
                 <div>
-                    <button onClick = {() => this.addToLocalStorage(ringtone.id, ringtone.name)} >
+                    <button onClick = {() => this.addToStorage(ringtone.id, ringtone.name)} >
                       Add To Cart
                     </button>
                 </div>
@@ -65,7 +65,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getAllRingtones: () => dispatch(fetchAllRingtones()),
-    getStorage: (id) => dispatch(storageThunk(id))
+    getStorage: (id) => dispatch(storageThunk(id)),
+    addItem: (id, ringtone) => dispatch(storageThunk(id, ringtone))
   };
 };
 

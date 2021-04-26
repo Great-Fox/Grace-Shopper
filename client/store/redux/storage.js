@@ -43,14 +43,15 @@ export const storageThunk = (id) => {
     };
 }
 
-export const addItemThunk = (userId, ringtoneId) => {
+export const addItemThunk = (userId, ringtone) => {
   return async (dispatch) => {
       try {
         let storage;
         //check if they are logged in
         if (userId !== undefined) {
-          let response = await axios.post(`./api/order/${userId}/${ringtoneId}`);
+          let response = await axios.post(`./api/order/${userId}`, ringtone);
           storage = response.data.ringtones;
+          console.log(storage);
         } else {
           storage = Object.keys(localStorage).map(ringtone => { 
             return {
