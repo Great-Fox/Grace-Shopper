@@ -54,7 +54,7 @@ export class AllRingtones extends React.Component {
     } else {
       return (
         <div>
-          <h1> These are our wonderful ringtones! </h1>
+          {/* <h1> These are our wonderful ringtones! </h1> */}
           {this.props.isAdmin ? (
             <div>
               <Box
@@ -62,7 +62,7 @@ export class AllRingtones extends React.Component {
                 justifyContent="center"
                 >
                 <Button
-                width= "225px"
+                style={{marginLeft: 5, marginTop: 5}}      
                 color="secondary"
                 variant="contained"
                 onClick={() => {
@@ -71,7 +71,7 @@ export class AllRingtones extends React.Component {
                 Add New Ringtone
               </Button>
               <Button             
-                style={{marginLeft: 5}}    
+                style={{marginLeft: 5, marginTop: 5}}    
                 color="secondary"
                 variant="contained"
                 onClick={() => {
