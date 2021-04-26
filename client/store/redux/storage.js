@@ -3,6 +3,7 @@ import axios from 'axios';
 export const ADD_TO_STORAGE = 'ADD_TO_STORAGE';
 export const DELETE_FROM_STORAGE = 'DELETE_FROM_STORAGE';
 export const GET_STORAGE = 'GET_STORAGE';
+const TOKEN = 'token';
 
 export const addToStorage = (ringtone) => ({
   type: ADD_TO_STORAGE,
@@ -20,65 +21,84 @@ export const getStorage = (storage) => ({
 });
 
 export const storageThunk = (id) => {
-    return async (dispatch) => {
-        try {
-          let storage;
-          //check if they are logged in
-          if (id !== undefined) {
-            let response = await axios.get(`./api/order/${id}`);
-            storage = response.data.ringtones;
-          } else {
-            storage = Object.keys(localStorage).map(ringtone => { 
-              return {
-                  id: ringtone, 
-                  name: localStorage[ringtone]
-              }
-            })
-          }
-          dispatch(getStorage(storage));
-        } catch (error) {
-          console.log(error);
-        }
-    };
-}
+  return async (dispatch) => {
+    try {
+      let storage;
+      const token = window.localStorage.getItem(TOKEN);
+
+      //check if they are logged in
+      if (id !== undefined) {
+        let response = await axios.get(`./api/order/${id}`, {
+          headers: { authorization: token },
+        });
+        storage = response.data.ringtones;
+      } else {
+        storage = Object.keys(localStorage).map((ringtone) => {
+          return {
+            id: ringtone,
+            name: localStorage[ringtone],
+          };
+        });
+      }
+      dispatch(getStorage(storage));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 export const addItemThunk = (ringtoneId, ringtoneName, userId) => {
   return async (dispatch) => {
-      try {
-        let storage;
-        if (userId !== undefined) {
-          console.log("thunk ringtone id", ringtoneId);
-          let response = await axios.post(`/api/order/${userId}`, {id: ringtoneId});
-          storage = response.data;
-        } else {
-          localStorage.setItem(`${ringtoneId}`, `${ringtoneName}`);
-          storage = {id: ringtoneId, name: ringtoneName}
-        }
-        dispatch(addToStorage(storage));
-      } catch (error) {
-        console.log(error);
+    try {
+      let storage;
+      const token = window.localStorage.getItem(TOKEN);
+
+      if (userId !== undefined) {
+        let response = await axios.post(
+          `/api/order/${userId}`,
+          {
+            id: ringtoneId,
+          },
+          {
+            headers: { authorization: token },
+          }
+        );
+        storage = response.data;
+      } else {
+        localStorage.setItem(`${ringtoneId}`, `${ringtoneName}`);
+        storage = { id: ringtoneId, name: ringtoneName };
       }
+      dispatch(addToStorage(storage));
+    } catch (error) {
+      console.log(error);
+    }
   };
-}
+};
 
 export const removeItemThunk = (ringtoneId, ringtoneName, userId) => {
   return async (dispatch) => {
-      try {
-        let storage;
-        if (userId !== undefined) {
-          console.log(ringtoneId, 'ringtone id in thunk');
-          let response = await axios.delete(`/api/order/${userId}/${ringtoneId}`);
-          storage = response.data;
-        } else {
-          localStorage.removeItem(`${ringtoneId}`, `${ringtoneName}`)
-          storage = {id: ringtoneId, name: ringtoneName}
-        }
-        dispatch(deleteFromStorage(storage));
-      } catch (error) {
-        console.log(error);
+    try {
+      let storage;
+      const token = window.localStorage.getItem(TOKEN);
+
+      if (userId !== undefined) {
+        let response = await axios.delete(
+          `/api/order/${userId}/${ringtoneId}`,
+          {
+            headers: { authorization: token },
+          }
+        );
+        storage = response.data;
+      } else {
+        localStorage.removeItem(`${ringtoneId}`, `${ringtoneName}`);
+        storage = { id: ringtoneId, name: ringtoneName };
       }
+      dispatch(deleteFromStorage(storage));
+    } catch (error) {
+      console.log(error);
+    }
   };
-}
+};
 
 export default function storageReducer(state = [], action) {
   switch (action.type) {
