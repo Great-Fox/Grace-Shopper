@@ -7,6 +7,7 @@ import SingleRingtone from './components/SingleRingtone';
 import Home from './components/Home';
 import { me } from './store';
 import Navbar from './components/Navbar';
+import Cart from './components/Cart'
 import AdminUsers from './components/AdminUsers';
 
 /**
@@ -32,6 +33,7 @@ class Routes extends Component {
           />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
+          <Route exact path="/cart" component={Cart} />
           <Route exact path="/admin/users" component={AdminUsers} />
         </Switch>
       </div>
