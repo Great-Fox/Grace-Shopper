@@ -3,21 +3,18 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
+// search bar
 // import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
+// import InputBase from '@material-ui/core/InputBase';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -32,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
     },
   },
+  //search bar
   // search: {
   //   position: 'relative',
   //   borderRadius: theme.shape.borderRadius,
@@ -75,98 +73,78 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
     },
   },
-  // sectionMobile: {
-  //   display: 'flex',
-  //   [theme.breakpoints.up('md')]: {
-  //     display: 'none',
-  //   },
-  // },
+
 }));
 
 const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
   const classes = useStyles();
+
+  // menu button
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  // const handleProfileMenuOpen = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
+  const open = Boolean(anchorEl);
+  const handleClickHere = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
+  const handleCloseHere = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          {/* the badgeContent need to be the length of ringtones in cart 
-          it may have merge conflict
-          becasue i rememberd i fixed this before with different branch--- shiyang */}
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-      </MenuItem>
-    </Menu>
-  );
 
   return (
     <div className={classes.grow}>
       <AppBar position="static">
       <Toolbar>
-      <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
+        <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleClickHere}
+            >
+            <MenuIcon />
+        </IconButton>
+        <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={open}
+          onClose={handleCloseHere}
+          PaperProps={{
+            style: {
+              width: '20ch',
+            },
+          }}
           >
-          <MenuIcon />
-      </IconButton>
-      <Typography className={classes.title} variant="h6" noWrap>
-           Ringtone World
-          </Typography>
+          <MenuItem onClick={handleCloseHere}>    
+            <Link to="/">Home</Link>
+          </MenuItem>
+          <MenuItem onClick={handleCloseHere}>           
+            <Link to="/ringtone">All Ringtones</Link>
+          </MenuItem>          
+        </Menu>
+        <Typography className={classes.title} variant="h6" noWrap>
+            Ringtone World
+            </Typography>
+              {/* search bar
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+            </div> */}
           <div className={classes.grow} />
             <div className={classes.sectionShoppingCart}>
               <IconButton aria-label="show shopping cart" color="inherit">
+                {/* the badgeContent need to be the length of ringtones in cart 
+                it may have merge conflict
+                becasue i rememberd i fixed this before with different branch--- shiyang */}
                 <Badge badgeContent={1} color="primary">
                   <ShoppingCartIcon />
                 </Badge>
@@ -175,16 +153,16 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
             {isLoggedIn ? (
               <div>
                 {/* The navbar will show these links after you log in */}
-                {/* <Link to="/home">Home</Link>
+                
                 <Link to="/ringtone">See All Our Ringtones!</Link> */}
                 <IconButton>
                   <p>Welcome {firstName}!</p>
                 </IconButton>
                 <IconButton
                   aria-label="log out"
-                  aria-controls={mobileMenuId}
+                  // aria-controls={mobileMenuId}
                   aria-haspopup="true"
-                  onClick={handleMobileMenuOpen}
+                  // onClick={handleMobileMenuOpen}
                   color="inherit"
                 >
                 <a href="#" onClick={handleClick}>
@@ -197,30 +175,29 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
                   {/* The navbar will show these links before you log in */}
                   <IconButton
                     aria-label="log out"
-                    aria-controls={mobileMenuId}
+                    // aria-controls={mobileMenuId}
                     aria-haspopup="true"
-                    onClick={handleMobileMenuOpen}
+                    // onClick={handleMobileMenuOpen}
                     color="inherit"
                   >
                     <Link to="/login">Login</Link>
                   </IconButton>
                   <IconButton
                     aria-label="log out"
-                    aria-controls={mobileMenuId}
+                    // aria-controls={mobileMenuId}
                     aria-haspopup="true"
-                    onClick={handleMobileMenuOpen}
+                    // onClick={handleMobileMenuOpen}
                     color="inherit"
                   >
                     <Link to="/signup">Sign Up</Link>
                   </IconButton>
                   <IconButton
                     aria-label="log out"
-                    aria-controls={mobileMenuId}
+                    // aria-controls={mobileMenuId}
                     aria-haspopup="true"
-                    onClick={handleMobileMenuOpen}
+                    // onClick={handleMobileMenuOpen}
                     color="inherit"
                   >
-                    <Link to="/ringtone">See All Our Ringtones!</Link>
                   </IconButton>
                 </div>
               )}
