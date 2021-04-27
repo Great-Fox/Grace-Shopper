@@ -43,13 +43,13 @@ export const storageThunk = (id) => {
         });
         storage = response.data.ringtones || [];
       } else {
-        let unfilteredStorage = Object.keys(localStorage).map((ringtone) => {
-          return {
-            id: ringtone,
-            name: localStorage[ringtone],
-          };
-        });
-        storage = unfilteredStorage.filter((value) => Number(value.id));
+        let unfilteredStorage = Object.keys(localStorage).map(ringtone => ringtone)
+        ;
+        console.log(unfilteredStorage);
+        let storageIds = unfilteredStorage.filter((value) => Number(value));
+        console.log(storageIds);
+        let response = await axios.post('/api/ringtone/where', storageIds);
+        storage = response.data || [];
       }
       dispatch(getStorage(storage));
     } catch (error) {
@@ -105,7 +105,7 @@ export const removeItemThunk = (ringtoneId, ringtoneName, userId) => {
   };
 };
 
-export const submitOrderThunk = (userId, paymentInfo, ringtones, totalPrice) => {
+export const submitOrderThunk = (userId, paymentInfo, ringtones, totalPrice, history) => {
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem(TOKEN);
@@ -132,6 +132,7 @@ export const submitOrderThunk = (userId, paymentInfo, ringtones, totalPrice) => 
         });
       }
       dispatch(submitOrder(response.data));
+      history.push('/thankyou');
     } catch (error) {
       console.log(error);
     }

@@ -1,6 +1,7 @@
 body {
   font-family: sans-serif;
   background: rgb(245, 226, 247);
+  text-align: center;
 }
 
 a {
@@ -10,4 +11,17 @@ a {
 nav a {
   display: inline-block;
   margin: 1em;
+}
+
+td, th {
+  width: auto;
+  padding: 5px;
+  height: auto;
+  text-align: left;
+}
+
+table {
+  margin: auto;
+  padding: 10px;
+  border: solid 1px rgb(136, 119, 119);
 }

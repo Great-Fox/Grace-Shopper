@@ -78,22 +78,44 @@ export class Checkout extends React.Component {
     this.setState(initialState);
   }
   render() {
-    //if logged in, auto fill all of the info
-    //if not logged in, you get a screen that says login or continue as a guest
-    //below is the guest experience
     let storage = this.state.finalRingtones;
     return (
       <div>
-        {storage.map((ringtone) => {
-          return (
-            <div key={ringtone.id}>
-              <p>{ringtone.name}</p>
-              <p>${(ringtone.price)/100}</p>
-            </div>
-          );
-        })}
-        <p>Tax: ${((this.state.totalPrice*.04)/100).toFixed(2)}</p>
-        <p>Total: ${((this.state.totalPrice*1.04)/100).toFixed(2)}</p>
+        <h1>Order Summary</h1>
+        <table>
+                  {/* <tr>
+                      <th>Ringtone</th>
+                      <th>Price</th>
+                  </tr> */}
+            {storage.map((ringtone) => {
+              return (
+                <tr key={Number(ringtone.id)}>
+                    <td>
+                    {ringtone.name}
+                    </td>
+                    <td>
+                    ${Number(ringtone.price)/100}
+                    </td>
+                </tr>
+              );
+            })}
+            <tr>
+              <th>
+                Tax: 
+              </th>
+              <th>
+              ${((this.state.totalPrice*.04)/100).toFixed(2)}
+              </th>
+              </tr>
+              <tr>
+              <th>
+                Total: 
+              </th>
+              <th>
+              ${((this.state.totalPrice*1.04)/100).toFixed(2)}
+              </th>
+              </tr>
+            </table>
         <form onSubmit={this.handleSubmit}>
           <div>
             <label>First Name</label>
@@ -149,10 +171,10 @@ const mapState = (state) => {
     ringtones: state.ringtones,
   };
 };
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, { history }) => {
   return {
     checkOut: (userId, paymentMethod, ringtones, totalPrice) =>
-      dispatch(submitOrderThunk(userId, paymentMethod, ringtones, totalPrice)),
+      dispatch(submitOrderThunk(userId, paymentMethod, ringtones, totalPrice, history)),
     getAllRingtones: () => dispatch(fetchAllRingtones()),
     getStorage: (id) => dispatch(storageThunk(id)),
     userData: () => dispatch(me()),

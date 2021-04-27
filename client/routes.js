@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Cart from './components/Cart'
 import AdminUsers from './components/AdminUsers';
 import Checkout from './components/Checkout';
+import ThankYou from './components/ThankYou';
 
 /**
  * COMPONENT
@@ -37,6 +38,7 @@ class Routes extends Component {
           <Route exact path="/cart" component={Cart} />
           <Route exact path="/checkout" component={Checkout} />
           <Route exact path="/admin/users" component={AdminUsers} />
+          <Route exact path="/thankyou" component={ThankYou} />
         </Switch>
       </div>
     );
