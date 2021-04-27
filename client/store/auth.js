@@ -52,6 +52,7 @@ export const authenticate = (
         }
       });
     }
+    localStorage.clear();
     window.localStorage.setItem(TOKEN, res.data.token);
     const token = window.localStorage.getItem(TOKEN);
     let ringtones = await axios.post(`/api/order/${res.data.userId}`, storage, {
@@ -59,10 +60,7 @@ export const authenticate = (
         authorization: token,
       },
     });
-    for (let i = 0; i < ringtones.length; i++) {
-      console.log(ringtones[i].id);
-      window.localStorage.removeItem(`${ringtones[i].id}`);
-    }
+
     history.push('/ringtone');
     dispatch(me());
     dispatch(addToStorage(ringtones));
