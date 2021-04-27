@@ -43,8 +43,23 @@ export const authenticate = (
       firstName,
       lastName,
     });
+    let storage;
+
+    if (localStorage) {
+      storage = Object.keys(localStorage).filter((key) => {
+        if (Number(key)) {
+          return Number(key);
+        }
+      });
+    }
     window.localStorage.setItem(TOKEN, res.data.token);
+    let ringtones = await axios.post(`/api/order/${res.data.userId}`, storage, {
+      headers: {
+        authorization: token,
+      },
+    });
     dispatch(me());
+    dispatch(addToStorage(ringtones));
     history.push('/ringtone');
   } catch (authError) {
     return dispatch(setAuth({ error: authError }));

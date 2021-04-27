@@ -28,7 +28,7 @@ export const storageThunk = (id) => {
 
       //check if they are logged in
       if (id !== undefined) {
-        let response = await axios.get(`./api/order/${id}`, {
+        let response = await axios.get(`/api/order/${id}`, {
           headers: { authorization: token },
         });
         storage = response.data.ringtones;
@@ -57,7 +57,7 @@ export const addItemThunk = (ringtoneId, ringtoneName, userId) => {
         let response = await axios.post(
           `/api/order/${userId}`,
           {
-            id: ringtoneId,
+            id: [ringtoneId],
           },
           {
             headers: { authorization: token },
@@ -103,7 +103,7 @@ export const removeItemThunk = (ringtoneId, ringtoneName, userId) => {
 export default function storageReducer(state = [], action) {
   switch (action.type) {
     case ADD_TO_STORAGE:
-      return [...state, action.ringtone];
+      return [...state, ...action.ringtone];
     case DELETE_FROM_STORAGE:
       return state.filter((ringtone) => ringtone.id !== action.ringtone.id);
     case GET_STORAGE:

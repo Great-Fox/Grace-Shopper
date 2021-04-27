@@ -4,6 +4,8 @@ const {
 } = require('../db/index');
 const User = require('../db/models/User');
 const { verifyUser } = require('./gatekeepingMiddleware');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 // //GET api/order
 //get cart
@@ -35,14 +37,21 @@ router.post('/:userId', verifyUser, async (req, res, next) => {
         completed: false,
       },
     });
-    let ringtone = await Ringtone.findByPk(req.body.id);
+    let ringtones = await Ringtone.findAll({
+      where: {
+        id: {
+          [Op.in]: req.body.id,
+        },
+      },
+    });
+    console.log(ringtones, 'RINGTONES IN POST ROUTE');
     if (!currentOrder) {
       currentOrder = await Order.create();
       let user = await User.findByPk(req.params.userId);
       user.addOrders(currentOrder);
     }
-    await currentOrder.addRingtones(ringtone);
-    res.status(201).send(ringtone);
+    await currentOrder.addRingtones(ringtones);
+    res.status(201).send(ringtones);
   } catch (error) {
     next(error);
   }
