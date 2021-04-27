@@ -40,11 +40,10 @@ router.post('/:userId', verifyUser, async (req, res, next) => {
     let ringtones = await Ringtone.findAll({
       where: {
         id: {
-          [Op.in]: req.body.id,
+          [Op.in]: req.body,
         },
       },
     });
-    console.log(ringtones, 'RINGTONES IN POST ROUTE');
     if (!currentOrder) {
       currentOrder = await Order.create();
       let user = await User.findByPk(req.params.userId);

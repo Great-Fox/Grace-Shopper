@@ -40,7 +40,9 @@ export const storageThunk = (id) => {
           };
         });
       }
-      dispatch(getStorage(storage));
+      if (storage) {
+        dispatch(getStorage(storage));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -54,15 +56,9 @@ export const addItemThunk = (ringtoneId, ringtoneName, userId) => {
       const token = window.localStorage.getItem(TOKEN);
 
       if (userId !== undefined) {
-        let response = await axios.post(
-          `/api/order/${userId}`,
-          {
-            id: [ringtoneId],
-          },
-          {
-            headers: { authorization: token },
-          }
-        );
+        let response = await axios.post(`/api/order/${userId}`, [ringtoneId], {
+          headers: { authorization: token },
+        });
         storage = response.data;
       } else {
         localStorage.setItem(`${ringtoneId}`, `${ringtoneName}`);
