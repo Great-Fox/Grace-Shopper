@@ -144,7 +144,7 @@ export class SingleRingtone extends React.Component {
                       allow="encrypted-media"></iframe>
                     <h4>{this.props.ringtone.artist}</h4>
                     <h6>{this.props.ringtone.genre}</h6>
-                    <h6>Price ${this.props.ringtone.price}</h6>
+                    <h6>Price ${(this.props.ringtone.price)/100}</h6>
                   </div>
                   <br />
                   <Button variant="contained" color="primary">

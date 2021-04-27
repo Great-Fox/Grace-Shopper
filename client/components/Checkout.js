@@ -11,6 +11,7 @@ const initialState = {
   creditCard: '',
   paymentMethod: 'Credit Card',
   finalRingtones: [],
+  totalPrice: 0
 };
 
 export class Checkout extends React.Component {
@@ -30,6 +31,9 @@ export class Checkout extends React.Component {
       firstName: this.props.firstName || '',
       lastName: this.props.lastName || '',
       email: this.props.email || '',
+      totalPrice: this.state.finalRingtones.reduce(function (accumulator, currentValue) {
+        return accumulator + Number(currentValue.price)
+      }, 0)
     });
   }
 
@@ -59,10 +63,13 @@ export class Checkout extends React.Component {
 
   async handleSubmit(evt) {
     evt.preventDefault();
+    const price = Number(this.state.totalPrice);
+    console.log(price);
     await this.props.checkOut(
       this.props.userId,
       this.state.paymentMethod,
-      this.state.finalRingtones
+      this.state.finalRingtones, 
+      price
     );
     console.log('submitted!');
     if (this.props.isLoggedIn === false) {
@@ -75,19 +82,18 @@ export class Checkout extends React.Component {
     //if not logged in, you get a screen that says login or continue as a guest
     //below is the guest experience
     let storage = this.state.finalRingtones;
-    let counter = 0;
     return (
       <div>
         {storage.map((ringtone) => {
-          counter += ringtone.price;
           return (
             <div key={ringtone.id}>
               <p>{ringtone.name}</p>
-              <p>${ringtone.price}</p>
+              <p>${(ringtone.price)/100}</p>
             </div>
           );
         })}
-        <p>Total: ${counter}</p>
+        <p>Tax: ${((this.state.totalPrice*.04)/100).toFixed(2)}</p>
+        <p>Total: ${((this.state.totalPrice*1.04)/100).toFixed(2)}</p>
         <form onSubmit={this.handleSubmit}>
           <div>
             <label>First Name</label>
@@ -145,8 +151,8 @@ const mapState = (state) => {
 };
 const mapDispatch = (dispatch) => {
   return {
-    checkOut: (userId, paymentMethod, ringtones) =>
-      dispatch(submitOrderThunk(userId, paymentMethod, ringtones)),
+    checkOut: (userId, paymentMethod, ringtones, totalPrice) =>
+      dispatch(submitOrderThunk(userId, paymentMethod, ringtones, totalPrice)),
     getAllRingtones: () => dispatch(fetchAllRingtones()),
     getStorage: (id) => dispatch(storageThunk(id)),
     userData: () => dispatch(me()),

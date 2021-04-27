@@ -93,7 +93,7 @@ export class AllRingtones extends React.Component {
                           allow="encrypted-media"></iframe>
                         <h4>{ringtone.artist}</h4>
                         <h6>{ringtone.genre}</h6>
-                        <h6>Price ${ringtone.price}</h6>
+                        <h6>Price ${(ringtone.price)/100}</h6>
                         <div>
                           <Button
                             variant="contained"

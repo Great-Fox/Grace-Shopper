@@ -105,15 +105,17 @@ export const removeItemThunk = (ringtoneId, ringtoneName, userId) => {
   };
 };
 
-export const submitOrderThunk = (userId, paymentInfo, ringtones) => {
+export const submitOrderThunk = (userId, paymentInfo, ringtones, totalPrice) => {
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem(TOKEN);
-
+      console.log(userId, paymentInfo, ringtones, totalPrice);
       let updates = {
         completed: true,
         paymentMethod: paymentInfo,
+        totalPrice: totalPrice
       };
+      console.log(updates, 'updates');
       let id = userId;
       let response;
       if (id === undefined) {
