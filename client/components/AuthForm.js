@@ -33,7 +33,7 @@ const AuthForm = (props) => {
                     <TextField
                       fullWidth
                       label="First Name"
-                      name="FirstName"
+                      name="firstName"
                       size="small"
                       variant="standard"
                       required

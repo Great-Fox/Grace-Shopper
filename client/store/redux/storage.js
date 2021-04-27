@@ -39,12 +39,14 @@ export const storageThunk = (id) => {
             let response = await axios.get(`./api/order/${id}`);
             storage = response.data.ringtones || [];
           } else {
-            storage = Object.keys(localStorage).map(ringtone => { 
+            let unfilteredStorage = Object.keys(localStorage).map(ringtone => { 
               return {
                   id: ringtone, 
                   name: localStorage[ringtone]
               }
             })
+            storage = unfilteredStorage.filter(value => Number(value.id));
+            console.log(storage);
           }
           dispatch(getStorage(storage));
         } catch (error) {
