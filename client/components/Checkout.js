@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { me } from '../store/auth';
 import { submitOrderThunk, storageThunk } from '../store/redux/storage';
 import { fetchAllRingtones } from '../store/redux/allRingtones';
-import { me } from '../store/auth';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import { Select } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+
+
 
 const initialState = {
   firstName: '',
@@ -116,45 +125,98 @@ export class Checkout extends React.Component {
               </th>
               </tr>
             </table>
+      <Container maxWidth="xs">
         <form onSubmit={this.handleSubmit}>
-          <div>
-            <label>First Name</label>
-            <input
-              name="firstName"
-              onChange={this.handleChange}
-              value={this.state.firstName}
-              required
-            />
-            <label>Last Name</label>
-            <input
-              name="lastName"
-              onChange={this.handleChange}
-              value={this.state.lastName}
-            />
-            <label>Email</label>
-            <input
+        <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                      fullWidth
+                      label="First Name"
+                      name="firstName"
+                      size="small"
+                      variant="standard"
+                      required
+                      onChange={this.handleChange}
+                      value={this.state.firstName}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                <TextField
+                      fullWidth
+                      label="Last Name"
+                      name="lastName"
+                      size="small"
+                      variant="standard"
+                      required
+                      onChange={this.handleChange}
+                      value={this.state.lastName}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                <TextField
+                      fullWidth
+                      label="Email"
+                      name="email"
+                      size="small"
+                      variant="standard"
+                      required
+                      onChange={this.handleChange}
+                      value={this.state.email}
+                    />
+                </Grid>
+            {/* <input
               name="email"
               onChange={this.handleChange}
               value={this.state.email}
-            />
-            <select
+            /> */}
+            {/* <select
               name="paymentMethod"
               onChange={this.handleChange}
               value={this.state.paymentMethod}>
               <option value="Credit Card">Credit Card</option>
               <option value="PayPal">PayPal</option>
               <option value="Venmo">Venmo</option>
-            </select>
-
-            <label>Card Number</label>
-            <input
-              name="creditCard"
+            </select> */}
+            <Grid item xs={12}>
+            <Select labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={this.state.paymentMethod}
               onChange={this.handleChange}
-              value={this.state.creditCard}
-            />
-          </div>
-          <button type="submit">Submit</button>
+              fullWidth
+              required
+              >
+                <MenuItem value={"Credit Card"}>Credit Card</MenuItem>
+                <MenuItem value={"PayPal"}>PayPal</MenuItem>
+                <MenuItem value={"Venmo"}>Venmo</MenuItem>
+            </Select>
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                      fullWidth
+                      label="Card Number"
+                      name="creditCard"
+                      size="small"
+                      variant="standard"
+                      onChange={this.handleChange}
+                      value={this.state.creditCard}
+                    />
+                </Grid>
+                </Grid>
+                <Grid item xs={12} style={{ marginTop: 8 }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  type="submit">
+                  Place Order
+                </Button>
+            </Grid>
+          </Grid>
+          </Grid>
         </form>
+        </Container>
       </div>
     );
   }

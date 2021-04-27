@@ -21,7 +21,25 @@ td, th {
 }
 
 table {
-  margin: auto;
-  padding: 10px;
-  border: solid 1px rgb(136, 119, 119);
+  margin: auto auto 30px auto;
+  padding: 20px;
+}
+
+.cheating {
+padding: 50px;
+}
+
+#checkout {
+  width: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
+}
+
+#checkout > {
+  flex-basis: 100%
+}
+
+.title {
+  margin: 100px auto 50px auto;
 }

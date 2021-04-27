@@ -5,6 +5,8 @@ import { storageThunk, removeItemThunk } from '../store/redux/storage';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
 //import useStyles from './styleSheet';
   
 
@@ -27,12 +29,18 @@ export class Cart extends React.Component {
     let ringtoneList = this.props.storage || [];
     return (
       <div>
-        <div>
+        <div className="cheating">
         {!ringtoneList || ringtoneList.length === 0 ? (
            <Grid item md style={{ margin: 10 }}>
-            <p>Your cart is empty! Click below to see our ringtones.</p>
+            <Typography className="cheating" variant="h5" >
+            Your cart is empty! Click below to see our ringtones.
+          </Typography>
             <Link to={'/ringtone'}>
-              <button>View ringtones</button>
+            <Button
+                style={{marginLeft: 5, marginTop: 5}}      
+                color="secondary"
+                variant="contained"
+               >View Ringtones</Button>
             </Link>
           </Grid>
         ) : (
