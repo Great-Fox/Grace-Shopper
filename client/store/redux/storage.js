@@ -37,7 +37,7 @@ export const storageThunk = (id) => {
     try {
       let storage;
       const token = window.localStorage.getItem(TOKEN);
-
+      console.log('id in storage thunk', id);
       if (id !== undefined) {
         let response = await axios.get(`/api/order/${id}`, {
           headers: { authorization: token },
@@ -52,9 +52,7 @@ export const storageThunk = (id) => {
         });
         storage = unfilteredStorage.filter((value) => Number(value.id));
       }
-      if (storage) {
-        dispatch(getStorage(storage));
-      }
+      dispatch(getStorage(storage));
     } catch (error) {
       console.log(error);
     }
@@ -65,8 +63,12 @@ export const addItemThunk = (ringtone, userId) => {
   return async (dispatch) => {
     try {
       let storage;
+      const token = window.localStorage.getItem(TOKEN);
+
       if (userId !== undefined) {
-        let response = await axios.post(`/api/order/${userId}`, ringtone);
+        let response = await axios.post(`/api/order/${userId}`, [ringtone.id], {
+          headers: { authorization: token },
+        });
         storage = response.data;
       } else {
         localStorage.setItem(`${ringtone.id}`, `${ringtone.name}`);
@@ -138,11 +140,11 @@ export const submitOrderThunk = (userId, paymentInfo, ringtones) => {
 export default function storageReducer(state = [], action) {
   switch (action.type) {
     case ADD_TO_STORAGE:
-      return [...state, ...action.ringtone];
+      return [...state, action.ringtone];
     case DELETE_FROM_STORAGE:
       return state.filter((ringtone) => ringtone.id !== action.ringtone.id);
     case GET_STORAGE:
-      return action.storage;
+      return [...action.storage];
     case SUBMIT_ORDER:
       return [];
     case LOAD_GUEST_RINGTONES:

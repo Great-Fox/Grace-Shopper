@@ -53,6 +53,7 @@ export const authenticate = (
       });
     }
     localStorage.clear();
+    console.log(res.data);
     window.localStorage.setItem(TOKEN, res.data.token);
     const token = window.localStorage.getItem(TOKEN);
     let ringtones = await axios.post(`/api/order/${res.data.userId}`, storage, {

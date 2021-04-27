@@ -13,7 +13,7 @@ export class CartIcon extends React.Component {
 
   async componentDidUpdate(prevProps) {
     // await this.props.getStorage(this.props.userId)
-    if (this.props.userId !== prevProps.userId) {
+    if (this.props.storage.length !== prevProps.storage.length) {
       await this.props.getStorage(this.props.userId);
     }
   }

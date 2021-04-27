@@ -6,7 +6,13 @@ module.exports = router;
 
 router.post('/login', async (req, res, next) => {
   try {
-    res.send({ token: await User.authenticate(req.body) });
+    //THIS IS THE PROBLEM!! NEED TO SEND USERID
+    const user = await User.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+    res.send({ token: await User.authenticate(req.body), userId: user.id });
   } catch (err) {
     next(err);
   }

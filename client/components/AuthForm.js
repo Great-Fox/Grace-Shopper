@@ -130,7 +130,7 @@ const mapDispatch = (dispatch, { history }) => {
       const formName = evt.target.name;
       const email = evt.target.email.value;
       const password = evt.target.password.value;
-      if (evt.target.firstName.value) {
+      if (evt.target.firstName) {
         const firstName = evt.target.firstName.value;
         const lastName = evt.target.lastName.value;
         dispatch(
