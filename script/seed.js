@@ -156,16 +156,32 @@ async function seed() {
     }),
   ]);
   const orders = await Promise.all([
-    Order.create({ paymentMethod: 'Credit Card', completed: false }),
-    Order.create({ paymentMethod: 'Venmo', completed: true }),
-    Order.create({ paymentMethod: 'PayPal', completed: false }),
-    Order.create({ paymentMethod: 'Venmo', completed: false }),
-    Order.create({ paymentMethod: 'PayPal', completed: true }),
-    Order.create({ paymentMethod: 'Credit Card', completed: true }),
-    Order.create({ paymentMethod: 'PayPal', completed: false }),
-    Order.create({ paymentMethod: 'Venmo', completed: false }),
-    Order.create({ paymentMethod: 'Venmo', completed: true }),
-    Order.create({ paymentMethod: 'PayPal', completed: true }),
+    Order.create({
+      paymentMethod: 'Credit Card',
+      completed: false,
+      totalPrice: 199,
+    }),
+    Order.create({ paymentMethod: 'Venmo', completed: true, totalPrice: 199 }),
+    Order.create({
+      paymentMethod: 'PayPal',
+      completed: false,
+      totalPrice: 597,
+    }),
+    Order.create({ paymentMethod: 'Venmo', completed: false, totalPrice: 199 }),
+    Order.create({ paymentMethod: 'PayPal', completed: true, totalPrice: 199 }),
+    Order.create({
+      paymentMethod: 'Credit Card',
+      completed: true,
+      totalPrice: 199,
+    }),
+    Order.create({
+      paymentMethod: 'PayPal',
+      completed: false,
+      totalPrice: 199,
+    }),
+    Order.create({ paymentMethod: 'Venmo', completed: false, totalPrice: 199 }),
+    Order.create({ paymentMethod: 'Venmo', completed: true, totalPrice: 398 }),
+    Order.create({ paymentMethod: 'PayPal', completed: true, totalPrice: 398 }),
   ]);
 
   const [
