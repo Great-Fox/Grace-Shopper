@@ -1,4 +1,4 @@
-import React,{ useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
@@ -12,8 +12,8 @@ import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
-import {storageThunk} from '../store/redux/storage'
-import CartIcon from './CartIcon'
+import { storageThunk } from '../store/redux/storage';
+import CartIcon from './CartIcon';
 
 // search bar
 // import SearchIcon from '@material-ui/icons/Search';
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ handleClick, isLoggedIn, firstName, storage, length}) => {
+const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -90,50 +90,41 @@ const Navbar = ({ handleClick, isLoggedIn, firstName, storage, length}) => {
     setAnchorEl(null);
   };
 
-  // async componentDidUpdate(prevProps){
-  //   // await this.props.getStorage(this.props.userId)
-  //   if (this.props.userId !== prevProps.userId) {
-  //     await this.props.getStorage(this.props.userId);
-  //     console.log(this.props.userId)
-  //   }
-  // }
-    // getStorage(userId)
   return (
     <div className={classes.grow}>
       <AppBar position="static">
-      <Toolbar>
-        <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleClickHere}
-            >
-            <MenuIcon />
-        </IconButton>
-        <Menu
-          id="long-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={open}
-          onClose={handleCloseHere}
-          PaperProps={{
-            style: {
-              width: '20ch',
-            },
-          }}
+        <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="open drawer"
+            // onClick={handleClickHere}
           >
-          <MenuItem onClick={handleCloseHere}>    
-            <Link to="/">Home</Link>
-          </MenuItem>
-          <MenuItem onClick={handleCloseHere}>           
-            <Link to="/ringtone">All Ringtones</Link>
-          </MenuItem>          
-        </Menu>
-        <Typography className={classes.title} variant="h6" noWrap>
+            <MenuIcon onClick={handleClickHere} />
+          </IconButton>
+          <Menu
+            id="long-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleCloseHere}
+            PaperProps={{
+              style: {
+                width: '20ch',
+              },
+            }}>
+            <MenuItem onClick={handleCloseHere}>
+              <Link to="/">Home</Link>
+            </MenuItem>
+            <MenuItem onClick={handleCloseHere}>
+              <Link to="/ringtone">All Ringtones</Link>
+            </MenuItem>
+          </Menu>
+          <Typography className={classes.title} variant="h6" noWrap>
             Ringtone World
-            </Typography>
-              {/* search bar
+          </Typography>
+          {/* search bar
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
                   <SearchIcon />
@@ -148,56 +139,51 @@ const Navbar = ({ handleClick, isLoggedIn, firstName, storage, length}) => {
                 />
             </div> */}
           <div className={classes.grow} />
-            <div className={classes.sectionShoppingCart} >
-              <IconButton aria-label="show shopping cart" color="inherit" >
-                <CartIcon />
-                {/* <Link to="/cart">
+          <div className={classes.sectionShoppingCart}>
+            <IconButton aria-label="show shopping cart" color="inherit">
+              <CartIcon />
+              {/* <Link to="/cart">
                 <Badge badgeContent={length} color="secondary">
                   <ShoppingCartIcon />
                 </Badge>
                 </Link> */}
+            </IconButton>
+          </div>
+          {isLoggedIn ? (
+            <div>
+              <IconButton>
+                <p>Welcome {firstName}!</p>
+              </IconButton>
+              <IconButton
+                aria-label="log out"
+                aria-haspopup="true"
+                color="inherit">
+                <a href="#" onClick={handleClick}>
+                  Logout
+                </a>
               </IconButton>
             </div>
-            {isLoggedIn ? (
-              <div>
-                <IconButton>
-                  <p>Welcome {firstName}!</p>
-                </IconButton>
-                <IconButton
-                  aria-label="log out"
-                  aria-haspopup="true"
-                  color="inherit"
-                >
-                <a href="#" onClick={handleClick}>
-                      Logout
-                    </a>
-                </IconButton>
-              </div>
-              ) : (
-                <div>
-                  <IconButton
-                    aria-label="log in"
-                    aria-haspopup="true"
-                    color="inherit"
-                  >
-                    <Link to="/login">Login</Link>
-                  </IconButton>
-                  <IconButton
-                    aria-label="sign up"
-                    aria-haspopup="true"
-                    color="inherit"
-                  >
-                    <Link to="/signup">Sign Up</Link>
-                  </IconButton>
-                </div>
-              )
-            }
-    </Toolbar>
-    </AppBar>
-  </div>
-  )
+          ) : (
+            <div>
+              <IconButton
+                aria-label="log in"
+                aria-haspopup="true"
+                color="inherit">
+                <Link to="/login">Login</Link>
+              </IconButton>
+              <IconButton
+                aria-label="sign up"
+                aria-haspopup="true"
+                color="inherit">
+                <Link to="/signup">Sign Up</Link>
+              </IconButton>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
 };
-
 
 /**
  * CONTAINER
@@ -206,9 +192,7 @@ const mapState = (state) => {
   return {
     isLoggedIn: !!state.auth.id,
     firstName: state.auth.firstName,
-    storage: state.storage,
     userId: state.auth.id,
-    length: state.storage.length
   };
 };
 
@@ -217,7 +201,7 @@ const mapDispatch = (dispatch) => {
     handleClick() {
       dispatch(logout());
     },
-    getStorage: (id) => dispatch(storageThunk(id))
+    getStorage: (id) => dispatch(storageThunk(id)),
   };
 };
 

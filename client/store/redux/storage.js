@@ -3,6 +3,7 @@ import axios from 'axios';
 export const ADD_TO_STORAGE = 'ADD_TO_STORAGE';
 export const DELETE_FROM_STORAGE = 'DELETE_FROM_STORAGE';
 export const GET_STORAGE = 'GET_STORAGE';
+const TOKEN = 'token';
 export const SUBMIT_ORDER = 'SUBMIT_ORDER';
 export const LOAD_GUEST_RINGTONES = 'LOAD_GUEST_RINGTONES';
 
@@ -23,95 +24,117 @@ export const getStorage = (storage) => ({
 
 export const submitOrder = (order) => ({
   type: SUBMIT_ORDER,
-  order
-})
+  order,
+});
 
 export const loadGuestRingtones = (ringtones) => ({
   type: LOAD_GUEST_RINGTONES,
-  ringtones
-})
+  ringtones,
+});
 
 export const storageThunk = (id) => {
-    return async (dispatch) => {
-        try {
-          let storage;
-          if (id !== undefined) {
-            let response = await axios.get(`./api/order/${id}`);
-            storage = response.data.ringtones || [];
-          } else {
-            let unfilteredStorage = Object.keys(localStorage).map(ringtone => { 
-              return {
-                  id: ringtone, 
-                  name: localStorage[ringtone]
-              }
-            })
-            storage = unfilteredStorage.filter(value => Number(value.id));
-            console.log(storage);
-          }
-          dispatch(getStorage(storage));
-        } catch (error) {
-          console.log(error);
-        }
-    };
-}
+  return async (dispatch) => {
+    try {
+      let storage;
+      const token = window.localStorage.getItem(TOKEN);
+      if (id !== undefined) {
+        let response = await axios.get(`/api/order/${id}`, {
+          headers: { authorization: token },
+        });
+        storage = response.data.ringtones || [];
+      } else {
+        let unfilteredStorage = Object.keys(localStorage).map((ringtone) => {
+          return {
+            id: ringtone,
+            name: localStorage[ringtone],
+          };
+        });
+        storage = unfilteredStorage.filter((value) => Number(value.id));
+      }
+      dispatch(getStorage(storage));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 export const addItemThunk = (ringtone, userId) => {
   return async (dispatch) => {
     try {
       let storage;
+      const token = window.localStorage.getItem(TOKEN);
+
       if (userId !== undefined) {
-        let response = await axios.post(`/api/order/${userId}`, ringtone);
+        let response = await axios.post(`/api/order/${userId}`, [ringtone.id], {
+          headers: { authorization: token },
+        });
         storage = response.data;
       } else {
         localStorage.setItem(`${ringtone.id}`, `${ringtone.name}`);
-        storage = {id: ringtone.id, name: ringtone.name}
+        storage = { id: ringtone.id, name: ringtone.name };
       }
       dispatch(addToStorage(storage));
     } catch (error) {
       console.log(error);
     }
+  };
 };
-}
 
 export const removeItemThunk = (ringtoneId, ringtoneName, userId) => {
   return async (dispatch) => {
-      try {
-        let storage;
-        if (userId !== undefined) {
-          let response = await axios.delete(`/api/order/${userId}/${ringtoneId}`);
-          storage = response.data;
-        } else {
-          localStorage.removeItem(`${ringtoneId}`, `${ringtoneName}`)
-          storage = {id: ringtoneId, name: ringtoneName}
-        }
-        dispatch(deleteFromStorage(storage));
-      } catch (error) {
-        console.log(error);
+    try {
+      let storage;
+      const token = window.localStorage.getItem(TOKEN);
+
+      if (userId !== undefined) {
+        let response = await axios.delete(
+          `/api/order/${userId}/${ringtoneId}`,
+          {
+            headers: { authorization: token },
+          }
+        );
+        storage = response.data;
+      } else {
+        localStorage.removeItem(`${ringtoneId}`, `${ringtoneName}`);
+        storage = { id: ringtoneId, name: ringtoneName };
       }
+      dispatch(deleteFromStorage(storage));
+    } catch (error) {
+      console.log(error);
+    }
   };
-}
+};
 
 export const submitOrderThunk = (userId, paymentInfo, ringtones) => {
   return async (dispatch) => {
-      try {
-        let updates = {
-          completed: true, 
-          paymentMethod: paymentInfo
-        }
-        let id = userId;
-        let response;
-        if (id === undefined) {
-          response = await axios.post(`/api/order/guest`, {ringtones, updates});
-        } else {
-          response = await axios.put(`/api/order/${userId}`, updates);
-        }
-          dispatch(submitOrder(response.data));
-        
-      } catch (error) {
-        console.log(error);
+    try {
+      const token = window.localStorage.getItem(TOKEN);
+
+      let updates = {
+        completed: true,
+        paymentMethod: paymentInfo,
+      };
+      let id = userId;
+      let response;
+      if (id === undefined) {
+        response = await axios.post(
+          `/api/order/guest`,
+          { ringtones, updates },
+          {
+            headers: { authorization: token },
+          }
+        );
+      } else {
+        response = await axios.put(`/api/order/${userId}`, updates, {
+          headers: { authorization: token },
+        });
       }
+      dispatch(submitOrder(response.data));
+    } catch (error) {
+      console.log(error);
+    }
   };
-}
+};
 
 export default function storageReducer(state = [], action) {
   switch (action.type) {
@@ -120,7 +143,7 @@ export default function storageReducer(state = [], action) {
     case DELETE_FROM_STORAGE:
       return state.filter((ringtone) => ringtone.id !== action.ringtone.id);
     case GET_STORAGE:
-      return action.storage;
+      return [...action.storage];
     case SUBMIT_ORDER:
       return [];
     case LOAD_GUEST_RINGTONES:

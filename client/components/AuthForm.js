@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { authenticate } from '../store';
 import Button from '@material-ui/core/Button';
@@ -82,13 +82,12 @@ const AuthForm = (props) => {
                   /> */}
                 </Grid>
               </Grid>
-              <Grid item xs={12} style={{marginTop: 8}}>
+              <Grid item xs={12} style={{ marginTop: 8 }}>
                 <Button
                   fullWidth
                   variant="contained"
                   color="primary"
-                  type="submit"
-                  >
+                  type="submit">
                   {displayName}
                 </Button>
               </Grid>
