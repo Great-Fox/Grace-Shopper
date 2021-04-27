@@ -37,7 +37,6 @@ export const storageThunk = (id) => {
     try {
       let storage;
       const token = window.localStorage.getItem(TOKEN);
-      console.log('id in storage thunk', id);
       if (id !== undefined) {
         let response = await axios.get(`/api/order/${id}`, {
           headers: { authorization: token },

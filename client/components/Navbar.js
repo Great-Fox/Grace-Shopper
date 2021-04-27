@@ -90,14 +90,6 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
     setAnchorEl(null);
   };
 
-  // async componentDidUpdate(prevProps){
-  //   // await this.props.getStorage(this.props.userId)
-  //   if (this.props.userId !== prevProps.userId) {
-  //     await this.props.getStorage(this.props.userId);
-  //     console.log(this.props.userId)
-  //   }
-  // }
-  // getStorage(userId)
   return (
     <div className={classes.grow}>
       <AppBar position="static">
