@@ -4,10 +4,27 @@ const {
 } = require('../db/index');
 const User = require('../db/models/User');
 const { verifyUser } = require('./gatekeepingMiddleware');
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
+const { Op } = require('sequelize');
 
-// //GET api/order
+//guest checkout
+router.post('/guest', async (req, res, next) => {
+  try {
+    let ringtoneIds = req.body.ringtones.map((ringtone) => ringtone.id);
+    let ringtone = await Ringtone.findAll({
+      where: {
+        id: {
+          [Op.in]: ringtoneIds,
+        },
+      },
+    });
+    currentOrder = await Order.create(req.body.updates);
+    await currentOrder.addRingtones(ringtone);
+    res.status(201).send(currentOrder);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //get cart
 router.get('/:userId', verifyUser, async (req, res, next) => {
   try {
@@ -64,9 +81,7 @@ router.delete('/:userId/:ringtoneId', verifyUser, async (req, res, next) => {
         completed: false,
       },
     });
-    console.log(currentOrder, 'current order');
     let ringtone = await Ringtone.findByPk(req.params.ringtoneId);
-    console.log(ringtone, 'ringtone');
     await currentOrder.removeRingtone(ringtone);
     res.send(ringtone);
   } catch (error) {
@@ -74,7 +89,7 @@ router.delete('/:userId/:ringtoneId', verifyUser, async (req, res, next) => {
   }
 });
 
-//place an order
+//place an order for logged in users
 router.put('/:userId', async (req, res, next) => {
   try {
     let currentOrder = await Order.findOne({
