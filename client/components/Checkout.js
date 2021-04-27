@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { submitOrderThunk } from '../store/redux/storage';
+import { submitOrderThunk, storageThunk } from '../store/redux/storage';
+import { fetchAllRingtones } from '../store/redux/allRingtones';
+import { me } from '../store/auth';
 
 const initialState = {
     firstName: '',
     lastName: '',
     email: '',
     creditCard: '',
-    paymentMethod: "Credit Card"
+    paymentMethod: "Credit Card", 
+    finalRingtones: []
   };
 
 export class Checkout extends React.Component {
@@ -16,41 +19,71 @@ export class Checkout extends React.Component {
     this.state = initialState
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.addRingtones = this.addRingtones.bind(this);
   }
-  
-  componentDidUpdate(prevProps){
-      if (prevProps.userId !==this.props.userId) {
-        this.setState ({
-            firstName: this.props.firstName || '',
-            lastName: this.props.lastName || '',
-            email: this.props.email || '',
-        })
-      }
+  async componentDidMount(){
+    await this.props.userData();
+    await this.props.getAllRingtones();
+    console.log(this.props, 'before');
+    await this.props.getStorage(this.props.userId);
+    console.log(this.props, 'after');
+    this.addRingtones();
+    this.setState ({
+        firstName: this.props.firstName || '',
+        lastName: this.props.lastName || '',
+        email: this.props.email || '',
+    });
+
   }
+
+//   async componentDidUpdate(prevProps){
+//       if (prevProps.userId !==this.props.userId) {
+        
+//       }
+//   }
 
   handleChange(evt) {
     this.setState({
       [evt.target.name]: evt.target.value,
     });
   }
-  handleSubmit(evt) {
+
+  addRingtones() {
+    let storage;
+    if (this.props.isLoggedIn) {
+        storage = this.props.storage || [];
+    } else {
+         let ringtoneIds = this.props.storage.map(ringtone => parseInt(ringtone.id, 10));
+         storage = this.props.ringtones.filter(ringtone => ringtoneIds.includes(ringtone.id)) || [];
+       }
+    this.setState({
+        finalRingtones: storage
+    })
+  }
+
+  async handleSubmit(evt) {
     evt.preventDefault();
-    this.props.checkOut(this.props.userId, this.state.paymentMethod);
+    console.log('hi');
+    console.log(this.state.finalRingtones);
+    await this.props.checkOut(this.props.userId, this.state.paymentMethod, this.state.finalRingtones);
     console.log('submitted!');
+    if (this.props.isLoggedIn === false) {
+        localStorage.clear();
+    }
     this.setState(initialState);
   }
   render() {
       //if logged in, auto fill all of the info
       //if not logged in, you get a screen that says login or continue as a guest
       //below is the guest experience
-      let storage = this.props.storage || [];
+      let storage = this.state.finalRingtones;
       let counter = 0;
     return (
     <div>
-        {storage.map(ringtone => {
+       {storage.map(ringtone => {
             counter += ringtone.price;
             return (
-            <div>
+            <div key={ringtone.id}>
                 <p>{ringtone.name}</p>
                 <p>${ringtone.price}</p>
             </div>
@@ -105,14 +138,18 @@ const mapState = (state) => {
       lastName: state.auth.lastName,
       email: state.auth.email,
       userId: state.auth.id,
-      storage: state.storage
-
+      storage: state.storage,
+      isLoggedIn: !!state.auth.id,
+      ringtones: state.ringtones
   }
 };
 const mapDispatch = (dispatch) => {
   return {
-    checkOut: (userId, paymentMethod) => dispatch(submitOrderThunk(userId, paymentMethod)),
-  };
+    checkOut: (userId, paymentMethod, ringtones) => dispatch(submitOrderThunk(userId, paymentMethod, ringtones)),
+    getAllRingtones: () => dispatch(fetchAllRingtones()),
+    getStorage: (id) => dispatch(storageThunk(id)),
+    userData: () => dispatch(me())
 };
+}
 
 export default connect(mapState, mapDispatch)(Checkout);

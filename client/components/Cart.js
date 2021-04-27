@@ -22,27 +22,38 @@ export class Cart extends React.Component {
 
     render() {
         let ringtoneList = this.props.storage || []
-        console.log(this.props, 'cart props');
             return (
                 <div>
-                    This is the Cart!
-                    {!ringtoneList || ringtoneList.length === 0 ? 'NOTHING IN CART' : ringtoneList.map(ringtone => {
+                    {!ringtoneList || ringtoneList.length === 0 ? (
+                    <div>
+                        <p>Your cart is empty! Click below to see our ringtones.</p>
+                        <Link to={'/ringtone'}> 
+                        <button>
+                            View ringtones
+                        </button>
+                        </Link>
+                    </div> ): (
+                        <div>
+                        {ringtoneList.map(ringtone => {
                         return (
                             <div key={Number(ringtone.id)} >
                                 {ringtone.name}
                                 <div>
                                     <button onClick = {() => this.props.removeItem(ringtone.id, ringtone.name, this.props.userId)}>
-                                        Delete From Cart
+                                        Remove
                                     </button>
                                 </div>
                             </div>
                             )
-                        }
-                    )
-                }
+                        })}
+                    
+        
                 <Link to={'/checkout'}> 
                     <button>Check Out</button>
                 </Link>
+                </div>
+    )}
+                
                 </div>
 
             )

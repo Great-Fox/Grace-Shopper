@@ -8,6 +8,10 @@ import { storageThunk } from '../store/redux/storage'
 
 
 export class CartIcon extends React.Component {
+  async componentDidMount(){
+    this.props.getStorage(this.props.userId);
+  }
+  
   async componentDidUpdate(prevProps){
     // await this.props.getStorage(this.props.userId)
     if (this.props.userId !== prevProps.userId) {

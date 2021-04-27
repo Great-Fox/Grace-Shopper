@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchAllRingtones } from '../store/redux/allRingtones';
 import { deleteMySingleRingtone } from '../store/redux/adminRingtone';
-import { Cart } from './Cart';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -11,7 +10,6 @@ import { spacing } from '@material-ui/system';
 import Box from "@material-ui/core/Box";
 
 import {
-  deleteFromStorage,
   storageThunk, addItemThunk
 } from '../store/redux/storage';
 import AdminForm from './AdminForm';
@@ -25,8 +23,7 @@ export class AllRingtones extends React.Component {
       form: false,
       users: false,
     };
-    // this.addToStorage = this.addToStorage.bind(this);
-    //this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
+  
     this.handleDelete = this.handleDelete.bind(this);
   }
 
@@ -34,10 +31,6 @@ export class AllRingtones extends React.Component {
     await this.props.getAllRingtones();
   }
 
-  // addToStorage(ringtoneId, ringtoneName, userId) {
-    
-  //   this.props.getStorage(this.props.userId);
-  // }
   handleDelete(id) {
     this.props.deleteRingtone(id);
   }
@@ -47,7 +40,6 @@ export class AllRingtones extends React.Component {
     if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
     } else {
-      console.log(this.props.storage);
       return (
         <div>
           {/* <h1> These are our wonderful ringtones! </h1> */}
