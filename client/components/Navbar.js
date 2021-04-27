@@ -14,6 +14,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import { storageThunk } from '../store/redux/storage';
 import CartIcon from './CartIcon';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 // search bar
 // import SearchIcon from '@material-ui/icons/Search';
@@ -76,6 +77,12 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
     },
   },
+  sectionAccount: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
+  },
 }));
 
 const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
@@ -89,7 +96,6 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
   const handleCloseHere = () => {
     setAnchorEl(null);
   };
-
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -120,6 +126,13 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
             <MenuItem onClick={handleCloseHere}>
               <Link to="/ringtone">All Ringtones</Link>
             </MenuItem>
+            {
+              isLoggedIn ? (
+                <MenuItem onClick={handleCloseHere}>
+                <Link to="/account">Account</Link>
+              </MenuItem>              
+              ) : null
+            }
           </Menu>
           <Typography className={classes.title} variant="h6" noWrap>
             Ringtone World
@@ -150,18 +163,25 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
             </IconButton>
           </div>
           {isLoggedIn ? (
-            <div>
+             <div className={classes.sectionAccount}>
+              <IconButton aria-label="show account" color="inherit">
+                <Link to="/account">
+                  <Badge badgeContent={0} color="secondary">
+                  <AccountCircleIcon />
+                  </Badge>
+                  </Link>
+              </IconButton>
               <IconButton>
-                <p>Welcome {firstName}!</p>
-              </IconButton>
-              <IconButton
-                aria-label="log out"
-                aria-haspopup="true"
-                color="inherit">
-                <a href="#" onClick={handleClick}>
-                  Logout
-                </a>
-              </IconButton>
+                  <p>Welcome {firstName}!</p>
+                </IconButton>
+                <IconButton
+                  aria-label="log out"
+                  aria-haspopup="true"
+                  color="inherit">
+                  <a href="#" onClick={handleClick}>
+                    Logout
+                  </a>
+                </IconButton>
             </div>
           ) : (
             <div>

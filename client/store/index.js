@@ -7,6 +7,7 @@ import auth from './auth';
 import singleRingtoneReducer from './redux/singleRingtone';
 import storageReducer from './redux/storage';
 import allUsersReducer from './redux/adminUsers';
+import orderHistoryReducer from './redux/orderHistory'
 
 const reducer = combineReducers({
   auth,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   ringtone: singleRingtoneReducer,
   storage: storageReducer,
   users: allUsersReducer,
+  orders: orderHistoryReducer,
 });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
