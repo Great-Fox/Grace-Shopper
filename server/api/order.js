@@ -3,8 +3,27 @@ const {
   models: { Order, Order_Ringtone, Ringtone },
 } = require('../db/index');
 const User = require('../db/models/User');
+const { Op } = require("sequelize");
 
-// //GET api/order
+//guest checkout
+router.post('/guest', async (req, res, next) => {
+  try{
+      let ringtoneIds = req.body.ringtones.map(ringtone => ringtone.id);
+      let ringtone = await Ringtone.findAll({
+        where: {
+          id: {
+            [Op.in]: ringtoneIds
+          }
+        }
+      });
+      currentOrder = await Order.create(req.body.updates);
+      await currentOrder.addRingtones(ringtone);
+      res.status(201).send(currentOrder);
+  } catch(error) {
+      next(error)
+  }
+})
+
 //get cart
 router.get('/:userId', async (req, res, next) => {
   try {
@@ -23,24 +42,25 @@ router.get('/:userId', async (req, res, next) => {
 
 //add a ringtone to cart
 router.post('/:userId', async (req, res, next) => {
-    try{
-        let currentOrder = await Order.findOne({
-          where: {
-            userId: req.params.userId, completed: false
-          }
-        });
-        let ringtone = await Ringtone.findByPk(req.body.id);
-        if (!currentOrder) {
-          currentOrder = await Order.create();
-          let user = await User.findByPk(req.params.userId);
-          user.addOrders(currentOrder);
+  try{
+      let currentOrder = await Order.findOne({
+        where: {
+          userId: req.params.userId, completed: false
         }
-        await currentOrder.addRingtones(ringtone);
-        res.status(201).send(ringtone);
-    } catch(error) {
-        next(error)
-    }
+      });
+      let ringtone = await Ringtone.findByPk(req.body.id);
+      if (!currentOrder) {
+        currentOrder = await Order.create();
+        let user = await User.findByPk(req.params.userId);
+        user.addOrders(currentOrder);
+      }
+      await currentOrder.addRingtones(ringtone);
+      res.status(201).send(ringtone);
+  } catch(error) {
+      next(error)
+  }
 })
+
 //remove a ringtone from cart
 router.delete('/:userId/:ringtoneId', async (req, res, next) => {
   try{
@@ -49,9 +69,7 @@ router.delete('/:userId/:ringtoneId', async (req, res, next) => {
           userId: req.params.userId, completed: false
         }
       });
-      console.log(currentOrder, "current order");
       let ringtone = await Ringtone.findByPk(req.params.ringtoneId);
-      console.log(ringtone, "ringtone");
       await currentOrder.removeRingtone(ringtone);
       res.send(ringtone);
   } catch(error) {
@@ -59,7 +77,7 @@ router.delete('/:userId/:ringtoneId', async (req, res, next) => {
   }
 })
 
-//place an order
+//place an order for logged in users
 router.put('/:userId', async (req, res, next) => {
   try{
       let currentOrder = await Order.findOne({

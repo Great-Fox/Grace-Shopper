@@ -3,6 +3,8 @@ import axios from 'axios';
 export const ADD_TO_STORAGE = 'ADD_TO_STORAGE';
 export const DELETE_FROM_STORAGE = 'DELETE_FROM_STORAGE';
 export const GET_STORAGE = 'GET_STORAGE';
+export const SUBMIT_ORDER = 'SUBMIT_ORDER';
+export const LOAD_GUEST_RINGTONES = 'LOAD_GUEST_RINGTONES';
 
 export const addToStorage = (ringtone) => ({
   type: ADD_TO_STORAGE,
@@ -19,21 +21,32 @@ export const getStorage = (storage) => ({
   storage,
 });
 
+export const submitOrder = (order) => ({
+  type: SUBMIT_ORDER,
+  order
+})
+
+export const loadGuestRingtones = (ringtones) => ({
+  type: LOAD_GUEST_RINGTONES,
+  ringtones
+})
+
 export const storageThunk = (id) => {
     return async (dispatch) => {
         try {
           let storage;
-          //check if they are logged in
           if (id !== undefined) {
             let response = await axios.get(`./api/order/${id}`);
-            storage = response.data.ringtones;
+            storage = response.data.ringtones || [];
           } else {
-            storage = Object.keys(localStorage).map(ringtone => { 
+            let unfilteredStorage = Object.keys(localStorage).map(ringtone => { 
               return {
                   id: ringtone, 
                   name: localStorage[ringtone]
               }
             })
+            storage = unfilteredStorage.filter(value => Number(value.id));
+            console.log(storage);
           }
           dispatch(getStorage(storage));
         } catch (error) {
@@ -42,23 +55,22 @@ export const storageThunk = (id) => {
     };
 }
 
-export const addItemThunk = (ringtoneId, ringtoneName, userId) => {
+export const addItemThunk = (ringtone, userId) => {
   return async (dispatch) => {
-      try {
-        let storage;
-        if (userId !== undefined) {
-          console.log("thunk ringtone id", ringtoneId);
-          let response = await axios.post(`/api/order/${userId}`, {id: ringtoneId});
-          storage = response.data;
-        } else {
-          localStorage.setItem(`${ringtoneId}`, `${ringtoneName}`);
-          storage = {id: ringtoneId, name: ringtoneName}
-        }
-        dispatch(addToStorage(storage));
-      } catch (error) {
-        console.log(error);
+    try {
+      let storage;
+      if (userId !== undefined) {
+        let response = await axios.post(`/api/order/${userId}`, ringtone);
+        storage = response.data;
+      } else {
+        localStorage.setItem(`${ringtone.id}`, `${ringtone.name}`);
+        storage = {id: ringtone.id, name: ringtone.name}
       }
-  };
+      dispatch(addToStorage(storage));
+    } catch (error) {
+      console.log(error);
+    }
+};
 }
 
 export const removeItemThunk = (ringtoneId, ringtoneName, userId) => {
@@ -66,7 +78,6 @@ export const removeItemThunk = (ringtoneId, ringtoneName, userId) => {
       try {
         let storage;
         if (userId !== undefined) {
-          console.log(ringtoneId, 'ringtone id in thunk');
           let response = await axios.delete(`/api/order/${userId}/${ringtoneId}`);
           storage = response.data;
         } else {
@@ -74,6 +85,28 @@ export const removeItemThunk = (ringtoneId, ringtoneName, userId) => {
           storage = {id: ringtoneId, name: ringtoneName}
         }
         dispatch(deleteFromStorage(storage));
+      } catch (error) {
+        console.log(error);
+      }
+  };
+}
+
+export const submitOrderThunk = (userId, paymentInfo, ringtones) => {
+  return async (dispatch) => {
+      try {
+        let updates = {
+          completed: true, 
+          paymentMethod: paymentInfo
+        }
+        let id = userId;
+        let response;
+        if (id === undefined) {
+          response = await axios.post(`/api/order/guest`, {ringtones, updates});
+        } else {
+          response = await axios.put(`/api/order/${userId}`, updates);
+        }
+          dispatch(submitOrder(response.data));
+        
       } catch (error) {
         console.log(error);
       }
@@ -88,6 +121,10 @@ export default function storageReducer(state = [], action) {
       return state.filter((ringtone) => ringtone.id !== action.ringtone.id);
     case GET_STORAGE:
       return action.storage;
+    case SUBMIT_ORDER:
+      return [];
+    case LOAD_GUEST_RINGTONES:
+      return action.ringtones;
     default:
       return state;
   }

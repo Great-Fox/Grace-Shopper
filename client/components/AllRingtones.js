@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchAllRingtones } from '../store/redux/allRingtones';
 import { deleteMySingleRingtone } from '../store/redux/adminRingtone';
-import { Cart } from './Cart';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -11,7 +10,6 @@ import { spacing } from '@material-ui/system';
 import Box from "@material-ui/core/Box";
 
 import {
-  deleteFromStorage,
   storageThunk, addItemThunk
 } from '../store/redux/storage';
 import AdminForm from './AdminForm';
@@ -25,8 +23,7 @@ export class AllRingtones extends React.Component {
       form: false,
       users: false,
     };
-    // this.addToStorage = this.addToStorage.bind(this);
-    //this.deleteFromLocalStorage = this.deleteFromLocalStorage.bind(this);
+  
     this.handleDelete = this.handleDelete.bind(this);
   }
 
@@ -34,10 +31,6 @@ export class AllRingtones extends React.Component {
     await this.props.getAllRingtones();
   }
 
-  // addToStorage(ringtoneId, ringtoneName, userId) {
-    
-  //   this.props.getStorage(this.props.userId);
-  // }
   handleDelete(id) {
     this.props.deleteRingtone(id);
   }
@@ -106,7 +99,7 @@ export class AllRingtones extends React.Component {
                             variant="contained"
                             color="primary"
                             onClick={() => 
-                              this.props.addItem(ringtone.id, ringtone.name, this.props.userId)
+                              this.props.addItem(ringtone, this.props.userId)
                             }>
                             Add To Cart
                           </Button>
@@ -152,7 +145,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getAllRingtones: () => dispatch(fetchAllRingtones()),
-    addItem: (ringtoneId, ringtoneName, userId) => dispatch(addItemThunk(ringtoneId, ringtoneName, userId)),
+    addItem: (ringtone, userId) => dispatch(addItemThunk(ringtone, userId)),
     getStorage: (id) => dispatch(storageThunk(id)),
     deleteRingtone: (id) => dispatch(deleteMySingleRingtone(id)),
   };

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchSingleRingtone } from '../store/redux/singleRingtone';
 import { storageThunk, removeItemThunk } from '../store/redux/storage';
+import { Link } from 'react-router-dom';
 
 export class Cart extends React.Component {
 
@@ -20,26 +21,40 @@ export class Cart extends React.Component {
     }
 
     render() {
+        console.log(this.props);
         let ringtoneList = this.props.storage || []
-        console.log(this.props, 'cart props');
             return (
                 <div>
-                    This is Cart!
-                    {!ringtoneList || ringtoneList.length === 0 ? 'NOTHING IN CART' : ringtoneList.map(ringtone => {
+                    {!ringtoneList || ringtoneList.length === 0 ? (
+                    <div>
+                        <p>Your cart is empty! Click below to see our ringtones.</p>
+                        <Link to={'/ringtone'}> 
+                        <button>
+                            View ringtones
+                        </button>
+                        </Link>
+                    </div> ): (
+                        <div>
+                        {ringtoneList.map(ringtone => {
                         return (
                             <div key={Number(ringtone.id)} >
                                 {ringtone.name}
                                 <div>
                                     <button onClick = {() => this.props.removeItem(ringtone.id, ringtone.name, this.props.userId)}>
-                                        Delete From Cart
+                                        Remove
                                     </button>
                                 </div>
                             </div>
                             )
-                        }
-                    )
-                }
-                <button>Check Out</button>
+                        })}
+                    
+        
+                <Link to={'/checkout'}> 
+                    <button>Check Out</button>
+                </Link>
+                </div>
+    )}
+                
                 </div>
 
             )
