@@ -160,6 +160,7 @@ const Navbar = ({
                             </h3>
                             <h4>{user.email}</h4>
                             <ButtonGroup
+                               onClick={popupState.close}
                               variant="contained"
                               color="primary"
                               aria-label="contained primary button group">

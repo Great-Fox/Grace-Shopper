@@ -10,7 +10,6 @@ import { DataGrid } from '@material-ui/data-grid';
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
   { field: 'name', headername: 'Name', width: 200 },
-  { field: 'price', headername: 'Price', width: 200 },
 ];
 
 export class OrderHistory extends React.Component {
@@ -47,7 +46,7 @@ export class OrderHistory extends React.Component {
                           </Grid>
                         </Grid>
                         <Grid item>
-                          <Typography variant="h4" style={{ marginTop: 10 }}>TOTAL PRICE: ${order.totalPrice}</Typography>    
+                          <Typography variant="h4" style={{ marginTop: 10 }}>TOTAL PRICE: ${order.totalPrice/100}</Typography>    
                         </Grid>
 
                       </Paper>
