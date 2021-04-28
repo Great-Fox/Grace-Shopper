@@ -25,6 +25,15 @@ router.post('/guest', async (req, res, next) => {
   }
 });
 
+router.get('/:userId/orders', verifyUser, async(req, res, next) => {
+  try {
+    const findAllOrders = await Order.findAll({where: {userId: req.params.userId, completed: true}, include: {model: Ringtone}})
+    res.send(findAllOrders)
+  } catch (error) {
+    next(error)
+  }
+})
+
 //get cart
 router.get('/:userId', verifyUser, async (req, res, next) => {
   try {

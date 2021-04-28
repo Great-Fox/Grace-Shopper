@@ -6,6 +6,10 @@ import {
   deleteMySingleRingtone,
 } from '../store/redux/adminRingtone';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import { Link, useHistory } from 'react-router-dom';
 
 const initialState = {
   name: '',
@@ -73,90 +77,107 @@ export class SingleRingtone extends React.Component {
     } else {
       return (
         <div>
+          <Container>
           <form id="edit-ringtone" onSubmit={this.handleSubmit}>
-            <h1> Ringtone Infomation </h1>
             <div key={this.props.ringtone.id}>
               {this.state.isInEditMode ? (
                 <div>
-                  <input
-                    label="Name:"
+                <Grid container spacing={3} >
+                  <Grid item xs={12}  style={{marginTop: 20}}>
+                    <TextField
+                    label="Ringtone name"
                     name="name"
-                    type="text"
+                    size="small"
+                    variant="outlined"
+                    onChange={this.handleChange}
                     value={this.state.name}
-                    onChange={this.handleChange}
                     required
-                  />
-                  <br />
-                  <input
-                    name="songUrl"
-                    label="Song URL:"
-                    type="text"
-                    value={this.state.songUrl}
-                    onChange={this.handleChange}
-                  />
-                  <br />
-                  {/* <iframe
-                    src={`https://open.spotify.com/embed/track/${this.state.songUrl.slice(
-                      14
-                    )}`}
-                    width="300"
-                    height="380"
-                    frameBorder="0"
-                    allowtransparency="true"
-                    allow="encrypted-media"></iframe> */}
-                  <input
-                    label="Artist:"
-                    value={this.state.artist}
+                    />
+                  </Grid>
+                  <Grid item xs={12}  style={{marginTop: 5}}>
+                    <TextField
+                    label="Artist"
                     name="artist"
+                    size="small"
+                    variant="outlined"
                     onChange={this.handleChange}
-                  />
-                  <br />
-                  <input
+                    value={this.state.artist}
+                    />
+                  </Grid>
+                  <Grid item xs={12}  style={{marginTop: 5}}>
+                    <TextField
+                    label="Song URL"
+                    name="songUrl"
+                    size="small"
+                    variant="outlined"
+                    onChange={this.handleChange}
+                    value={this.state.songUrl}
+                    />
+                  </Grid>
+                  <Grid item xs={12}  style={{marginTop: 5}}>
+                    <TextField
+                    label="Genre"
                     name="genre"
+                    size="small"
+                    variant="outlined"
+                    onChange={this.handleChange}
                     value={this.state.genre}
-                    onChange={this.handleChange}
-                  />
-                  <br />
-                  <input
+                    />
+                  </Grid>
+                  <Grid item xs={12}  style={{marginTop: 5}}>
+                    <TextField
+                    label="Price"
                     name="price"
-                    label="Price:"
-                    value={this.state.price}
+                    size="small"
+                    variant="outlined"
                     onChange={this.handleChange}
-                    required
-                  />
-                  <br />
-                  <Button variant="contained" color="primary" type="submit">
-                    Save Changes
-                  </Button>
+                    value={this.state.price}
+                    />
+                  </Grid>
+                </Grid>
                 </div>
               ) : (
                 <div>
                   <div onClick={this.changeEditMode}>
-                    <h3>{this.props.ringtone.name}</h3>
+                    <h4>{this.props.ringtone.name} - {this.props.ringtone.artist}</h4>
                     <iframe
                       src={`https://open.spotify.com/embed/track/${this.props.ringtone.songUrl.slice(
                         14
                       )}`}
-                      width="300"
-                      height="380"
+                      width="230"
+                      height="300"
                       frameBorder="0"
                       allowtransparency="true"
                       allow="encrypted-media"></iframe>
-                    <h4>{this.props.ringtone.artist}</h4>
                     <h6>{this.props.ringtone.genre}</h6>
-                    <h6>Price ${(this.props.ringtone.price)/100}</h6>
+                    <h4>Price ${(this.props.ringtone.price)/100}</h4>
                   </div>
                   <br />
-                  <Button variant="contained" color="primary">
-                    Buy This Ringtone!
-                  </Button>
+                  { this.props.isAdmin ? (null) :  (
+                    <Button variant="contained" color="primary">
+                       Buy This Ringtone!
+                    </Button>
+                  )}
                   <br />
                 </div>
               )}
               {this.props.isAdmin ? (
                 <div>
+                  {this.state.isInEditMode ? (
+                    <div>
+                      <Button variant="contained" color="primary" type="submit" style={{marginTop: 12}}>
+                       Save Changes
+                      </Button>
+                      <Button style={{marginTop: 12}} variant="contained" color="primary" type="submit" onClick={() => {
+                          this.props.history.push(`/ringtone/${this.props.ringtone.id}`);
+                      }}>
+                          Cancel
+                       </Button>
+                    </div>
+                  ): null}
                   <br />
                   <Button
+                    style={{marginTop: 12}}
                     variant="contained"
                     color="secondary"
                     onClick={() => {
@@ -166,10 +187,18 @@ export class SingleRingtone extends React.Component {
                     }}>
                     Delete Ringtone
                   </Button>
+                      <Button
+                        style={{marginTop: 12}}
+                        variant="contained"
+                        color="secondary"
+                        onClick={this.changeEditMode}>
+                        Edit Ringtone
+                      </Button>
                 </div>
               ) : null}
             </div>
           </form>
+          </Container>
         </div>
       );
     }
