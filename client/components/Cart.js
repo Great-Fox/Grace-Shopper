@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchSingleRingtone } from '../store/redux/singleRingtone';
-import { storageThunk, removeItemThunk } from '../store/redux/storage';
+import { storageThunk, removeItemThunk, addItemThunk } from '../store/redux/storage';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -49,6 +49,7 @@ export class Cart extends React.Component {
                   <tr>
                       <th>Ringtone</th>
                       <th>Price</th>
+                      <th>Quantity</th>
                       <th></th>
                   </tr>
             {ringtoneList.map((ringtone) => {
@@ -59,6 +60,16 @@ export class Cart extends React.Component {
                     </td>
                     <td>
                     ${Number(ringtone.price)/100}
+                    </td>
+                    <td>
+                    {ringtone['order ringtone'].quantity}
+                    </td>
+                    <td>
+                      <button onClick={() => {
+                              this.props.addItem(ringtone, this.props.userId)}}>+</button>
+                    </td>
+                    <td>
+                      <button>-</button>
                     </td>
                   <td>
                     <Button
@@ -105,6 +116,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getSingleRingtone: (id) => dispatch(fetchSingleRingtone(id)),
     getStorage: (id) => dispatch(storageThunk(id)),
+    addItem: (ringtone, userId) => dispatch(addItemThunk(ringtone, userId)),
     removeItem: (ringtoneId, ringtoneName, userId) =>
       dispatch(removeItemThunk(ringtoneId, ringtoneName, userId)),
   };

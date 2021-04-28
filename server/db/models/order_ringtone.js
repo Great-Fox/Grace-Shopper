@@ -7,6 +7,7 @@ const Order_Ringtone = db.define('order ringtone', {
   },
   quantity: {
     type: Sequelize.INTEGER,
+    defaultValue: 1
   },
 });
 

@@ -39,6 +39,7 @@ router.get('/:userId', verifyUser, async (req, res, next) => {
         },
       ],
     });
+    console.log(products.ringtones[0]['order ringtone'].dataValues.quantity);
     res.send(products);
   } catch (error) {
     next(error);
@@ -53,6 +54,9 @@ router.post('/:userId', verifyUser, async (req, res, next) => {
         userId: req.params.userId,
         completed: false,
       },
+      include: {
+        model: Ringtone
+      }
     });
     let ringtones = await Ringtone.findAll({
       where: {
@@ -61,13 +65,20 @@ router.post('/:userId', verifyUser, async (req, res, next) => {
         },
       },
     });
+    let finalRingtones = ringtones.map((ringtone) => {
+      if (currentOrder.ringtones.includes(ringtone.id)) {
+        return (ringtone, {quantity: ringtone.quantity+1}) 
+      } else {
+        return (ringtone)
+      }
+      })
     if (!currentOrder) {
       currentOrder = await Order.create();
       let user = await User.findByPk(req.params.userId);
       user.addOrders(currentOrder);
     }
-    await currentOrder.addRingtones(ringtones);
-    res.status(201).send(ringtones);
+    await currentOrder.addRingtones(finalRingtones);
+    res.status(201).send(finalRingtones);
   } catch (error) {
     next(error);
   }
