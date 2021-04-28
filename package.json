@@ -29,6 +29,7 @@
     "history": "^4.9.0",
     "hoist-non-react-statics": "^3.3.2",
     "jsonwebtoken": "^8.5.1",
+    "material-ui-popup-state": "^1.8.3",
     "morgan": "^1.9.1",
     "node": "^16.0.0",
     "pg": "^8.5.1",

@@ -19,12 +19,21 @@ const { verifyUser } = require('./gatekeepingMiddleware');
 //   }
 // });
 
-router.put('/:userId', verifyUser, async(req, res, next) => {
+router.put('/:userId', verifyUser, async (req, res, next) => {
   try {
-      const user = await User.findOne({where: {id: req.params.userId}})
-      let updatedUser = await user.update(req.body)
-      res.send(updatedUser)
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    let updatedUser = await user.update(req.body);
+    res.send(updatedUser);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
+
+router.get('/:userId', verifyUser, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});

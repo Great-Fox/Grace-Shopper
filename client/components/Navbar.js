@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { logout } from '../store';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,6 +15,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { storageThunk } from '../store/redux/storage';
 import CartIcon from './CartIcon';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Popover from '@material-ui/core/Popover';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import Box from '@material-ui/core/Box';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
+import { getUserInfoThunk } from '../store/redux/user';
 
 // search bar
 // import SearchIcon from '@material-ui/icons/Search';
@@ -85,17 +91,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
+const Navbar = ({
+  handleClick,
+  isLoggedIn,
+  firstName,
+  userId,
+  getUser,
+  user,
+}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClickHere = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const history = useHistory();
 
   const handleCloseHere = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    getUser(userId);
+  }, []);
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -126,13 +143,11 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
             <MenuItem onClick={handleCloseHere}>
               <Link to="/ringtone">All Ringtones</Link>
             </MenuItem>
-            {
-              isLoggedIn ? (
-                <MenuItem onClick={handleCloseHere}>
+            {isLoggedIn ? (
+              <MenuItem onClick={handleCloseHere}>
                 <Link to="/account">Account</Link>
-              </MenuItem>              
-              ) : null
-            }
+              </MenuItem>
+            ) : null}
           </Menu>
           <Typography className={classes.title} variant="h6" noWrap>
             Ringtone World
@@ -163,25 +178,71 @@ const Navbar = ({ handleClick, isLoggedIn, firstName }) => {
             </IconButton>
           </div>
           {isLoggedIn ? (
-             <div className={classes.sectionAccount}>
+            <div className={classes.sectionAccount}>
               <IconButton aria-label="show account" color="inherit">
-                <Link to="/account">
-                  <Badge badgeContent={0} color="secondary">
-                  <AccountCircleIcon />
-                  </Badge>
-                  </Link>
+                {/* <Link to="/account"> */}
+                {/* <Badge badgeContent={0} color="secondary"> */}
+                <PopupState variant="popover">
+                  {(popupState) => (
+                    <div>
+                      <AccountCircleIcon {...bindTrigger(popupState)} />
+                      <Popover
+                        {...bindPopover(popupState)}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'center',
+                        }}>
+                        <Box p={4} justifyContent="center">
+                          <div>
+                            <h3>
+                              {user.firstName} {user.lastName}
+                            </h3>
+                            <h4>{user.email}</h4>
+                            <ButtonGroup
+                              variant="contained"
+                              color="primary"
+                              aria-label="contained primary button group">
+                              {/* <Link to={`/account/${user.id}`}> */}
+                              <Button
+                                onClick={() => {
+                                  history.push(`/account/${user.id}`);
+                                }}>
+                                Order History
+                              </Button>
+                              {/* </Link> */}
+                              {/* <Link to={`/account/${user.id}/edit`}> */}
+                              <Button
+                                onClick={() => {
+                                  history.push(`/account/${user.id}/edit`);
+                                }}>
+                                Edit Account
+                              </Button>
+                              {/* </Link> */}
+                            </ButtonGroup>
+                          </div>
+                        </Box>
+                      </Popover>
+                    </div>
+                  )}
+                </PopupState>
+                {/* </Badge> */}
+                {/* </Link> */}
               </IconButton>
               <IconButton>
-                  <p>Welcome {firstName}!</p>
-                </IconButton>
-                <IconButton
-                  aria-label="log out"
-                  aria-haspopup="true"
-                  color="inherit">
-                  <a href="#" onClick={handleClick}>
-                    Logout
-                  </a>
-                </IconButton>
+                <p>Welcome {firstName}!</p>
+              </IconButton>
+              <IconButton
+                aria-label="log out"
+                aria-haspopup="true"
+                color="inherit">
+                <a href="#" onClick={handleClick}>
+                  Logout
+                </a>
+              </IconButton>
             </div>
           ) : (
             <div>
@@ -213,6 +274,7 @@ const mapState = (state) => {
     isLoggedIn: !!state.auth.id,
     firstName: state.auth.firstName,
     userId: state.auth.id,
+    user: state.user,
   };
 };
 
@@ -222,6 +284,7 @@ const mapDispatch = (dispatch) => {
       dispatch(logout());
     },
     getStorage: (id) => dispatch(storageThunk(id)),
+    getUser: (id) => dispatch(getUserInfoThunk(id)),
   };
 };
 
