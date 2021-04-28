@@ -14,11 +14,11 @@ const editUserInfo = (user) => ({
   user,
 });
 
-export const getUserInfoThunk = (id) => {
+export const getUserInfoThunk = (userId) => {
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem(TOKEN);
-      const { data } = await axios.get(`/api/users/${id}`, {
+      const { data } = await axios.get(`/api/users/${userId}`, {
         headers: { authorization: token },
       });
       dispatch(getUserInfo(data));

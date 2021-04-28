@@ -112,7 +112,7 @@ const Navbar = ({
   };
   useEffect(() => {
     getUser(userId);
-  }, []);
+  }, [userId]);
   return (
     <div className={classes.grow}>
       <AppBar position="static">
