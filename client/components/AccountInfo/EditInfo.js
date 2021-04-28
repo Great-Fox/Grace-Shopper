@@ -19,12 +19,13 @@ export class EditInfo extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  componentDidMount() {
-    this.props.getUser(this.props.match.params.userId);
-  }
-  componentDidUpdate(prevProps) {
-    if (this.props.user !== prevProps.user) {
-      this.setState({
+//   componentDidMount() {
+//     this.props.getUser(this.props.userId);
+//   }
+  async componentDidUpdate(prevProps) {
+    if (this.props.userId !== prevProps.userId) {
+        await this.props.getUser(this.props.userId);
+        this.setState({
         firstName: this.props.user.firstName || '',
         lastName: this.props.user.lastName || '',
         email: this.props.user.email || '',
@@ -44,6 +45,7 @@ export class EditInfo extends React.Component {
   }
 
   render() {
+      console.log(this.props)
     return (
       <form id="account-form" onSubmit={this.handleSubmit}>
         <p>First Name: </p>
@@ -75,6 +77,7 @@ export class EditInfo extends React.Component {
 
 const mapState = (state) => {
   return {
+    userId: state.auth.id,
     user: state.user,
   };
 };
