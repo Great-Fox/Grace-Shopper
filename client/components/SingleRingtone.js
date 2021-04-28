@@ -10,6 +10,8 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Link, useHistory } from 'react-router-dom';
+import { addItemThunk } from '../store/redux/storage';
+
 
 const initialState = {
   name: '',
@@ -153,11 +155,12 @@ export class SingleRingtone extends React.Component {
                     <h4>Price ${(this.props.ringtone.price)/100}</h4>
                   </div>
                   <br />
-                  { this.props.isAdmin ? (null) :  (
-                    <Button variant="contained" color="primary">
+            
+                    <Button variant="contained" color="primary" onClick={() => {
+                              this.props.addItem(this.props.ringtone, this.props.userId)}}>
                        Buy This Ringtone!
                     </Button>
-                  )}
+    
                   <br />
                 </div>
               )}
@@ -209,6 +212,7 @@ const mapState = (state) => {
   return {
     ringtone: state.ringtone,
     isAdmin: state.auth.isAdmin,
+    userId: state.auth.id
   };
 };
 
@@ -216,6 +220,7 @@ const mapDispatch = (dispatch) => {
   return {
     getSingleRingtone: (id) => dispatch(fetchSingleRingtone(id)),
     edit: (ringtone) => dispatch(editMySingleRingtone(ringtone)),
+    addItem: (ringtone, userId) => dispatch(addItemThunk(ringtone, userId)),
     deleteRingtone: (id) => dispatch(deleteMySingleRingtone(id)),
   };
 };

@@ -180,8 +180,8 @@ export class Checkout extends React.Component {
               <option value="Venmo">Venmo</option>
             </select> */}
             <Grid item xs={12}>
-            <Select labelId="demo-simple-select-label"
-              id="demo-simple-select"
+            <Select name="paymentMethod"
+              id="paymentMethod"
               value={this.state.paymentMethod}
               onChange={this.handleChange}
               fullWidth
