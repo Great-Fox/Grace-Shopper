@@ -3,6 +3,12 @@ import { connect } from 'react-redux';
 import { fetchSingleRingtone } from '../store/redux/singleRingtone';
 import { storageThunk, removeItemThunk } from '../store/redux/storage';
 import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
+//import useStyles from './styleSheet';
+  
 
 export class Cart extends React.Component {
   componentDidMount() {
@@ -23,40 +29,66 @@ export class Cart extends React.Component {
     let ringtoneList = this.props.storage || [];
     return (
       <div>
+        <div className="cheating">
         {!ringtoneList || ringtoneList.length === 0 ? (
-          <div>
-            <p>Your cart is empty! Click below to see our ringtones.</p>
+           <Grid item md style={{ margin: 10 }}>
+            <Typography className="cheating" variant="h5" >
+            Your cart is empty! Click below to see our ringtones.
+          </Typography>
             <Link to={'/ringtone'}>
-              <button>View ringtones</button>
+            <Button
+                style={{marginLeft: 5, marginTop: 5}}      
+                color="secondary"
+                variant="contained"
+               >View Ringtones</Button>
             </Link>
-          </div>
+          </Grid>
         ) : (
-          <div>
+            <Grid item md style={{ margin: 10 }}>
+              <table>
+                  <tr>
+                      <th>Ringtone</th>
+                      <th>Price</th>
+                      <th></th>
+                  </tr>
             {ringtoneList.map((ringtone) => {
               return (
-                <div key={Number(ringtone.id)}>
-                  {ringtone.name}
-                  <div>
-                    <button
-                      onClick={() =>
-                        this.props.removeItem(
-                          ringtone.id,
-                          ringtone.name,
-                          this.props.userId
-                        )
-                      }>
-                      Remove
-                    </button>
-                  </div>
-                </div>
+                <tr key={Number(ringtone.id)}>
+                    <td>
+                    {ringtone.name}
+                    </td>
+                    <td>
+                    ${Number(ringtone.price)/100}
+                    </td>
+                  <td>
+                    <Button
+                style={{marginLeft: 5, marginTop: 5}}      
+                color="secondary"
+                variant="text"
+                onClick={() =>
+                    this.props.removeItem(
+                      ringtone.id,
+                      ringtone.name,
+                      this.props.userId
+                    )
+                  }>Remove</Button>
+                  </td>
+                </tr>
               );
             })}
+            
+            </table>
 
             <Link to={'/checkout'}>
-              <button>Check Out</button>
+            <Button
+                style={{marginLeft: 5, marginTop: 5}}      
+                color="secondary"
+                variant="contained"
+               >Check Out</Button>
             </Link>
-          </div>
+          </Grid>
         )}
+        </div>
       </div>
     );
   }

@@ -2,6 +2,7 @@ const router = require('express').Router();
 const {
   models: { Ringtone },
 } = require('../db/index');
+const { Op } = require('sequelize');
 
 //GET api/ringtone
 router.get('/', async (req, res, next) => {
@@ -12,6 +13,22 @@ router.get('/', async (req, res, next) => {
     next(error);
   }
 });
+
+router.post('/where', async (req, res, next) => {
+  try {
+    let ringtones = await Ringtone.findAll({
+      where: {
+        id: {
+          [Op.in]: req.body
+        }
+      }
+    });
+    console.log(req.body);
+    res.json(ringtones);
+  } catch(error) {
+    next(error)
+  }
+})
 
 //GET api/ringtone/:ringtoneId
 router.get('/:ringtoneId', async (req, res, next) => {
