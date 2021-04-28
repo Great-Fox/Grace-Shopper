@@ -40,6 +40,7 @@ export class EditInfo extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.edit({ ...this.props.user, ...this.state });
+    this.props.history.push('/ringtone');
   }
 
   render() {
