@@ -47,6 +47,12 @@ router.get('/:userId', verifyUser, async (req, res, next) => {
 });
 
 //add a ringtone to cart
+
+//!!!LOOK HERE FOR QUANTITY INFO
+
+//here, i am trying to update the quantity of the ringtone whose id we received. 
+//i can get it to update in final ringtones, but for some reason this is not adding to the db
+  
 router.post('/:userId', verifyUser, async (req, res, next) => {
   try {
     let currentOrder = await Order.findOne({
@@ -58,26 +64,32 @@ router.post('/:userId', verifyUser, async (req, res, next) => {
         model: Ringtone
       }
     });
+    //console.log('order ringtones', currentOrder.ringtones);
     let ringtones = await Ringtone.findAll({
       where: {
         id: {
           [Op.in]: req.body,
         },
-      },
+      }
     });
-    let finalRingtones = ringtones.map((ringtone) => {
-      if (currentOrder.ringtones.includes(ringtone.id)) {
-        return (ringtone, {quantity: ringtone.quantity+1}) 
+    let ringtoneIds = ringtones.map(ringtone => ringtone.dataValues.id);
+    let finalRingtones = currentOrder.ringtones.map((ringtone) => {
+      if (ringtoneIds.includes(ringtone.id)){
+        ringtone['order ringtone'].dataValues.quantity = Number(ringtone['order ringtone'].dataValues.quantity)+1;
+        return ringtone
       } else {
-        return (ringtone)
+        return ringtone
       }
       })
+      console.log('my ringtones', finalRingtones);
+      console.log('og ringtones', currentOrder.ringtones);
+
     if (!currentOrder) {
       currentOrder = await Order.create();
       let user = await User.findByPk(req.params.userId);
       user.addOrders(currentOrder);
     }
-    await currentOrder.addRingtones(finalRingtones);
+    await currentOrder.setRingtones(finalRingtones);
     res.status(201).send(finalRingtones);
   } catch (error) {
     next(error);

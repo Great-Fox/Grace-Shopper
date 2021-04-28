@@ -65,11 +65,9 @@ export const addItemThunk = (ringtone, userId) => {
       const token = window.localStorage.getItem(TOKEN);
 
       if (userId !== undefined) {
-        let order = await axios.get(`/api/order/${id}`, {
+        let order = await axios.get(`/api/order/${userId}`, {
           headers: { authorization: token },
-        });
-        let ringtones = order.data.ringtones.filter(r => r.id === ringtone.id);
-       
+        });       
         let response = await axios.post(`/api/order/${userId}`, [ringtone.id], {
           headers: { authorization: token },
         });
