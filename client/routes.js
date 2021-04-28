@@ -12,6 +12,7 @@ import AdminUsers from './components/AdminUsers';
 import Checkout from './components/Checkout';
 import UserInfo from './components/AccountInfo/UserInfo';
 import OrderHistory from './components/AccountInfo/OrderHistory';
+import EditInfo from './components/AccountInfo/EditInfo';
 
 /**
  * COMPONENT
@@ -41,6 +42,7 @@ class Routes extends Component {
           <Route exact path="/admin/users" component={AdminUsers} />
           <Route exact path="/account" component={UserInfo} />
           <Route exact path="/account/:userId" component={OrderHistory} />
+          <Route exact path="/account/:userId/edit" component={EditInfo} />
         </Switch>
       </div>
     );

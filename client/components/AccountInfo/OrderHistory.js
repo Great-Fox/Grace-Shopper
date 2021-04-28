@@ -23,7 +23,6 @@ export class OrderHistory extends React.Component {
 // }
 
 async componentDidUpdate(prevProps){
-
     if (prevProps.userId !== this.props.userId) {
         await this.props.getOrders(this.props.userId)
     }

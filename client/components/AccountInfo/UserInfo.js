@@ -15,6 +15,9 @@ const UserInfo = ({user}) => {
             <Link to={`/account/${user.id}`}>
             <button>He</button>
             </Link>
+            <Link to={`/account/${user.id}/edit`} >
+            <button>edit</button>
+            </Link>
         </div>
     )
 }
