@@ -35,10 +35,48 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     display: 'none',
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
   },
+  //search bar
+  // search: {
+  //   position: 'relative',
+  //   borderRadius: theme.shape.borderRadius,
+  //   backgroundColor: fade(theme.palette.common.white, 0.15),
+  //   '&:hover': {
+  //     backgroundColor: fade(theme.palette.common.white, 0.25),
+  //   },
+  //   marginRight: theme.spacing(2),
+  //   marginLeft: 0,
+  //   width: '100%',
+  //   [theme.breakpoints.up('sm')]: {
+  //     marginLeft: theme.spacing(3),
+  //     width: 'auto',
+  //   },
+  // },
+  // searchIcon: {
+  //   padding: theme.spacing(0, 2),
+  //   height: '100%',
+  //   position: 'absolute',
+  //   pointerEvents: 'none',
+  //   display: 'flex',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  // },
+  // inputRoot: {
+  //   color: 'inherit',
+  // },
+  // inputInput: {
+  //   padding: theme.spacing(1, 1, 1, 0),
+  //   // vertical padding + font size from searchIcon
+  //   paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+  //   transition: theme.transitions.create('width'),
+  //   width: '100%',
+  //   [theme.breakpoints.up('md')]: {
+  //     width: '20ch',
+  //   },
+  // },
   sectionShoppingCart: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
@@ -56,6 +94,7 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = ({
   handleClick,
   isLoggedIn,
+  firstName,
   userId,
   getUser,
   user,
@@ -79,11 +118,11 @@ const Navbar = ({
       <AppBar position="static">
         <Toolbar>
           <IconButton
-            onClick={handleClickHere}
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            // onClick={handleClickHere}
           >
             <MenuIcon onClick={handleClickHere} />
           </IconButton>
@@ -98,47 +137,51 @@ const Navbar = ({
                 width: '20ch',
               },
             }}>
+            <MenuItem onClick={handleCloseHere}>
+              <Link to="/">Home</Link>
+            </MenuItem>
+            <MenuItem onClick={handleCloseHere}>
+              <Link to="/ringtone">All Ringtones</Link>
+            </MenuItem>
+            {isLoggedIn ? (
               <MenuItem onClick={handleCloseHere}>
-                <Link to="/">Home</Link>
+                <Link to="/account">Account</Link>
               </MenuItem>
-              <MenuItem onClick={handleCloseHere}>
-                <Link to="/ringtone">All Ringtones</Link>
-              </MenuItem>
-            {isLoggedIn ? (
-              <MenuItem onClick={handleCloseHere}>
-                <Link to={`/account/${user.id}/edit`}>Edit My Account</Link>
-              </MenuItem>           
-            ) : null}
-            {isLoggedIn ? (
-              <MenuItem onClick={handleCloseHere}>
-                <Link to={'/cart'}>View My Cart</Link>
-              </MenuItem>           
-            ) : null}
-            {isLoggedIn ? (
-              <MenuItem onClick={handleCloseHere}>
-              <Link to={`/account/${user.id}`}>Order History</Link>
-              </MenuItem>        
-            ) : null}
-            {isLoggedIn ? (
-              <MenuItem onClick={handleCloseHere}>
-              <Link to='/' onClick={handleClick} >Log Out</Link>
-              </MenuItem>        
             ) : null}
           </Menu>
-          <IconButton variant="h6"  onClick={() => {history.push('/ringtone')}}>
+          <Typography className={classes.title} variant="h6" noWrap>
             Ringtone World
-          </IconButton>
+          </Typography>
+          {/* search bar
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+            </div> */}
           <div className={classes.grow} />
+          <div className={classes.sectionShoppingCart}>
+            <IconButton aria-label="show shopping cart" color="inherit">
+              <CartIcon />
+              {/* <Link to="/cart">
+                <Badge badgeContent={length} color="secondary">
+                  <ShoppingCartIcon />
+                </Badge>
+                </Link> */}
+            </IconButton>
+          </div>
           {isLoggedIn ? (
             <div className={classes.sectionAccount}>
-             <Typography 
-                style={{marginTop: 10, marginRight: 16}}
-                className={classes.title}
-                variant="h6" 
-                noWrap>
-              Welcome {user.firstName}!
-              </Typography>
               <IconButton aria-label="show account" color="inherit">
+                {/* <Link to="/account"> */}
+                {/* <Badge badgeContent={0} color="secondary"> */}
                 <PopupState variant="popover">
                   {(popupState) => (
                     <div>
@@ -162,26 +205,24 @@ const Navbar = ({
                             <ButtonGroup
                               variant="contained"
                               color="primary"
-                              aria-label="contained primary button group">
+                              aria-label="contained primary button group"
+                              onClick={popupState.close}>
+                              {/* <Link to={`/account/${user.id}`}> */}
                               <Button
                                 onClick={() => {
                                   history.push(`/account/${user.id}`);
                                 }}>
                                 Order History
                               </Button>
+                              {/* </Link> */}
+                              {/* <Link to={`/account/${user.id}/edit`}> */}
                               <Button
                                 onClick={() => {
                                   history.push(`/account/${user.id}/edit`);
                                 }}>
                                 Edit Account
                               </Button>
-                              < Button onClick={() => {
-                                  history.push('/');
-                                }}>
-                                <p onClick={handleClick}>
-                                  Logout
-                                </p>
-                              </Button>
+                              {/* </Link> */}
                             </ButtonGroup>
                           </div>
                         </Box>
@@ -189,8 +230,21 @@ const Navbar = ({
                     </div>
                   )}
                 </PopupState>
+                {/* </Badge> */}
+                {/* </Link> */}
               </IconButton>
-            </div>   
+              <IconButton>
+                <p>Welcome {firstName}!</p>
+              </IconButton>
+              <IconButton
+                aria-label="log out"
+                aria-haspopup="true"
+                color="inherit">
+                <a href="#" onClick={handleClick}>
+                  Logout
+                </a>
+              </IconButton>
+            </div>
           ) : (
             <div>
               <IconButton
@@ -207,11 +261,6 @@ const Navbar = ({
               </IconButton>
             </div>
           )}
-              <div className={classes.sectionShoppingCart}>
-                <IconButton aria-label="show shopping cart" color="inherit" style={{marginBottom: 6}}>
-                  <CartIcon />
-                </IconButton>
-              </div>
         </Toolbar>
       </AppBar>
     </div>
