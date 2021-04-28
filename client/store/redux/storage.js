@@ -45,9 +45,7 @@ export const storageThunk = (id) => {
       } else {
         let unfilteredStorage = Object.keys(localStorage).map(ringtone => ringtone)
         ;
-        console.log(unfilteredStorage);
         let storageIds = unfilteredStorage.filter((value) => Number(value));
-        console.log(storageIds);
         let response = await axios.post('/api/ringtone/where', storageIds);
         storage = response.data || [];
       }
