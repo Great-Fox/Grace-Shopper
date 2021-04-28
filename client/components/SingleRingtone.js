@@ -79,13 +79,12 @@ export class SingleRingtone extends React.Component {
         <div>
           <Container>
           <form id="edit-ringtone" onSubmit={this.handleSubmit}>
-            <h1> Ringtone Infomation </h1>
             <div key={this.props.ringtone.id}>
               {this.state.isInEditMode ? (
+                <div>
                 <Grid container spacing={3} >
-                  <Grid item xs={12}  style={{marginTop: 30}}>
+                  <Grid item xs={12}  style={{marginTop: 20}}>
                     <TextField
-                    margin="normal"
                     label="Ringtone name"
                     name="name"
                     size="small"
@@ -95,20 +94,8 @@ export class SingleRingtone extends React.Component {
                     required
                     />
                   </Grid>
-                  <Grid item xs={12}  style={{marginTop: 30}}>
+                  <Grid item xs={12}  style={{marginTop: 5}}>
                     <TextField
-                    margin="normal"
-                    label="Song URL"
-                    name="songUrl"
-                    size="small"
-                    variant="outlined"
-                    onChange={this.handleChange}
-                    value={this.state.songUrl}
-                    />
-                  </Grid>
-                  <Grid item xs={12}  style={{marginTop: 30}}>
-                    <TextField
-                    margin="normal"
                     label="Artist"
                     name="artist"
                     size="small"
@@ -117,9 +104,18 @@ export class SingleRingtone extends React.Component {
                     value={this.state.artist}
                     />
                   </Grid>
-                  <Grid item xs={12}  style={{marginTop: 30}}>
+                  <Grid item xs={12}  style={{marginTop: 5}}>
                     <TextField
-                    margin="normal"
+                    label="Song URL"
+                    name="songUrl"
+                    size="small"
+                    variant="outlined"
+                    onChange={this.handleChange}
+                    value={this.state.songUrl}
+                    />
+                  </Grid>
+                  <Grid item xs={12}  style={{marginTop: 5}}>
+                    <TextField
                     label="Genre"
                     name="genre"
                     size="small"
@@ -128,9 +124,8 @@ export class SingleRingtone extends React.Component {
                     value={this.state.genre}
                     />
                   </Grid>
-                  <Grid item xs={12}  style={{marginTop: 30}}>
+                  <Grid item xs={12}  style={{marginTop: 5}}>
                     <TextField
-                    margin="normal"
                     label="Price"
                     name="price"
                     size="small"
@@ -139,43 +134,50 @@ export class SingleRingtone extends React.Component {
                     value={this.state.price}
                     />
                   </Grid>
-                  <Button variant="contained" color="primary" type="submit">
-                    Save Changes
-                  </Button>
-                  <Button variant="contained" color="primary" type="submit" onClick={() => {
-                                  history.push(`/ringtone/${this.props.ringtone.id}`);
-                                }}>
-                  Cancel
-                  </Button>
                 </Grid>
+                </div>
               ) : (
                 <div>
                   <div onClick={this.changeEditMode}>
-                    <h3>{this.props.ringtone.name}</h3>
+                    <h4>{this.props.ringtone.name} - {this.props.ringtone.artist}</h4>
                     <iframe
                       src={`https://open.spotify.com/embed/track/${this.props.ringtone.songUrl.slice(
                         14
                       )}`}
-                      width="300"
-                      height="380"
+                      width="230"
+                      height="300"
                       frameBorder="0"
                       allowtransparency="true"
                       allow="encrypted-media"></iframe>
-                    <h4>{this.props.ringtone.artist}</h4>
                     <h6>{this.props.ringtone.genre}</h6>
-                    <h6>Price ${(this.props.ringtone.price)/100}</h6>
+                    <h4>Price ${(this.props.ringtone.price)/100}</h4>
                   </div>
                   <br />
-                  <Button variant="contained" color="primary">
-                    Buy This Ringtone!
-                  </Button>
+                  { this.props.isAdmin ? (null) :  (
+                    <Button variant="contained" color="primary">
+                       Buy This Ringtone!
+                    </Button>
+                  )}
                   <br />
                 </div>
               )}
               {this.props.isAdmin ? (
                 <div>
+                  {this.state.isInEditMode ? (
+                    <div>
+                      <Button variant="contained" color="primary" type="submit" style={{marginTop: 12}}>
+                       Save Changes
+                      </Button>
+                      <Button style={{marginTop: 12}} variant="contained" color="primary" type="submit" onClick={() => {
+                          this.props.history.push(`/ringtone/${this.props.ringtone.id}`);
+                      }}>
+                          Cancel
+                       </Button>
+                    </div>
+                  ): null}
                   <br />
                   <Button
+                    style={{marginTop: 12}}
                     variant="contained"
                     color="secondary"
                     onClick={() => {
@@ -185,12 +187,13 @@ export class SingleRingtone extends React.Component {
                     }}>
                     Delete Ringtone
                   </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={this.changeEditMode}>
-                    Edit Ringtone
-                  </Button>
+                      <Button
+                        style={{marginTop: 12}}
+                        variant="contained"
+                        color="secondary"
+                        onClick={this.changeEditMode}>
+                        Edit Ringtone
+                      </Button>
                 </div>
               ) : null}
             </div>

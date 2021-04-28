@@ -209,7 +209,7 @@ const Navbar = ({
             </div>
           )}
               <div className={classes.sectionShoppingCart}>
-                <IconButton aria-label="show shopping cart" color="inherit" style={{marginBottom: 6}}>
+                <IconButton aria-label="show shopping cart" color="inherit" style={{marginBottom: 8}}>
                   <CartIcon />
                 </IconButton>
               </div>

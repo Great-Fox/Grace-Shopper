@@ -101,7 +101,7 @@ export class EditInfo extends React.Component {
                   variant="contained" 
                   type="submit"
                   onClick={() => {
-                    history.push('/ringtone');
+                    this.props.history.push('/ringtone');
                   }}>
                     Cancel
                 </Button>
