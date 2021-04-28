@@ -6,7 +6,7 @@ export default function ThankYou() {
     return (
         <div>
             <h1 className="cheating">Thank you for placing an order!</h1>
-            <p>This website is pretend, so unfortunately we can't actually give you a ringtone. Bu you can keep exploring at the link below!</p>
+            <p>This website is for school, so unfortunately we can't actually give you a ringtone. But you can keep exploring at the link below!</p>
            <Link to="/ringtone">
            <Button
                 style={{marginLeft: 5, marginTop: 5}}      
