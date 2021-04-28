@@ -7,11 +7,11 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { spacing } from '@material-ui/system';
-import Box from "@material-ui/core/Box";
+import Box from '@material-ui/core/Box';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
-import {
-  storageThunk, addItemThunk
-} from '../store/redux/storage';
+import { storageThunk, addItemThunk } from '../store/redux/storage';
 import AdminForm from './AdminForm';
 import AdminUsers from './AdminUsers';
 
@@ -22,9 +22,12 @@ export class AllRingtones extends React.Component {
       storage: [],
       form: false,
       users: false,
+      open: false,
     };
-  
+
     this.handleDelete = this.handleDelete.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   async componentDidMount() {
@@ -34,9 +37,23 @@ export class AllRingtones extends React.Component {
   handleDelete(id) {
     this.props.deleteRingtone(id);
   }
+  // handleClick(event, ringtone) {
+  //   this.props.addItem(ringtone, this.props.userId);
+  //   this.setState({
+  //     open: true,
+  //   });
+  // }
 
+  handleClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({
+      open: false,
+    });
+  }
   render() {
-    
     if (!this.props.ringtones.length) {
       return <h1> Loading Ringtones! </h1>;
     } else {
@@ -45,28 +62,25 @@ export class AllRingtones extends React.Component {
           {/* <h1> These are our wonderful ringtones! </h1> */}
           {this.props.isAdmin ? (
             <div>
-              <Box
-                display="flex"
-                justifyContent="center"
-                >
+              <Box display="flex" justifyContent="center">
                 <Button
-                style={{marginLeft: 5, marginTop: 5}}      
-                color="secondary"
-                variant="contained"
-                onClick={() => {
-                  this.setState({ form: !this.state.form });
-                }}>
-                Add New Ringtone
-              </Button>
-              <Button             
-                style={{marginLeft: 5, marginTop: 5}}    
-                color="secondary"
-                variant="contained"
-                onClick={() => {
-                  this.props.history.push('/admin/users')
-                }}>
-                See all users with accounts
-              </Button>
+                  style={{ marginLeft: 5, marginTop: 5 }}
+                  color="secondary"
+                  variant="contained"
+                  onClick={() => {
+                    this.setState({ form: !this.state.form });
+                  }}>
+                  Add New Ringtone
+                </Button>
+                <Button
+                  style={{ marginLeft: 5, marginTop: 5 }}
+                  color="secondary"
+                  variant="contained"
+                  onClick={() => {
+                    this.props.history.push('/admin/users');
+                  }}>
+                  See all users with accounts
+                </Button>
               </Box>
             </div>
           ) : null}
@@ -93,16 +107,31 @@ export class AllRingtones extends React.Component {
                           allow="encrypted-media"></iframe>
                         <h4>{ringtone.artist}</h4>
                         <h6>{ringtone.genre}</h6>
-                        <h6>Price ${(ringtone.price)/100}</h6>
+                        <h6>Price ${ringtone.price / 100}</h6>
                         <div>
                           <Button
                             variant="contained"
                             color="primary"
-                            onClick={() => 
-                              this.props.addItem(ringtone, this.props.userId)
-                            }>
+                            onClick={() => {
+                              this.props.addItem(ringtone, this.props.userId);
+                              this.setState({
+                                open: true,
+                              });
+                            }}>
                             Add To Cart
                           </Button>
+                          <Snackbar
+                            open={this.state.open}
+                            autoHideDuration={3000}
+                            onClose={this.handleClose}>
+                            <MuiAlert
+                              elevation={6}
+                              variant="filled"
+                              onClose={this.handleClose}
+                              severity="success">
+                              Ringtone added to cart!{' '}
+                            </MuiAlert>
+                          </Snackbar>
                           {this.props.isAdmin ? (
                             <div>
                               <Button
@@ -138,7 +167,7 @@ const mapState = (state) => {
     ringtones: state.ringtones,
     storage: state.storage,
     userId: state.auth.id,
-    isAdmin: state.auth.isAdmin
+    isAdmin: state.auth.isAdmin,
   };
 };
 
