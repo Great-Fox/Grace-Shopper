@@ -1,6 +1,7 @@
 body {
   font-family: sans-serif;
   background: rgb(245, 226, 247);
+  text-align: center;
 }
 
 a {
@@ -10,4 +11,35 @@ a {
 nav a {
   display: inline-block;
   margin: 1em;
+}
+
+td, th {
+  width: auto;
+  padding: 5px;
+  height: auto;
+  text-align: left;
+}
+
+table {
+  margin: auto auto 30px auto;
+  padding: 20px;
+}
+
+.cheating {
+padding: 50px;
+}
+
+#checkout {
+  width: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
+}
+
+#checkout > {
+  flex-basis: 100%
+}
+
+.title {
+  margin: 100px auto 50px auto;
 }

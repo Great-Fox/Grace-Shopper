@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { editUserInfoThunk, getUserInfoThunk } from '../../store/redux/user';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
-// const initialState = {
-//     firstName: '',
-//     lastName:'',
-//     email: ''
-// }
 
 export class EditInfo extends React.Component {
   constructor() {
@@ -44,32 +43,73 @@ export class EditInfo extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
-      <form id="account-form" onSubmit={this.handleSubmit}>
-        <p>First Name: </p>
-        <input
-          label="First Name:"
-          name="firstName"
-          value={this.state.firstName}
-          onChange={this.handleChange}
-        />
-        <p>Last Name: </p>
-        <input
-          label="Last Name:"
-          name="lastName"
-          value={this.state.lastName}
-          onChange={this.handleChange}
-        />
-        <p>Email: </p>
-        <input
-          label="Email:"
-          name="email"
-          value={this.state.email}
-          onChange={this.handleChange}
-        />
-        <button>Submit</button>
+      <Container>
+        <form id="account-form" onSubmit={this.handleSubmit}>
+        <Grid container spacing={3} >
+          <Grid item xs={12}>
+            <Grid container >
+              <Grid item xs={12}  style={{marginTop: 30}}>
+                <TextField
+                  margin="normal"
+                  label="First Name"
+                  name="firstName"
+                  size="small"
+                  variant="outlined"
+                  onChange={this.handleChange}
+                  value={this.state.firstName}
+                  required
+                  />
+              </Grid>
+               <Grid item xs={12}  style={{marginTop: 12}}>
+                <TextField
+                  margin="normal"
+                  label="Last Name"
+                  name="lastName"
+                  size="small"
+                  variant="outlined"
+                  onChange={this.handleChange}
+                  value={this.state.lastName}
+                  required
+                  />
+              </Grid>
+              <Grid item xs={12}  style={{marginTop: 12}}>
+                <TextField
+                  margin="normal"
+                  label="Email"
+                  name="email"
+                  size="small"
+                  variant="outlined"
+                  onChange={this.handleChange}
+                  value={this.state.email}
+                  required
+                  />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid style={{marginTop: 20}}>
+                <Button 
+                  color="secondary" 
+                  variant="contained" 
+                  type="submit">
+                    Submit
+                </Button>
+                <Button 
+                  style={{marginLeft: 12}}
+                  color="secondary" 
+                  variant="contained" 
+                  type="submit"
+                  onClick={() => {
+                    history.push('/ringtone');
+                  }}>
+                    Cancel
+                </Button>
+                <Grid>
+                    </Grid>
+                </Grid>
       </form>
+      </Container>
     );
   }
 }

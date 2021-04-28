@@ -13,6 +13,7 @@ import Checkout from './components/Checkout';
 import UserInfo from './components/AccountInfo/UserInfo';
 import OrderHistory from './components/AccountInfo/OrderHistory';
 import EditInfo from './components/AccountInfo/EditInfo';
+import ThankYou from './components/ThankYou';
 
 /**
  * COMPONENT
@@ -43,6 +44,7 @@ class Routes extends Component {
           <Route exact path="/account" component={UserInfo} />
           <Route exact path="/account/:userId" component={OrderHistory} />
           <Route exact path="/account/:userId/edit" component={EditInfo} />
+          <Route exact path="/thankyou" component={ThankYou} />
         </Switch>
       </div>
     );

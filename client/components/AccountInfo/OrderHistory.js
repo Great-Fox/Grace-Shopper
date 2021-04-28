@@ -1,55 +1,62 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getAllOrderHistoryThunk } from '../../store/redux/orderHistory'
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import { DataGrid } from '@material-ui/data-grid';
 
-
-// const initialState = {
-//   name: '',
-//   artist: '',
-//   genre: '',
-//   songUrl: '',
-//   price: '',
-// };
+const columns = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'name', headername: 'Name', width: 200 },
+  { field: 'price', headername: 'Price', width: 200 },
+];
 
 export class OrderHistory extends React.Component {
-//   constructor() {
-//     super();
-//     this.state = initialState;
-//     this.handleChange = this.handleChange.bind(this);
-//     this.handleSubmit = this.handleSubmit.bind(this);
-//   }
-// async componentDidMount() {
-//     await this.props.getOrders(this.props.userId)
-// }
 
-async componentDidUpdate(prevProps){
-    if (prevProps.userId !== this.props.userId) {
-        await this.props.getOrders(this.props.userId)
-    }
+ componentDidMount() {
+    this.props.getOrders(this.props.match.params.userId)
 }
+
   render(){
-      
       const orders = this.props.orders
-      console.log(orders)
       return (
         <div>
-                Your Orders: 
+        <Paper margin='auto' maxWidth={500} >
+            <Typography gutterBottom variant="h3" style={{ marginTop: 5 }}>
+                Your Orders History 
+                </Typography>
+            <Box display="flex" justifyContent="center">
+            <Grid container spacing={12}>
                 {orders.map(order => {
                     return (
-                        <p>
-                            <p>Order: {order.id}</p>
-                            { order.ringtones.map(ringtone => {
-                            return (
-                                <p>{ringtone.name}</p>
-                            )
-                        })}
-                        <p>
-                            {order.totalPrice}
-                        </p>
-                        </p>
+                      <Grid item xs={12} sm container style={{ margin: 5 }}>
+                      <Paper style={{ padding: 100 }}>
+
+                      <Grid item xs container direction="column" spacing={2}>
+                        <Grid item xs>
+                        <Typography gutterBottom variant="h4">
+                          Order {order.id}
+                        </Typography>
+                              <div style={{ display: 'flex', height: 300, background: "white"}}>
+                              <div style={{ flexGrow: 1}}>
+                                <DataGrid columns={columns} rows={order.ringtones} />
+                              </div>
+                            </div>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="h4" style={{ marginTop: 10 }}>TOTAL PRICE: ${order.totalPrice}</Typography>    
+                        </Grid>
+
+                      </Paper>
+                      </Grid>
                     )
                 })}
-
+              </Grid>
+              </Box>
+          </Paper>
         </div>
       )
   }
